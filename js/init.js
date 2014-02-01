@@ -1,3 +1,8 @@
+/*
+	Astral 2.5 by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+*/
 
 skel.init({
 	prefix: 'css/style',
@@ -5,6 +10,15 @@ skel.init({
 	resetCSS: true,
 	useOrientation: false,
 	breakpoints: {
+		'mobile': {
+			range: '-480',
+			lockViewport: true,
+			containers: 'fluid',
+			grid: {
+				collapse: true,
+				gutters: 10
+			}
+		},
 		'desktop': {
 			range: '481-',
 			containers: 1200
@@ -21,7 +35,7 @@ jQuery(window).load(function() {
 	/*********************************************************************************/
 
 		var settings = {
-			resizeSpeed:	100,		// Speed to resize panel
+			resizeSpeed:	600,		// Speed to resize panel
 			fadeSpeed:		300,		// Speed to fade in/out
 			sizeFactor:		11.5,		// Size factor
 			sizeMin:		15,			// Minimum point size
@@ -47,7 +61,7 @@ jQuery(window).load(function() {
 			firstPanelId = null,
 			isLocked = false,
 			hash = window.location.hash.substring(1),
-			isTouch = false,
+			isTouch = !!('ontouchstart' in window),
 			isLegacyIE = (navigator.userAgent.match(/MSIE ([0-9]+)\./) && RegExp.$1 <= 9);
 		
 		if (isTouch)
