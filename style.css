@@ -454,7 +454,7 @@ pre {
 
 #logo {
 	text-align: left;
-	padding: 40px 32px 0 32px;
+	padding: 30px 32px 0 40px;
 }
 
 #logo a {
@@ -462,6 +462,8 @@ pre {
 }
 
 #logo img {
+	width: 128px;
+	height: 52px;
 	display: inline;
 }
 
