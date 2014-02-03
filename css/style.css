@@ -1,0 +1,19 @@
+body {
+	padding-top: 20px;
+	padding-bottom: 20px;
+	font-size: 1.5em;
+}
+
+.navbar {
+	margin-bottom: 20px;
+}
+
+.container {
+	width: 960px;
+	width: 960px;
+}
+
+.navbar-brand img {
+	width: 90px;
+	margin-top: -11px;
+}
