@@ -1,94 +1,101 @@
-<!DOCTYPE HTML>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<title>Rime team</title>
-	<link rel="shortcut icon" type="image/x-icon" href="style/images/favicon.png?v=1" />
-	<link rel="stylesheet" type="text/css" href="style.css" media="all" />
-	<!--[if IE 7]>
-	<link rel="stylesheet" type="text/css" href="style/css/ie7.css" media="all" />
-	<![endif]-->
-	<!--[if IE 8]>
-	<link rel="stylesheet" type="text/css" href="style/css/ie8.css" media="all" />
-	<![endif]-->
-	<!--[if IE 9]>
-	<link rel="stylesheet" type="text/css" href="style/css/ie9.css" media="all" />
-	<![endif]-->
-	<script type="text/javascript" src="style/js/jquery-1.6.4.min.js"></script>
-	<script type="text/javascript" src="style/js/ddsmoothmenu.js"></script>
-	<script type="text/javascript" src="style/js/jquery.jcarousel.js"></script>
-	<script type="text/javascript" src="style/js/jquery.prettyPhoto.js"></script>
-	<script type="text/javascript" src="style/js/carousel.js"></script>
-	<script type="text/javascript" src="style/js/jquery.flexslider-min.js"></script>
-	<script type="text/javascript" src="style/js/jquery.masonry.min.js"></script>
-	<script type="text/javascript" src="style/js/jquery.slickforms.js"></script>
-</head>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Rime team</title>
 
-<body>
-	<div id="wrapper">
-		<div id="sidebar">
-			<div id="logo">
-				<a href="index.html"><img src="style/images/rime_logo.png" alt="Rime" /></a>
-			</div>
-			 
-			<div id="menu" class="menu-v">
-			  <ul>
-				<li><a href="index.html" class="active">Home</a>
-				</li>
-				<li><a href="#">Games</a>
-					<ul>
-						<li><a href="#">Line Bound</a></li>
-						<li><a href="#">Uncopy</a></li>
-					</ul>
-				</li>
-				<li><a href="http://0xc0dec.org" target="_blank">Blog</a>
-				</li>
-				<li><a href="team.html">The team</a></li>
-			  </ul>
-			</div>
+		<!-- Bootstrap -->
+		<link href="css/bootstrap.min.css" rel="stylesheet">
 
-			<div class="sidebox">
-				<ul class="share">
-					<li><a href="http://facebook.com/0xc0dec"><img src="style/images/icon-facebook.png" alt="Facebook" /></a></li>
-					<li><a href="http://twitter.com/0xc0dec"><img src="style/images/icon-twitter.png" alt="Twitter" /></a></li>
-				</ul>
-			</div>
-		</div>
-	
-		<div id="content">
-			<h1 class="title">Welcome</h1>
-			<div class="line"></div>
+		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
 		
-			<h3>Who are we?</h3>
-			
-			<p>
-				Rime is an indie game development team based in Ekaterinburg, Russia.<br/>
-				We focus on making smart, yet simple and stylish games for mobile and desktop platforms.
-			</p>
-			
-			<p>
-				Rime was founded by Aleksey "0xc0dec" Fedotov in the beginning of 2014. Before that he published several games
-				that now can also be considered belonging to the Rime team.
-			</p>
-			
-			<h2>Mission</h2>
-			<p>
-				Our mission is to deliver high quality, unconvensional games that should make people rethink the definition of the word "game".
-				We think, a game is a new way of self expression, a tool for a game developer to share his feelings and emotions with the gamers.
-			</p>
+		<style>
+			body {
+				padding-top: 20px;
+				padding-bottom: 20px;
+			}
 
-			<div id="footer">
-				<div class="footer-box one-half">
-					Copyright (c) Rime team, 2014
+			.navbar {
+				margin-bottom: 20px;
+			}
+			
+			.container {
+				min-width: 960px;
+				max-width: 960px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<!-- Static navbar -->
+			<div class="navbar navbar-default" role="navigation">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="#">Rime</a>
+					</div>
+					<div class="navbar-collapse collapse">
+						<ul class="nav navbar-nav navbar-right">
+							<li class="active"><a href="./">Home</a></li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Games <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="#">Action</a></li>
+									<li><a href="#">Another action</a></li>
+									<li><a href="#">Something else here</a></li>
+									<li class="divider"></li>
+									<li class="dropdown-header">Nav header</li>
+									<li><a href="#">Separated link</a></li>
+									<li><a href="#">One more separated link</a></li>
+								</ul>
+							</li>
+							<li><a href="#">Team</a></li>
+							<li><a href="#">Contacts</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row marketing">
+				<div class="col-lg-6">
+					<h4>Who are we?</h4>
+					<p></p>
+
+					<h4>Subheading</h4>
+					<p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
+
+					<h4>Subheading</h4>
+					<p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+				</div>
+
+				<div class="col-lg-6">
+					<h4>Subheading</h4>
+					<p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+
+					<h4>Subheading</h4>
+					<p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
+
+					<h4>Subheading</h4>
+					<p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="clear"></div>
-	<script type="text/javascript" src="style/js/scripts.js"></script>
-	<!--[if !IE]> -->
-	<script type="text/javascript" src="style/js/jquery.corner.js"></script>
-	<!-- <![endif]-->
-</body>
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="https://code.jquery.com/jquery.js"></script>
+		<!-- Include all compiled plugins (below), or include individual files as needed -->
+		<script src="js/bootstrap.min.js"></script>
+	</body>
 </html>
