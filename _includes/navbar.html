@@ -1,0 +1,15 @@
+<div class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/">
+				<img src="/data/gamepad_large.png"/>
+			</a>
+			<div class="navbar-text">Home page of one programmer</div>
+		</div>
+		<ul class="nav navbar-nav navbar-right">
+			<li {% if page.name == 'blog' %} class="active" {% endif %}><a href="/">Blog</a></li>
+			<li {% if page.name == 'portfolio' %} class="active" {% endif %}><a href="/portfolio/">Portfolio</a></li>
+			<li {% if page.name == 'about' %} class="active" {% endif %}><a href="/about/">About</a></li>
+		</ul>
+	</div>
+</div>

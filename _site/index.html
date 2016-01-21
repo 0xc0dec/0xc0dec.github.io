@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Blog | Raycast</title>
+
+		<link href="/css/vendor/bootstrap.min.css" rel="stylesheet">
+    	<link href="/css/flat-ui.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="/css/style.css"/>
+		<link rel="stylesheet" href="/css/syntax.css" media="screen"/>
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox.css" media="screen"/>
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-buttons.css" media="screen" />
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-thumbs.css" media="screen" />
+		<link rel="shortcut icon" type="image/png" href="/data/gamepad2.png">
+
+	</head>
+	<body>
+		<div class="container page">
+			<div class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/">
+				<img src="/data/gamepad_large.png"/>
+			</a>
+			<div class="navbar-text">Home page of one programmer</div>
+		</div>
+		<ul class="nav navbar-nav navbar-right">
+			<li ><a href="/">Blog</a></li>
+			<li ><a href="/portfolio/">Portfolio</a></li>
+			<li ><a href="/about/">About</a></li>
+		</ul>
+	</div>
+</div>
+
+
+			<div class="content">
+				
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2015/09/30/lua-intf.html">C++ embedded scripting&#58; LuaIntf recipes</a></h2>
+				<span class="small text-muted">30 Sep 2015</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<p>In <a href="/2015/07/07/chaiscript-recipes.html">my previous post</a> on C++ embedded scripting I talked about ChaiScript and described how to implement some tricky cases
+when embedding this language into your C++ application.
+Although the language is really interesting, there are some flaws in it that I find serious, like, for example, not very rich syntax or long compilation times.</p>
+
+<p>Having said that, I decided to search again in attempt to find a good Lua binding library. After some research I found one - <a href="https://github.com/SteveKChiu/lua-intf">LuaInft</a> (C++11), which I want to talk about today.
+A good documentation (at least it has one!) plus the fact that its author positions the library as a modern remake of LuaBridge (another good, but abandoned library), attracted my attention immediately.</p>
+
+
+			
+				<a href="/2015/09/30/lua-intf.html">Read more...</a>
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2015/08/09/another-failed-experiment.html">Another failed experiment</a></h2>
+				<span class="small text-muted">09 Aug 2015</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<p>It&#39;s time for me to accept that I&#39;ve failed again.</p>
+
+<div class="row text-center"><img src="/data/hypermino/screenshot1.png" class="margined20"/></div>
+
+<p>During the past week I&#39;ve been working on a game prototype in which I implemented a gameplay idea that came to my mind recently.
+Today I realised that this gameplay is no longer fun to me. When I first started, it was interesting to quickly prototype the idea
+to get how it feels, looks and works. Many indiedevs are correct saying that you need to make a working prototype as soon as you can,
+scrapping away all the stuff that doesn&#39;t add to the gameplay. This basic prototype will show whether the game is fun to play or not, and maybe it would also
+give you some ideas on how to make things even more fun.</p>
+
+
+			
+				<a href="/2015/08/09/another-failed-experiment.html">Read more...</a>
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2015/07/07/chaiscript-recipes.html">C++ embedded scripting&#58; ChaiScript recipes</a></h2>
+				<span class="small text-muted">07 Jul 2015</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<p><a href="/2015/07/07/chaiscript-recipes.html#recipes">Go to recipes</a></p>
+
+<p>Currently there are several options for embedding scripting into your C++ application. Among the most well-known, from my experience, are
+<a href="http://www.lua.org/">Lua</a>, <a href="http://www.angelcode.com/angelscript/">AngelScript</a> and the recent addition - <a href="http://chaiscript.com/">ChaiScript</a>.
+I&#39;ve been evaluating these languages for some time recently and my main impressions are:</p>
+
+
+			
+				<a href="/2015/07/07/chaiscript-recipes.html">Read more...</a>
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2015/05/05/nsf-devblog-part2.html">Not So Flat devblog, part 2</a></h2>
+				<span class="small text-muted">05 May 2015</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<div class="row text-center"><img src="/data/notsoflat/player2.png" class="margined20"/></div>
+
+<p><a href="/2015/03/22/nsf-devblog.html">Part 1</a></p>
+
+<p>Whoa, that did happen! Not So Flat has finally been released and is <a href="http://0xc0dec.itch.io/notsoflat">available for free on itch.io</a>.</p>
+
+<p>The only game before Not So Flat that also had a devblog about it was ultimately abandonded and never made it to the release.
+I was afraid that Not So Flat would suffer the same fate, but things turned out (almost) very well.</p>
+
+<p>This second part of the devblog is aimed at explaining the character movement implementation.
+This includes two major topics: the actual movement (running and jumping) and the calculation of the space available for movement.</p>
+
+
+			
+				<a href="/2015/05/05/nsf-devblog-part2.html">Read more...</a>
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2015/03/22/nsf-devblog.html">Not So Flat devblog</a></h2>
+				<span class="small text-muted">22 Mar 2015</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<div class="row text-center"><img src="/data/notsoflat/player.png" class="margined20"/></div>
+
+<p><a href="/2015/05/04/nsf-devblog-part2.html">Part 2</a></p>
+
+<p>Not So Flat is the name of the new game that I&#39;m currently working on. When I first started the development (late December 2014),
+it&#39;s been already more than half a year since my previous game <a href="/cubicroll/">Cubic Roll</a> came out. At that time I was struggling to come up with
+a unique gameplay idea that I&#39;ve never seen before, but which could still be quite feasible to implement within an acceptable time bounds.</p>
+
+<p>In search of inspiration I was looking through my old prototypes and found one that was dated back to the beginning of 2013.
+The idea was quite interesting but at the time the demo was made I had lost my inspiration because I wasn&#39;t able to implement the
+concept in a way that I could be satisfied with (that was technically a bit challenging). Looking at that demo again I&#39;ve decided to give it
+another try and see what happens this time. I had no ideas better than the one already implemented, so the decision to continue the project was easy to make.</p>
+
+
+			
+				<a href="/2015/03/22/nsf-devblog.html">Read more...</a>
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2015/01/01/happy-2015.html">Happy New Year!</a></h2>
+				<span class="small text-muted">01 Jan 2015</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<div class="row">
+    <div class="col-xs-4 col-xs-offset-4" style="font-size: 35pt; text-align: center">2015</div>
+    <div class="col-xs-6 col-xs-offset-3" style="text-align: center">= 1024 + 512 + 256 + 128 + 64 + :) + 16 + 8 + 4 + 2 + 1</div>
+    <div class="col-xs-2 col-xs-offset-5" style="text-align: center">= 11111011111</div>
+</div>
+
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2014/10/19/clion-multiple-binaries.html">Building multiple linked binaries in CLion on Mac OS X</a></h2>
+				<span class="small text-muted">19 Oct 2014</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<div class="row text-center"><img src="/data/clion_logo.png" class="margined20"/></div>
+
+<p><a href="https://www.jetbrains.com/clion/">CLion</a> is a new C/C++ IDE from JetBrains, the creators of ReSharper, IntelliJ IDEA and many other great products for software developers. CLion is claimed to support a full-featured refactoring workflow for C++, similar to how it is already implemented in other JetBrains products. At this moment the IDE is available in early access mode, which means that we can download and use it freely, keeping in mind that the product is not stable yet, so bugs are possible.</p>
+
+<p>I decided to move one of my projects from XCode to CLion. The refactoring capabilities of XCode for C++ are far from being good (in fact, there is no refactoring support for C++), and after using ReSharper for my C# projects, I simply don&#39;t understand how to work without &quot;Rename&quot;, &quot;Find usages&quot;, &quot;Generate missing members&quot;, smart highlighting and a plenty of other super-useful features.</p>
+
+<p>CLion uses CMake to describe and manage its projects (at least yet). If you&#39;re not very familiar with CMake (like me), creating and building anything more complex than the default Hello world will be sort of a nightmare. In this post I&#39;ll share my experience in building a static library and a project that uses this library in CLion, hoping that this will save a lot of googling time for anyone having the similar task.</p>
+
+
+			
+				<a href="/2014/10/19/clion-multiple-binaries.html">Read more...</a>
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2014/09/07/unity3d-pick-and-drag.html">Unity3d tip&#58; implementing pick-and-drag mechanics in a first-person game</a></h2>
+				<span class="small text-muted">07 Sep 2014</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<div class="row text-center"><img src="/data/companion_cube.png" class="margined20"/></div>
+
+<p>Picking and dragging objects around is something that you can see quite often in various games with the first-person camera view.
+This features adds a lot to the level of interactivity with the game environment, so developers build their game mechanics around
+this feature for a good reason.</p>
+
+<p>So, how to implement this inside Unity? I&#39;ve seen some implementations ranging from the very simple to the more advanced ones. In this post
+I&#39;ll try to explain what I don&#39;t like about some of them and propose my own solution with an interesting hack behind it.</p>
+
+
+			
+				<a href="/2014/09/07/unity3d-pick-and-drag.html">Read more...</a>
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2014/08/12/unreal-engine-platforms.html">How to make moving platforms in Unreal Engine 4</a></h2>
+				<span class="small text-muted">12 Aug 2014</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<div class="row text-center"><img src="/data/ue_logo.png" class="margined20"/></div>
+
+<p>When Epic Games introduced their new type of license for the Unreal Engine 4 (the so-called EaaS, i.e. &quot;engine as a service&quot;), it was only a matter of time for me to start testing and using the engine.
+To be honest, I had certain difficulties understanding some basic concepts of various things that make up the engine editor. Most importantly, the blueprints. It is indeed a very powerful system, and judging by
+various tutorials that float around the Internet (including the official ones), this system can do almost anything that you previously needed to write code for.</p>
+
+
+			
+				<a href="/2014/08/12/unreal-engine-platforms.html">Read more...</a>
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2014/03/29/One-line-of-code-to-make-a-better-quick-search-in-FAR-Manager.html">One line of code to make a better quick search in FAR Manager</a></h2>
+				<span class="small text-muted">29 Mar 2014</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<p><img src="/data/far.png" class="img-thumbnail pull-left margined20"></p>
+
+<p>A few testimonials first. FAR Manager was the kind of software which I used a lot on a daily basis.
+Really, it’s fast, has a rich feature set and looks cool (console-styled interface is quite competitive with those native Windows GUI’s that other managers have).
+When it comes to reading large files like logs, FAR manager is beyond comparison.</p>
+
+<p>However, one thing that sucks and always did in FAR is the quick search – the search that is activated when you press <code>Alt</code> key and start typing.
+The concept itself is very useful and allows you to navigate files at the speed of light, but in FAR the whole idea is ruined by the way it’s implemented:
+FAR seeks the input string only at the beginning of each file name. Let’s imagine that we have a program that consists of an .exe file and many libraries.
+All file names have the same prefix. For example, they follow some awkward notation <code>&lt;CompanyName&gt;.&lt;ProgramName&gt;.&lt;extension&gt;</code>, which, you know,
+is quite a real case in business software. As you might expect, there’s no way to quickly navigate the exe file in this directory – you literally have to print the entire file name to select it,
+because most of the files differ only by extension.</p>
+
+
+			
+				<a href="/2014/03/29/One-line-of-code-to-make-a-better-quick-search-in-FAR-Manager.html">Read more...</a>
+			
+		</div>
+	</div>
+
+
+<div class="row">
+  <div class="col-xs-12">
+  	<div class="pagination pagination-inverse">
+  		
+			<a class="btn btn-inverse previous" disabled href="/"><i class="fui-arrow-left"></i>Newer</a></li>
+	    
+
+	    <ul>
+	        
+				<li class="active"><span>1</span></li>
+	        
+			
+	        
+				
+					<li><a href="/page2">2</a></li>
+				
+	        
+				
+					<li><a href="/page3">3</a></li>
+				
+	        
+				
+					<li><a href="/page4">4</a></li>
+				
+	        
+	    </ul>
+
+	    
+			<a class="btn btn-inverse next" href="/page2">Older<i class="fui-arrow-right"></i></a>
+        
+	</div>
+  </div>
+</div>
+
+			<div>
+
+			
+
+		</div>
+
+		<div class="footer">
+	<p class="text-muted">© 2014-2016 Aleksey Fedotov</p>
+</div>
+
+<script src="/js/vendor/jquery.min.js"></script>
+<script src="/js/vendor/video.js"></script>
+<script src="/js/flat-ui.min.js"></script>
+<script src="/js/fancybox/jquery.fancybox.pack.js"></script>
+<script src="/js/fancybox/jquery.fancybox-buttons.js"></script>
+<script src="/js/fancybox/jquery.fancybox-media.js"></script>
+<script src="/js/fancybox/jquery.fancybox-thumbs.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-50872849-1', 'raycast.net');
+  ga('send', 'pageview', {
+    "page": "/index.html",
+    "title": 'Blog'
+  });
+</script>
+
+<script>
+	$(document).ready(function() {
+		$(".lightbox").fancybox();
+	});
+</script>
+
+	</body>
+</html>

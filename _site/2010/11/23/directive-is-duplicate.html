@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>nginx&#58; directive is duplicate | Raycast</title>
+
+		<link href="/css/vendor/bootstrap.min.css" rel="stylesheet">
+    	<link href="/css/flat-ui.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="/css/style.css"/>
+		<link rel="stylesheet" href="/css/syntax.css" media="screen"/>
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox.css" media="screen"/>
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-buttons.css" media="screen" />
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-thumbs.css" media="screen" />
+		<link rel="shortcut icon" type="image/png" href="/data/gamepad2.png">
+
+	</head>
+	<body>
+		<div class="container page">
+			<div class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/">
+				<img src="/data/gamepad_large.png"/>
+			</a>
+			<div class="navbar-text">Home page of one programmer</div>
+		</div>
+		<ul class="nav navbar-nav navbar-right">
+			<li ><a href="/">Blog</a></li>
+			<li ><a href="/portfolio/">Portfolio</a></li>
+			<li ><a href="/about/">About</a></li>
+		</ul>
+	</div>
+</div>
+
+
+			<div class="content">
+				<div class="article">
+	<div class="row">
+		<div class="col-xs-12">
+			<h2>nginx&#58; directive is duplicate</h2>
+			
+				<span class="small text-muted">23 Nov 2010</span>
+			
+		</div>
+	</div>
+	
+	<div class="article-content">
+		<p>Заканчиваю разработку модуля для nginx’а под названием ustats (“upstream statistics”), показывающего статистику по бэкендам,
+которая нашему отделу необходима для мониторинга активности серверов. В процессе разработки столкнулся с интересной проблемой,
+которая, с одной стороны, была вызвана моим пренебрежением к мануалам, а с другой – неполнотой этих мануалов
+(речь о <a href="http://www.evanmiller.org/nginx-modules-guide.html">Emiller’s Guide To Nginx Module Development</a> и прочих).</p>
+
+<!--break-->
+
+<p>Итак, пусть наш модуль ModuleName должен поддерживать конфигурационную директиву <code>test_dir</code>, которая может
+иметь целое неотрицательное значение. Контекст не важен, но пусть для простоты это <code>location</code>.</p>
+
+<p>Реализация поддержки директивы выглядела бы примерно так. Объявляется структура, хранящая настройки модуля:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">typedef</span> <span class="k">struct</span>
+<span class="p">{</span>
+<span class="p">...</span>
+    <span class="kt">ngx_uint_t</span> <span class="n">test_dir</span><span class="p">;</span>
+<span class="p">...</span>
+<span class="p">}</span> <span class="kt">ngx_http_modulename_loc_conf_t</span><span class="p">;</span></code></pre></div>
+
+<p>В список команд модуля добавляется описание директивы:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">static</span> <span class="kt">ngx_command_t</span>  <span class="n">ngx_http_modulename_commands</span><span class="p">[]</span> <span class="o">=</span>
+<span class="p">{</span>
+<span class="p">...</span>
+    <span class="p">{</span>
+        <span class="n">ngx_string</span><span class="p">(</span><span class="s">&quot;test_dir&quot;</span><span class="p">),</span>
+        <span class="n">NGX_HTTP_LOC_CONF</span> <span class="o">|</span> <span class="n">NGX_CONF_TAKE1</span><span class="p">,</span>
+        <span class="n">ngx_conf_set_num_slot</span><span class="p">,</span>
+        <span class="n">NGX_HTTP_LOC_CONF_OFFSET</span><span class="p">,</span>
+        <span class="n">offsetof</span><span class="p">(</span><span class="kt">ngx_http_modulename_loc_conf_t</span><span class="p">,</span> <span class="n">test_dir</span><span class="p">),</span>
+        <span class="nb">NULL</span>
+    <span class="p">},</span>
+<span class="p">...</span></code></pre></div>
+
+<p>Если в структуре контекста модуля не прописан указатель на функцию создания конфига модуля, прописываем:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">static</span> <span class="kt">ngx_http_module_t</span>  <span class="n">ngx_http_modulename_module_ctx</span> <span class="o">=</span>
+<span class="p">{</span>
+<span class="p">...</span>
+    <span class="n">ngx_http_modulename_create_loc_conf</span><span class="p">,</span>       <span class="cm">/* create location configuration */</span>
+    <span class="cm">/* merging function pointer here */</span>
+<span class="p">...</span>
+<span class="p">};</span></code></pre></div>
+
+<p>И последний шаг – сама функция создания конфигурации модуля:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">static</span> <span class="kt">void</span> <span class="o">*</span> <span class="nf">ngx_http_modulename_create_loc_conf</span><span class="p">(</span><span class="kt">ngx_conf_t</span> <span class="o">*</span><span class="n">cf</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">ngx_http_modulename_loc_conf_t</span>  <span class="o">*</span><span class="n">conf</span><span class="p">;</span>
+
+    <span class="n">conf</span> <span class="o">=</span> <span class="n">ngx_pcalloc</span><span class="p">(</span><span class="n">cf</span><span class="o">-&gt;</span><span class="n">pool</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">ngx_http_modulename_loc_conf_t</span><span class="p">));</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">conf</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">NGX_CONF_ERROR</span><span class="p">;</span>
+
+    <span class="n">conf</span><span class="o">-&gt;</span><span class="n">test_dir</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">conf</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Я действительно думал, что присвоив переменной <code>test_dir</code> значение 10 я тем самым устанавливаю её значение по-умолчанию.
+Вот после такой реализации я и огрёб ту самую интересную проблему. В настройках nginx’а было прописано</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="p">...</span>
+<span class="n">location</span> <span class="o">/</span><span class="n">modulename</span> <span class="p">{</span>
+   <span class="n">test_dir</span> <span class="mi">50</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">...</span></code></pre></div>
+
+<p>на что он и начал ругаться, что</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="p">[</span><span class="n">emerg</span><span class="p">]</span><span class="o">:</span> <span class="s">&quot;test_dir&quot;</span> <span class="n">directive</span> <span class="n">is</span> <span class="n">duplicate</span> <span class="n">in</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">conf</span><span class="o">/</span><span class="n">nginx</span><span class="p">.</span><span class="nl">conf</span><span class="p">:</span><span class="mi">173</span></code></pre></div>
+
+<p>Эта ошибка возникла не потому, что директива действительно случайно была продублирована в своём контексте. <strong>Причина состояла в том,
+что в функции создания конфигурации модуля нужно было указать, что переменной не присвоено никакого значения</strong>, а именно:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">static</span> <span class="kt">void</span> <span class="o">*</span> <span class="nf">ngx_http_modulename_create_loc_conf</span><span class="p">(</span><span class="kt">ngx_conf_t</span> <span class="o">*</span><span class="n">cf</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">ngx_http_modulename_loc_conf_t</span>  <span class="o">*</span><span class="n">conf</span><span class="p">;</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="n">ngx_pcalloc</span><span class="p">(</span><span class="n">cf</span><span class="o">-&gt;</span><span class="n">pool</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">ngx_http_modulename_loc_conf_t</span><span class="p">));</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">conf</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">NGX_CONF_ERROR</span><span class="p">;</span>
+    <span class="n">conf</span><span class="o">-&gt;</span><span class="n">test_dir</span> <span class="o">=</span> <span class="n">NGX_CONF_UNSET_UINT</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">conf</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>После такого исправления всё работает.</p>
+
+<p><strong>UPDATE</strong></p>
+
+<p>Установка дефолтных значений директив производится внутри функции слияния конфигов. Указатель на соответствующую функцию должен быть прописал в контексте модуля:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">static</span> <span class="kt">ngx_http_module_t</span>  <span class="n">ngx_http_modulename_module_ctx</span> <span class="o">=</span>
+<span class="p">{</span>
+<span class="p">...</span>
+    <span class="n">ngx_http_modulename_create_loc_conf</span><span class="p">,</span>       <span class="cm">/* create location configuration */</span>
+    <span class="n">ngx_http_modulename_merge_loc_conf</span>        <span class="cm">/* merge location configuration */</span>
+<span class="p">};</span></code></pre></div>
+
+<p>Сама функция выглядит так:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">static</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">ngx_http_modulename_merge_loc_conf</span><span class="p">(</span><span class="kt">ngx_conf_t</span> <span class="o">*</span><span class="n">cf</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">parent</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">child</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">ngx_http_modulename_loc_conf_t</span> <span class="o">*</span><span class="n">prev</span> <span class="o">=</span> <span class="n">parent</span><span class="p">;</span>
+    <span class="kt">ngx_http_modulename_loc_conf_t</span> <span class="o">*</span><span class="n">conf</span> <span class="o">=</span> <span class="n">child</span><span class="p">;</span>
+
+    <span class="n">ngx_conf_merge_uint_value</span><span class="p">(</span><span class="n">conf</span><span class="o">-&gt;</span><span class="n">test_dir</span><span class="p">,</span> <span class="n">prev</span><span class="o">-&gt;</span><span class="n">test_dir</span><span class="p">,</span> <span class="mi">70</span> <span class="cm">/* дефолтное значение для директивы */</span><span class="p">);</span>
+
+    <span class="c1">// ...</span>
+
+    <span class="k">return</span> <span class="n">NGX_CONF_OK</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+	</div>
+</div>
+
+			<div>
+
+			
+	<div id="disqus_thread">
+	</div>
+	<script type="text/javascript">
+		var disqus_shortname = 'raycastnet'; // required: replace example with your forum shortname
+		(function() {
+			var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+			dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		})();
+	</script>
+	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+		</div>
+
+		<div class="footer">
+	<p class="text-muted">© 2014-2016 Aleksey Fedotov</p>
+</div>
+
+<script src="/js/vendor/jquery.min.js"></script>
+<script src="/js/vendor/video.js"></script>
+<script src="/js/flat-ui.min.js"></script>
+<script src="/js/fancybox/jquery.fancybox.pack.js"></script>
+<script src="/js/fancybox/jquery.fancybox-buttons.js"></script>
+<script src="/js/fancybox/jquery.fancybox-media.js"></script>
+<script src="/js/fancybox/jquery.fancybox-thumbs.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-50872849-1', 'raycast.net');
+  ga('send', 'pageview', {
+    "page": "/2010/11/23/directive-is-duplicate.html",
+    "title": 'nginx&#58; directive is duplicate'
+  });
+</script>
+
+<script>
+	$(document).ready(function() {
+		$(".lightbox").fancybox();
+	});
+</script>
+
+	</body>
+</html>

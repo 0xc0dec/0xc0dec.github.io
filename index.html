@@ -1,0 +1,60 @@
+---
+layout: default
+title: Blog
+name: blog
+---
+
+{% for post in paginator.posts %}
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+				<span class="small text-muted">{{ post.date | date_to_string }}</span>
+			</div>
+		</div>
+		<div class="article-content">
+			{{ post.content | split:'<!--break-->' | first }}
+			{% if post.content contains '<!--break-->' %}
+				<a href="{{ post.url }}">Read more...</a>
+			{% endif %}
+		</div>
+	</div>
+{% endfor %}
+
+<div class="row">
+  <div class="col-xs-12">
+  	<div class="pagination pagination-inverse">
+  		{% if paginator.previous_page %}
+			{% if paginator.previous_page == 1 %}
+				<a class="btn btn-inverse previous" href="/"><i class="fui-arrow-left"></i>Newer</a></li>
+			{% else %}
+				<a class="btn btn-inverse previous" href="/page{{ paginator.previous_page }}"><i class="fui-arrow-left"></i>Newer</a>
+			{% endif %}
+	    {% else %}
+			<a class="btn btn-inverse previous" disabled href="/"><i class="fui-arrow-left"></i>Newer</a></li>
+	    {% endif %}
+
+	    <ul>
+	        {% if paginator.page == 1 %}
+				<li class="active"><span>1</span></li>
+	        {% else %}
+				<li><a href="/">1</a></li>
+	        {% endif %}
+			
+	        {% for count in (2..paginator.total_pages) %}
+				{% if count == paginator.page %}
+					<li class="active"><span >{{ count }}</span></li>
+				{% else %}
+					<li><a href="/page{{ count }}">{{ count }}</a></li>
+				{% endif %}
+	        {% endfor %}
+	    </ul>
+
+	    {% if paginator.next_page %}
+			<a class="btn btn-inverse next" href="/page{{ paginator.next_page }}">Older<i class="fui-arrow-right"></i></a>
+        {% else %}
+			<a class="btn btn-inverse next disabled">Older<i class="fui-arrow-right"></i></a>
+        {% endif %}
+	</div>
+  </div>
+</div>

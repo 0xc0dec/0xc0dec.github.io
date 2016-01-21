@@ -1,0 +1,24 @@
+<div class="row thumbed-list-item">
+	{% if include.img_path %}
+		<div class="col-xs-2">
+			<div class="thumbnail">
+				<a href="{{ include.url }}"><img src="{{ include.img_path }}" alt="..."></a>
+			</div>
+		</div>
+	{% else %}
+		<div class="col-xs-2 thumbed-list-item_logo__nologo">{{ include.logo_placeholder }}</div>
+	{% endif %}
+	<div class="col-xs-10">
+		<div><a href="{{ include.url }}"><strong>{{ include.title }}</strong></a></div>
+		{% if include.description_path %}
+			{% include {{include.description_path}} %}
+		{% endif %}
+		{% if include.description %}
+			{{ include.description }}
+		{% endif %}
+		{% if include.more_description %}
+			<br/>
+			<i>{{ include.more_description }}</i>
+		{% endif %}
+	</div>
+</div>

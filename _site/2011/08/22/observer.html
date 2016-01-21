@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Observer pattern via templates in C++ | Raycast</title>
+
+		<link href="/css/vendor/bootstrap.min.css" rel="stylesheet">
+    	<link href="/css/flat-ui.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="/css/style.css"/>
+		<link rel="stylesheet" href="/css/syntax.css" media="screen"/>
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox.css" media="screen"/>
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-buttons.css" media="screen" />
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-thumbs.css" media="screen" />
+		<link rel="shortcut icon" type="image/png" href="/data/gamepad2.png">
+
+	</head>
+	<body>
+		<div class="container page">
+			<div class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/">
+				<img src="/data/gamepad_large.png"/>
+			</a>
+			<div class="navbar-text">Home page of one programmer</div>
+		</div>
+		<ul class="nav navbar-nav navbar-right">
+			<li ><a href="/">Blog</a></li>
+			<li ><a href="/portfolio/">Portfolio</a></li>
+			<li ><a href="/about/">About</a></li>
+		</ul>
+	</div>
+</div>
+
+
+			<div class="content">
+				<div class="article">
+	<div class="row">
+		<div class="col-xs-12">
+			<h2>Observer pattern via templates in C++</h2>
+			
+				<span class="small text-muted">22 Aug 2011</span>
+			
+		</div>
+	</div>
+	
+	<div class="article-content">
+		<p>Observer pattern is very useful when you need one object to notify a number of other objects on its state changes.
+I had a plenty of times when I needed to implement this pattern in my projects, mostly related to real-time graphics.
+One of the problems I faced when following the pattern was that I had to write a separate interface for every type of
+event that was going to be supported (of course this drawback can be partially avoided by using various tricks like inheritance,
+flags, type casting, and so on). Here I present a template-based method used to implement the pattern. I thought templates
+can help me shorten my code size and eliminate some routine work. I don’t know if it is already known, however I’ve never
+seen it used in any library I worked with. I also don’t guarantee that it is perfect – probably, it’s only of academic interest.</p>
+
+<!--break-->
+
+<p>So, the first thing to do is to write an event listener interface. Pretty straightforward:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">class</span> <span class="nc">IEventListener</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">IEventListener</span><span class="p">()</span> <span class="p">{}</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">onEvent</span><span class="p">(</span><span class="n">T</span> <span class="o">*</span><span class="n">eventData</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">};</span></code></pre></div>
+
+<p>The basic idea is to allow one class to have multiple event callbacks and that support for each new event can be easily
+added to that class by simply inheriting IEventListener with the apropriate event type provided. Like that:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">ActialListener</span><span class="o">:</span> <span class="k">public</span> <span class="n">IEventListener</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span> <span class="k">public</span> <span class="n">IEventListener</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">someMethodHere</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ActualListener::someMethodHere&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// First event callback</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">onEvent</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">eventData</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ActualListener::onEvent(int*)&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Second event callback</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">onEvent</span><span class="p">(</span><span class="kt">float</span> <span class="o">*</span><span class="n">eventData</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ActualListener::onEvent(float*)&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">someMethodThere</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ActualListener::someMethodThere&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span></code></pre></div>
+
+<p>Here we provide support for two events that are desribed by an integer and float pointers. In real applications events are typically described by more complicated data structures.
+The next step is to write the EventGenerator class:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">class</span> <span class="nc">EventGenerator</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">EventGenerator</span><span class="p">()</span> <span class="p">{}</span>
+
+    <span class="c1">// Simplified version - no error checks</span>
+    <span class="kt">void</span> <span class="n">addListener</span><span class="p">(</span><span class="n">IEventListener</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">l</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">_listeners</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">l</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// TODO removeListener</span>
+
+    <span class="kt">void</span> <span class="n">trigger</span><span class="p">(</span><span class="n">T</span> <span class="o">*</span><span class="n">eventData</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">_listeners</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">_listeners</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="p">;</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span>
+            <span class="p">(</span><span class="o">*</span><span class="n">it</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">onEvent</span><span class="p">(</span><span class="n">eventData</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">list</span><span class="o">&lt;</span><span class="n">IEventListener</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;*&gt;</span> <span class="n">ListenersList</span><span class="p">;</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">ListenersList</span> <span class="n">_listeners</span><span class="p">;</span>
+<span class="p">};</span></code></pre></div>
+
+<p>Using this base class, I can create real event generators, for example:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">ActualEventGenerator</span><span class="o">:</span> <span class="k">public</span> <span class="n">EventGenerator</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span> <span class="k">public</span> <span class="n">EventGenerator</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">hello</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Leading method&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">firstMethod</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+        <span class="kt">float</span> <span class="n">b</span> <span class="o">=</span> <span class="mf">100.1f</span><span class="p">;</span>
+        <span class="n">trigger</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">);</span>
+        <span class="n">trigger</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">secondMethod</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+        <span class="kt">float</span> <span class="n">b</span> <span class="o">=</span> <span class="mf">200.1f</span><span class="p">;</span>
+        <span class="n">trigger</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span>
+        <span class="n">trigger</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">world</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Trailing method&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span></code></pre></div>
+
+<p>Here the real magic occurs. All I have to do is to create data structures that describe events, and call trigger with the
+needed structure passed in – the event will be automatically dispatched to all subscribers awaiting for it.</p>
+
+<p>Almost done. That main function should look like that:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">ActialListener</span> <span class="n">l</span><span class="p">;</span>
+    <span class="n">ActualEventGenerator</span> <span class="n">g</span><span class="p">;</span>
+
+    <span class="n">g</span><span class="p">.</span><span class="n">addListener</span><span class="p">(</span><span class="o">&amp;</span><span class="n">l</span><span class="p">);</span>
+
+    <span class="n">g</span><span class="p">.</span><span class="n">firstMethod</span><span class="p">();</span>
+    <span class="n">g</span><span class="p">.</span><span class="n">secondMethod</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>One last moment. The above code will not work. Moreover, it won’t event compile, give it a try.
+I need some little hacks to make it work. First, to complete the ActualEventGenerator class, I should add:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="cp">#define PUBLISH_EVENT(type) \</span>
+<span class="cp">   using EventGenerator&lt;type&gt;::addListener; \</span>
+<span class="cp">   using EventGenerator&lt;type&gt;::trigger;</span>
+
+<span class="k">class</span> <span class="nc">ActualEventGenerator</span><span class="o">:</span> <span class="k">public</span> <span class="n">EventGenerator</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span> <span class="k">public</span> <span class="n">EventGenerator</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="p">...</span>
+    <span class="n">PUBLISH_EVENT</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+    <span class="n">PUBLISH_EVENT</span><span class="p">(</span><span class="kt">float</span><span class="p">);</span>
+<span class="p">};</span></code></pre></div>
+
+<p>The addListener method call should also be tweaked and doubled for each event we subscribe to:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="p">...</span>
+<span class="cp">#define EVENT_LISTENER(type, l) ((IEventListener&lt;type&gt;*)(l))</span>
+<span class="p">...</span>
+<span class="n">g</span><span class="p">.</span><span class="n">addListener</span><span class="p">(</span><span class="n">EVENT_LISTENER</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">l</span><span class="p">));</span>
+<span class="n">g</span><span class="p">.</span><span class="n">addListener</span><span class="p">(</span><span class="n">EVENT_LISTENER</span><span class="p">(</span><span class="kt">float</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">l</span><span class="p">));</span>
+<span class="p">...</span></code></pre></div>
+
+<p>Thats it. The program output will be:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">ActualListener</span><span class="o">::</span><span class="n">onEvent</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span><span class="p">)</span>
+<span class="n">ActualListener</span><span class="o">::</span><span class="n">onEvent</span><span class="p">(</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span>
+<span class="n">ActualListener</span><span class="o">::</span><span class="n">onEvent</span><span class="p">(</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span>
+<span class="n">ActualListener</span><span class="o">::</span><span class="n">onEvent</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span><span class="p">)</span></code></pre></div>
+
+<p>Don’t forget to replace auto keyword with the full iterator declaration if you have no C++0x compatible compiler.</p>
+
+	</div>
+</div>
+
+			<div>
+
+			
+	<div id="disqus_thread">
+	</div>
+	<script type="text/javascript">
+		var disqus_shortname = 'raycastnet'; // required: replace example with your forum shortname
+		(function() {
+			var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+			dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		})();
+	</script>
+	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+		</div>
+
+		<div class="footer">
+	<p class="text-muted">© 2014-2016 Aleksey Fedotov</p>
+</div>
+
+<script src="/js/vendor/jquery.min.js"></script>
+<script src="/js/vendor/video.js"></script>
+<script src="/js/flat-ui.min.js"></script>
+<script src="/js/fancybox/jquery.fancybox.pack.js"></script>
+<script src="/js/fancybox/jquery.fancybox-buttons.js"></script>
+<script src="/js/fancybox/jquery.fancybox-media.js"></script>
+<script src="/js/fancybox/jquery.fancybox-thumbs.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-50872849-1', 'raycast.net');
+  ga('send', 'pageview', {
+    "page": "/2011/08/22/observer.html",
+    "title": 'Observer pattern via templates in C++'
+  });
+</script>
+
+<script>
+	$(document).ready(function() {
+		$(".lightbox").fancybox();
+	});
+</script>
+
+	</body>
+</html>

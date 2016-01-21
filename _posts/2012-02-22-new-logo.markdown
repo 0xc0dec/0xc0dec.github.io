@@ -1,0 +1,27 @@
+---
+layout: page
+title:  New logo
+date:   2012-02-22 00:00:00
+---
+
+Since my initials are "F.A.N.", I always thought that my avatar should somehow reflect that fact. My first avatar (created by me) looked like that:
+
+<div class="row text-center"><img src="/data/fan1.jpg" class="margined20"/></div>
+
+Not a fan at all, but something that looks quite similar and brutal.
+
+Not long ago I decided that it’s time to update my logo/avatar, because the old one looks to me really
+old-fashioned and just not very beautiful and clean. After some hours spent trying to draw a real fan, I came up with this:
+
+<div class="row text-center"><img src="/data/fan2.png" class="margined20"/></div>
+
+This is actualy looks like a PC fan, so I think I did my job well. There’s also a version with the nickname text on it:
+
+<div class="row text-center"><img src="/data/fan2_wide.png" class="margined20"/></div>
+
+This is one of the intermediate versions I created before the final image came out:
+
+<div class="row text-center"><img src="/data/fan1.5.png" class="margined20"/></div>
+
+Not a fan, but a circular saw instead. My friend told me that it symbolises the "Earth-Moon-Sun" trio.
+Had no idea about that when was drawing the pic, that was surprising.

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Something you probably didn’t know about C/C++ | Raycast</title>
+
+		<link href="/css/vendor/bootstrap.min.css" rel="stylesheet">
+    	<link href="/css/flat-ui.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="/css/style.css"/>
+		<link rel="stylesheet" href="/css/syntax.css" media="screen"/>
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox.css" media="screen"/>
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-buttons.css" media="screen" />
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-thumbs.css" media="screen" />
+		<link rel="shortcut icon" type="image/png" href="/data/gamepad2.png">
+
+	</head>
+	<body>
+		<div class="container page">
+			<div class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/">
+				<img src="/data/gamepad_large.png"/>
+			</a>
+			<div class="navbar-text">Home page of one programmer</div>
+		</div>
+		<ul class="nav navbar-nav navbar-right">
+			<li ><a href="/">Blog</a></li>
+			<li ><a href="/portfolio/">Portfolio</a></li>
+			<li ><a href="/about/">About</a></li>
+		</ul>
+	</div>
+</div>
+
+
+			<div class="content">
+				<div class="article">
+	<div class="row">
+		<div class="col-xs-12">
+			<h2>Something you probably didn’t know about C/C++</h2>
+			
+				<span class="small text-muted">09 Mar 2013</span>
+			
+		</div>
+	</div>
+	
+	<div class="article-content">
+		<p>I love to collect mind-blowing and not too widely known C/C++ language constructions and facts. This post carries my collection and will be updated
+when new entries appear.</p>
+
+<p>C/C++</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="c1">// zero-sized bit fields</span>
+<span class="k">struct</span> <span class="n">S</span>
+<span class="p">{</span>
+  <span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="nl">b</span><span class="p">:</span><span class="mi">2</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="nl">c</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span>
+  <span class="o">:</span><span class="mi">0</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">d</span><span class="p">;</span>
+<span class="p">};</span></code></pre></div>
+
+<!--break-->
+
+<p>C-only</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="c1">// Exit code when there&#39;s no return statement?</span>
+<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Test</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// The program exit code will be... ? 5. When there is no return statement,</span>
+<span class="c1">// the program will return the result of the last executed function.</span>
+<span class="c1">// In this case it is 5, because printf returns the number of symbols actually printed.</span></code></pre></div>
+
+<p>C/C++</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="c1">// a[b] is practically the same as *(a + b)</span>
+<span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">4</span><span class="p">[</span><span class="s">&quot;Hello, world!&quot;</span><span class="p">];</span> <span class="c1">// c == &#39;o&#39;</span></code></pre></div>
+
+<p>C/C++</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">33</span><span class="p">;</span>
+<span class="kt">int</span> <span class="nf">f</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1045</span><span class="p">;</span>
+  <span class="p">{</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">;</span> <span class="c1">// returns 1045</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">33</span><span class="p">;</span>
+<span class="kt">int</span> <span class="nf">f</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1045</span><span class="p">;</span>
+  <span class="p">{</span>
+    <span class="k">extern</span> <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">;</span> <span class="c1">// returns 33</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>C-only</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="c1">// Passed array must have at least 10 elements (-Warray-bounds):</span>
+<span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">arr</span><span class="p">[</span><span class="k">static</span> <span class="mi">10</span><span class="p">])</span> <span class="p">{</span> <span class="p">}</span>
+
+<span class="c1">// Free compile-time not-NULL check [-Wnonnull]</span>
+<span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">arr</span><span class="p">[</span><span class="k">static</span> <span class="mi">1</span><span class="p">])</span> <span class="p">{</span> <span class="p">}</span></code></pre></div>
+
+<p>C-only</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">FOO</span><span class="o">!</span><span class="err">&#39;</span><span class="p">;</span> <span class="c1">// single quotes! codepad.org compiler says x == 1179602721</span></code></pre></div>
+
+<p>C/C++</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">y</span><span class="o">+++</span><span class="n">z</span><span class="p">;</span> <span class="c1">// parsed as y++ + z (&quot;greedy lexer rule&quot;)</span>
+<span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="n">b</span><span class="o">+++++</span><span class="n">c</span><span class="p">;</span> <span class="c1">// b++ ++ + c, not b++ + ++c</span></code></pre></div>
+
+<p>C-only</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="c1">// The shortest C-program that compiles and links. With a warning. Do not run!</span>
+<span class="n">main</span><span class="p">;</span>
+<span class="c1">// No warnings. Do not run either!</span>
+<span class="kt">int</span> <span class="n">main</span><span class="p">;</span></code></pre></div>
+
+<p>C-only</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="c1">// Old-style function definition</span>
+<span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">)</span>
+<span class="kt">int</span> <span class="n">argc</span><span class="p">;</span>
+<span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[];</span>
+<span class="p">{</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>C-only</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">return</span> <span class="p">((</span><span class="kt">int</span> <span class="p">[]){</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">})[</span><span class="mi">1</span><span class="p">];</span>
+<span class="c1">// returns 2</span></code></pre></div>
+
+<p>C-only</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="c1">// Initializer with designators hell</span>
+<span class="k">struct</span> <span class="p">{</span> 
+   <span class="kt">int</span> <span class="n">x</span><span class="p">;</span> 
+   <span class="k">struct</span> <span class="p">{</span> 
+       <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">;</span> 
+   <span class="p">}</span> <span class="n">nested</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">i</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">nested</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="p">};</span>  
+<span class="c1">// i.nested.y == 2, i.nested.z == 6</span></code></pre></div>
+
+<p>GCC C-only</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="c1">// omit second component of ?: operator</span>
+<span class="k">extern</span> <span class="kt">int</span> <span class="nf">f</span><span class="p">();</span>
+<span class="k">return</span> <span class="n">f</span><span class="p">()</span> <span class="o">?</span> <span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="c1">// Returns f() if it&#39;s not zero, or -1 otherwise. Reminds me of C# operator ??</span></code></pre></div>
+
+<p>C/C++</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="c1">// zero-sized bit fields</span>
+<span class="k">struct</span> <span class="n">S</span>
+<span class="p">{</span>
+  <span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="nl">b</span><span class="p">:</span><span class="mi">2</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="nl">c</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span>
+  <span class="o">:</span><span class="mi">0</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">d</span><span class="p">;</span>
+<span class="p">};</span></code></pre></div>
+
+<p>Most interesting parts of <a href="http://nickdesaulniers.github.io/blog/2013/07/25/designated-initialization-with-pointers-in-c/">this</a>
+article about designated initialization in C:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="n">point</span>
+<span class="p">{</span>
+  <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="c1">// ...</span>
+<span class="k">struct</span> <span class="n">point</span> <span class="n">p</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="p">}</span> <span class="c1">// ok, p now has coordinates (1, 2)</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="n">point</span> <span class="n">p</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">2</span> <span class="p">}</span> <span class="c1">// ok, p now has coordinates (2, 1)</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="c1">// Re-assign? No problems, but tricky</span>
+<span class="k">struct</span> <span class="n">point</span> <span class="n">p</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">2</span> <span class="p">};</span>
+<span class="c1">// ...</span>
+<span class="n">p</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">20</span> <span class="p">};</span> <span class="c1">// compilation error</span>
+<span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">point</span><span class="p">){</span> <span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">20</span> <span class="p">};</span> <span class="c1">// works</span>
+<span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">point</span><span class="p">){</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span> <span class="p">};</span> <span class="c1">// this works too</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="nf">distance</span><span class="p">(</span><span class="k">struct</span> <span class="n">point</span> <span class="n">a</span><span class="p">,</span> <span class="k">struct</span> <span class="n">point</span> <span class="n">b</span><span class="p">);</span>
+<span class="c1">// ...</span>
+<span class="n">distance</span><span class="p">({</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="p">},</span> <span class="p">{</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span> <span class="p">});</span> <span class="c1">// no-no, compilation error</span>
+<span class="n">distance</span><span class="p">((</span><span class="k">struct</span> <span class="n">point</span><span class="p">){</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="p">},</span> <span class="p">(</span><span class="k">struct</span> <span class="n">point</span><span class="p">)</span> <span class="p">{</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span> <span class="p">});</span> <span class="c1">// fine, this compiles</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="c1">// Initializing pointer members</span>
+<span class="k">struct</span> <span class="n">node</span>
+<span class="p">{</span>
+  <span class="kt">char</span> <span class="o">*</span><span class="n">value</span><span class="p">;</span>
+  <span class="k">struct</span> <span class="n">node</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="c1">// ...</span>
+<span class="k">struct</span> <span class="n">node</span> <span class="n">n</span> <span class="o">=</span> 
+<span class="p">{</span>
+  <span class="p">.</span><span class="n">value</span> <span class="o">=</span> <span class="s">&quot;Hello, world!&quot;</span><span class="p">,</span>
+  <span class="p">.</span><span class="n">next</span> <span class="o">=</span> <span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="k">struct</span> <span class="n">node</span><span class="p">)</span> <span class="p">{</span> <span class="p">.</span><span class="n">value</span> <span class="o">=</span> <span class="s">&quot;Next node&quot;</span> <span class="p">})</span> <span class="c1">// wow!</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Empty declarations in C:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">typedef</span><span class="p">;</span>
+<span class="kt">int</span> <span class="k">typedef</span> <span class="k">const</span><span class="p">;</span></code></pre></div>
+
+<p>Won’t compile with <code>-Wall</code> though.</p>
+
+<p>Some people write such code probably hoping that C/C++ has native support for tuples. No, it doesn’t.</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="nf">func</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// ...</span>
+
+<span class="kt">int</span> <span class="n">d</span> <span class="o">=</span> <span class="n">func</span><span class="p">();</span> <span class="c1">// d == c == 3, if () operator is not overloaded</span></code></pre></div>
+
+<p>This construction is strange in a way that you probably won&#39;t encounter it very often. For some reasons it&#39;s not commonly used. The <a href="http://en.cppreference.com/w/cpp/language/function-try-block">function-try-block</a>:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="n">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="n">try</span> <span class="p">{</span>
+  <span class="o">++</span><span class="n">n</span><span class="p">;</span> <span class="c1">// increments the function parameter</span>
+  <span class="k">throw</span> <span class="n">n</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">catch</span><span class="p">(...)</span> <span class="p">{</span>
+  <span class="o">++</span><span class="n">n</span><span class="p">;</span> <span class="c1">// n is in scope and still refers to the function parameter</span>
+  <span class="n">assert</span><span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">4</span><span class="p">);</span>
+  <span class="k">return</span> <span class="n">n</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+	</div>
+</div>
+
+			<div>
+
+			
+	<div id="disqus_thread">
+	</div>
+	<script type="text/javascript">
+		var disqus_shortname = 'raycastnet'; // required: replace example with your forum shortname
+		(function() {
+			var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+			dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		})();
+	</script>
+	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+		</div>
+
+		<div class="footer">
+	<p class="text-muted">© 2014-2016 Aleksey Fedotov</p>
+</div>
+
+<script src="/js/vendor/jquery.min.js"></script>
+<script src="/js/vendor/video.js"></script>
+<script src="/js/flat-ui.min.js"></script>
+<script src="/js/fancybox/jquery.fancybox.pack.js"></script>
+<script src="/js/fancybox/jquery.fancybox-buttons.js"></script>
+<script src="/js/fancybox/jquery.fancybox-media.js"></script>
+<script src="/js/fancybox/jquery.fancybox-thumbs.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-50872849-1', 'raycast.net');
+  ga('send', 'pageview', {
+    "page": "/2013/03/09/cpp-oddities.html",
+    "title": 'Something you probably didn’t know about C/C++'
+  });
+</script>
+
+<script>
+	$(document).ready(function() {
+		$(".lightbox").fancybox();
+	});
+</script>
+
+	</body>
+</html>

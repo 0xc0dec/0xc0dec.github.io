@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Blog | Raycast</title>
+
+		<link href="/css/vendor/bootstrap.min.css" rel="stylesheet">
+    	<link href="/css/flat-ui.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="/css/style.css"/>
+		<link rel="stylesheet" href="/css/syntax.css" media="screen"/>
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox.css" media="screen"/>
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-buttons.css" media="screen" />
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-thumbs.css" media="screen" />
+		<link rel="shortcut icon" type="image/png" href="/data/gamepad2.png">
+
+	</head>
+	<body>
+		<div class="container page">
+			<div class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/">
+				<img src="/data/gamepad_large.png"/>
+			</a>
+			<div class="navbar-text">Home page of one programmer</div>
+		</div>
+		<ul class="nav navbar-nav navbar-right">
+			<li ><a href="/">Blog</a></li>
+			<li ><a href="/portfolio/">Portfolio</a></li>
+			<li ><a href="/about/">About</a></li>
+		</ul>
+	</div>
+</div>
+
+
+			<div class="content">
+				
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2011/07/13/qooxdoo.html">Changing default theme in QooXDoo</a></h2>
+				<span class="small text-muted">13 Jul 2011</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<p>The Javascript framework QooXDoo currently offers three standard themes that are shipped by default: Modern, Simple и Classic.
+Each new project you start is automatically set up to use the first one. To use other theme, you alter all files in the folder
+<code>./source/class/project_name/theme</code>, where <code>project_name</code> is the name you gave to your project. Change the following line:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">extend : qx.theme.modern.Appearance</code></pre></div>
+
+<p>to</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">extend : qx.theme.simple.Appearance</code></pre></div>
+
+<p>The next <code>./generate build</code> command will apply the changes.</p>
+
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2011/06/28/cdls.html">cd + ls</a></h2>
+				<span class="small text-muted">28 Jun 2011</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<p>Эта последовательность команд, которую я выполняю десятки раз в день: “перейти в папку -&gt; вывести содержимое папки”.
+Приходится писать</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">cd </span>folder_name
+<span class="nv">$ </span>ls</code></pre></div>
+
+<p>или же</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">cd </span>folder_name <span class="o">&amp;&amp;</span> ls</code></pre></div>
+
+<p>Действие само напрашивается, чтобы его автоматизировали. Для этого в <code>~/.bashrc</code> добавляем строчки</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="k">function</span> cdls<span class="o">()</span> <span class="c"># или любое другое имя, которое вздумается</span>
+<span class="o">{</span>
+    <span class="nb">cd</span> <span class="s2">&quot;$1&quot;</span> <span class="o">&amp;&amp;</span> ls
+<span class="o">}</span></code></pre></div>
+
+<p>Перезапускаем шелл, и теперь нам доступна команда <code>cdls folder_name</code>, сочетающая в себе два действия.</p>
+
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2011/06/16/cpp-load-linux.html">Определение загрузки процессора в Linux на C++</a></h2>
+				<span class="small text-muted">16 Jun 2011</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<p>Довольно много времени я потратил на то, чтобы найти, как правильно реализовать на плюсах определение загрузки процессора под Linux.
+Первый вариант использовал popen для чтения вывода top, но по непонятным причинам с каждой итерацией работы такой программы появлялось
+все больше зомби-процессов sh – вероятно, помимо <code>pclose</code> надо было еще что-то делать после чтения вывода порождаемого процесса.
+Второй вариант решения задачи оказался для меня более приемлемым, его и приведу тут.</p>
+
+
+			
+				<a href="/2011/06/16/cpp-load-linux.html">Read more...</a>
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2011/06/02/nerds-only.html">Nerds only?</a></h2>
+				<span class="small text-muted">02 Jun 2011</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<div class="row text-center">
+    <img src="/data/wow.png" style="width: 200px; height: 200px;" class="margined20">
+</div>
+
+<p>Не могу не процитировать найденное на просторах рунета в одном из обсуждений статистики WoW (орфография сохранена):</p>
+
+<blockquote>
+<p>Понимаете, дело не в ВоВ, и не в играх вообще и не в увлечениях. Дело в людях.
+Нормальный человек может играть хоть все <em>свободное</em> время и ничему это мешать не будет – ни семье,
+ни работе, ни другим увлечениям. А если мозгов нет, не понимает человек (назовем его условно “идиот”),
+что нужно меру знать увлечениям, то ему все-равно уже ничего не поможет. Не будет игрушек –
+будет просто по форумам шариться. Не будет дома компа – будет сутками зависать в дешевом вонючем
+интернет-клубе. Не будет компа – будет просто шляться, бухать или колоться. И ничего путного
+из него уже не выйдет в жизни. Потому, что идиот.</p>
+
+<p>Живой пример: у нас в гильдии есть действующий капитан огромного Боинга-747, в KLM работает.
+Один из лучших игроков на сервере, так что времени много проводит в игре. Есть,
+конечно, семья, дочь-подросток. И после рейда, нормально выспавшись(!) он на следующий день
+везет 400 человек через атлантику. Если остается в гостинице, то и оттуда играет. В HR KLM-а
+идиотов нет, как только заметили бы какие-то косяки за ним, сразу бы отправили на пенсию.
+И вообще, в европе большинство игроков вполне нормальные люди. Что взрослые, что подростки. Нердов мало. Хотя м…ков достаточно :)</p>
+</blockquote>
+
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2011/03/02/cpp-http-server.html">C++ embedded HTTP server with compression</a></h2>
+				<span class="small text-muted">02 Mar 2011</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<p>Иногда бывает нужно внедрить в приложение функциональность простейшего HTTP сервера. Конечно, нет
+смысла изобретать свой сервер с нуля, когда есть готовые решения (nginx, apache, etc.). Однако
+встраивать базовую поддержку HTTP протокола в своё приложение бывает полезно, например, в тех случаях,
+когда нужно обеспечить коммуникацию между сервисами или между сервисом и пользователем. В качестве расширенного
+примера можно рассмотреть некий самописный демон, состояние которого для нас критично, и мы хотим его мониторить.
+Один из вариантов это реализовать – встроить в демон простой HTTP сервер, который при поступлении запроса будет
+генерить страничку со статистикой состояния. После этого мы всегда сможем обратиться по нужному адресу и посмотреть
+на интересующие нас цифры. На этой основе потом можно много чего надстроить, например, рисование графиков производительности демона.</p>
+
+
+			
+				<a href="/2011/03/02/cpp-http-server.html">Read more...</a>
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2011/02/06/msvs-static-linking.html">Статическая линковка Visual Studio Runtime</a></h2>
+				<span class="small text-muted">06 Feb 2011</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<p>Распространенная проблема у начинающих: собранный со стандартными настройками в Visual Studio проект
+на С/С++ не запускается на другом компьютере. Причина кроется в том, что исполняемый файл цепляет
+стандартные библиотеки языков С и С++, которые по умолчанию линкуются динамически. В состав Windows
+эти библиотеки не входят, зато поставляются вместе со студией, либо устанавливаются отдельно пакетом
+Visual Studio Redistributable соответствующей версии. Вы могли замечать, что инсталляторы некоторых программ
+в процессе работы ставят такой пакет – как раз из-за библиотек.</p>
+
+
+			
+				<a href="/2011/02/06/msvs-static-linking.html">Read more...</a>
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2010/12/11/java-cert.html">Java certification</a></h2>
+				<span class="small text-muted">11 Dec 2010</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<p>Завалялось несколько фотографий моего SCJP-сертификата, полученного в начале года, и решил их выложить.
+Очень жаль, что этот сертификат пока что мне практически не пригодился, и на работе я на java ни разу не писал.</p>
+
+<p>Конвертик, в котором сертификат пришёл по почте. Сделан из очень плотного картона:</p>
+
+<div class="row text-center"><img src="/data/scjp1.jpg" class="margined20"/></div>
+
+<p>Письмо с поздравлением:</p>
+
+<div class="row text-center"><img src="/data/scjp2.jpg" class="margined20"/></div>
+
+<p>И сам сертификат:</p>
+
+<div class="row text-center"><img src="/data/scjp3.jpg" class="margined20"/></div>
+
+<p>Теперь эта бумажка – что-то вроде раритета, потому что Sun уже в составе Oracle,
+и я, видимо, был один из последних, кто получил сертификат от них как от самостоятельной компании.
+Текущее состояние программы сертификации я не знаю, но беглый просмотр странички на английской Википедии даёт повод думать, что она ещё жива.</p>
+
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2010/11/23/directive-is-duplicate.html">nginx&#58; directive is duplicate</a></h2>
+				<span class="small text-muted">23 Nov 2010</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<p>Заканчиваю разработку модуля для nginx’а под названием ustats (“upstream statistics”), показывающего статистику по бэкендам,
+которая нашему отделу необходима для мониторинга активности серверов. В процессе разработки столкнулся с интересной проблемой,
+которая, с одной стороны, была вызвана моим пренебрежением к мануалам, а с другой – неполнотой этих мануалов
+(речь о <a href="http://www.evanmiller.org/nginx-modules-guide.html">Emiller’s Guide To Nginx Module Development</a> и прочих).</p>
+
+
+			
+				<a href="/2010/11/23/directive-is-duplicate.html">Read more...</a>
+			
+		</div>
+	</div>
+
+
+<div class="row">
+  <div class="col-xs-12">
+  	<div class="pagination pagination-inverse">
+  		
+			
+				<a class="btn btn-inverse previous" href="/page3"><i class="fui-arrow-left"></i>Newer</a>
+			
+	    
+
+	    <ul>
+	        
+				<li><a href="/">1</a></li>
+	        
+			
+	        
+				
+					<li><a href="/page2">2</a></li>
+				
+	        
+				
+					<li><a href="/page3">3</a></li>
+				
+	        
+				
+					<li class="active"><span >4</span></li>
+				
+	        
+	    </ul>
+
+	    
+			<a class="btn btn-inverse next disabled">Older<i class="fui-arrow-right"></i></a>
+        
+	</div>
+  </div>
+</div>
+
+			<div>
+
+			
+
+		</div>
+
+		<div class="footer">
+	<p class="text-muted">© 2014-2016 Aleksey Fedotov</p>
+</div>
+
+<script src="/js/vendor/jquery.min.js"></script>
+<script src="/js/vendor/video.js"></script>
+<script src="/js/flat-ui.min.js"></script>
+<script src="/js/fancybox/jquery.fancybox.pack.js"></script>
+<script src="/js/fancybox/jquery.fancybox-buttons.js"></script>
+<script src="/js/fancybox/jquery.fancybox-media.js"></script>
+<script src="/js/fancybox/jquery.fancybox-thumbs.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-50872849-1', 'raycast.net');
+  ga('send', 'pageview', {
+    "page": "/page4/index.html",
+    "title": 'Blog'
+  });
+</script>
+
+<script>
+	$(document).ready(function() {
+		$(".lightbox").fancybox();
+	});
+</script>
+
+	</body>
+</html>

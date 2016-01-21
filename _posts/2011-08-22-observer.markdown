@@ -1,0 +1,183 @@
+---
+layout: page
+title:  Observer pattern via templates in C++
+date:   2011-08-22 00:00:00
+---
+
+Observer pattern is very useful when you need one object to notify a number of other objects on its state changes.
+I had a plenty of times when I needed to implement this pattern in my projects, mostly related to real-time graphics.
+One of the problems I faced when following the pattern was that I had to write a separate interface for every type of
+event that was going to be supported (of course this drawback can be partially avoided by using various tricks like inheritance,
+flags, type casting, and so on). Here I present a template-based method used to implement the pattern. I thought templates
+can help me shorten my code size and eliminate some routine work. I don’t know if it is already known, however I’ve never
+seen it used in any library I worked with. I also don’t guarantee that it is perfect – probably, it’s only of academic interest.
+
+<!--break-->
+
+So, the first thing to do is to write an event listener interface. Pretty straightforward:
+
+{% highlight cpp %}
+template <class T>
+class IEventListener
+{
+public:
+	virtual ~IEventListener() {}
+	virtual void onEvent(T *eventData) = 0;
+};
+{% endhighlight %}
+
+The basic idea is to allow one class to have multiple event callbacks and that support for each new event can be easily
+added to that class by simply inheriting IEventListener with the apropriate event type provided. Like that:
+
+{% highlight cpp %}
+class ActialListener: public IEventListener<int>, public IEventListener<float>
+{
+public:
+	void someMethodHere()
+	{
+		std::cout << "ActualListener::someMethodHere" << std::endl;
+	}
+
+	// First event callback
+	virtual void onEvent(int *eventData)
+	{
+		std::cout << "ActualListener::onEvent(int*)" << std::endl;
+	}
+
+	// Second event callback
+	virtual void onEvent(float *eventData)
+	{
+		std::cout << "ActualListener::onEvent(float*)" << std::endl;
+	}
+
+	void someMethodThere()
+	{
+		std::cout << "ActualListener::someMethodThere" << std::endl;
+	}
+};
+{% endhighlight %}
+
+Here we provide support for two events that are desribed by an integer and float pointers. In real applications events are typically described by more complicated data structures.
+The next step is to write the EventGenerator class:
+
+{% highlight cpp %}
+template <class T>
+class EventGenerator
+{
+public:
+	virtual ~EventGenerator() {}
+
+	// Simplified version - no error checks
+	void addListener(IEventListener<T> *l)
+	{
+		_listeners.push_back(l);
+	}
+
+	// TODO removeListener
+
+	void trigger(T *eventData)
+	{
+		for (auto it = _listeners.begin(); it != _listeners.end() ; ++it)
+			(*it)->onEvent(eventData);
+	}
+
+private:
+	typedef std::list<IEventListener<T>*> ListenersList;
+
+private:
+	ListenersList _listeners;
+};
+{% endhighlight %}
+
+Using this base class, I can create real event generators, for example:
+
+{% highlight cpp %}
+class ActualEventGenerator: public EventGenerator<int>, public EventGenerator<float>
+{
+public:
+	void hello()
+	{
+		std::cout << "Leading method" << std::endl;
+	}
+
+	void firstMethod()
+	{
+		int a = 10;
+		float b = 100.1f;
+		trigger(&a);
+		trigger(&b);
+	}
+
+	void secondMethod()
+	{
+		int a = 20;
+		float b = 200.1f;
+		trigger(&b);
+		trigger(&a);
+	}
+
+	void world()
+	{
+		std::cout << "Trailing method" << std::endl;
+	}
+};
+{% endhighlight %}
+
+Here the real magic occurs. All I have to do is to create data structures that describe events, and call trigger with the
+needed structure passed in – the event will be automatically dispatched to all subscribers awaiting for it.
+
+Almost done. That main function should look like that:
+
+{% highlight cpp %}
+int main(int argc, char *argv[])
+{
+	ActialListener l;
+	ActualEventGenerator g;
+
+	g.addListener(&l);
+
+	g.firstMethod();
+	g.secondMethod();
+
+	return 0;
+}
+{% endhighlight %}
+
+One last moment. The above code will not work. Moreover, it won’t event compile, give it a try.
+I need some little hacks to make it work. First, to complete the ActualEventGenerator class, I should add:
+
+{% highlight cpp %}
+#define PUBLISH_EVENT(type) \
+	using EventGenerator<type>::addListener; \
+	using EventGenerator<type>::trigger;
+
+class ActualEventGenerator: public EventGenerator<int>, public EventGenerator<float>
+{
+public:
+	...
+	PUBLISH_EVENT(int);
+	PUBLISH_EVENT(float);
+};
+{% endhighlight %}
+
+The addListener method call should also be tweaked and doubled for each event we subscribe to:
+
+{% highlight cpp %}
+...
+#define EVENT_LISTENER(type, l) ((IEventListener<type>*)(l))
+...
+g.addListener(EVENT_LISTENER(int, &l));
+g.addListener(EVENT_LISTENER(float, &l));
+...
+{% endhighlight %}
+
+Thats it. The program output will be:
+
+{% highlight cpp %}
+ActualListener::onEvent(int*)
+ActualListener::onEvent(float*)
+ActualListener::onEvent(float*)
+ActualListener::onEvent(int*)
+{% endhighlight %}
+
+Don’t forget to replace auto keyword with the full iterator declaration if you have no C++0x compatible compiler.

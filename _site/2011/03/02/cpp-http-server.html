@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>C++ embedded HTTP server with compression | Raycast</title>
+
+		<link href="/css/vendor/bootstrap.min.css" rel="stylesheet">
+    	<link href="/css/flat-ui.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="/css/style.css"/>
+		<link rel="stylesheet" href="/css/syntax.css" media="screen"/>
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox.css" media="screen"/>
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-buttons.css" media="screen" />
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-thumbs.css" media="screen" />
+		<link rel="shortcut icon" type="image/png" href="/data/gamepad2.png">
+
+	</head>
+	<body>
+		<div class="container page">
+			<div class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/">
+				<img src="/data/gamepad_large.png"/>
+			</a>
+			<div class="navbar-text">Home page of one programmer</div>
+		</div>
+		<ul class="nav navbar-nav navbar-right">
+			<li ><a href="/">Blog</a></li>
+			<li ><a href="/portfolio/">Portfolio</a></li>
+			<li ><a href="/about/">About</a></li>
+		</ul>
+	</div>
+</div>
+
+
+			<div class="content">
+				<div class="article">
+	<div class="row">
+		<div class="col-xs-12">
+			<h2>C++ embedded HTTP server with compression</h2>
+			
+				<span class="small text-muted">02 Mar 2011</span>
+			
+		</div>
+	</div>
+	
+	<div class="article-content">
+		<p>Иногда бывает нужно внедрить в приложение функциональность простейшего HTTP сервера. Конечно, нет
+смысла изобретать свой сервер с нуля, когда есть готовые решения (nginx, apache, etc.). Однако
+встраивать базовую поддержку HTTP протокола в своё приложение бывает полезно, например, в тех случаях,
+когда нужно обеспечить коммуникацию между сервисами или между сервисом и пользователем. В качестве расширенного
+примера можно рассмотреть некий самописный демон, состояние которого для нас критично, и мы хотим его мониторить.
+Один из вариантов это реализовать – встроить в демон простой HTTP сервер, который при поступлении запроса будет
+генерить страничку со статистикой состояния. После этого мы всегда сможем обратиться по нужному адресу и посмотреть
+на интересующие нас цифры. На этой основе потом можно много чего надстроить, например, рисование графиков производительности демона.</p>
+
+<!--break-->
+
+<p>Сначала надо выбрать библиотеку, реализующую функционал HTTP сервера – мы ведь не будем изобретать велосипед?
+После нескольких часов в гугле я решил, что стоит попробовать <a href="http://code.google.com/p/mongoose/">Mongoose</a>, потому что а) на неё много где ссылаются, и
+б) библиотека оказалась очень простой – 2 файла исходников и нет внешних зависимостей – то, что нужно. К сожалению,
+единственный приличный пример использования – исходник веб-чата, включенный в дистрибутив библиотеки (<code>examples/char.c</code>),
+по нему и пришлось осваивать, остальная документация оказалась какой-то мутной, на мой взгляд.</p>
+
+<p>Прежде чем перейти к реализации, последний момент: сжатие данных. Если сервис рассчитан на отдачу (причём, частую)
+больших объёмов данных, в особенности текста, то для сокращения объёмов трафика просто необходимо
+сжимать эти данные. Современные браузеры поддерживают ряд алгоритмов сжатия, из которых мы выберем deflate.
+Для сжатия данных на клиенте будем использовать библиотеку <a href="http://zlib.net/">zlib</a>.</p>
+
+<p>Итак, время написать простенький сервер, задача которого – отдавать пользователю текст.
+Текст может быть каким угодно – мы будем читать его из файла <code>test.txt</code>, причём чем больше файл,
+тем лучше будет заметно влияние сжатия на объём передаваемого трафика.</p>
+
+<p>Для начала,</p>
+
+<ul>
+<li>Качаем исходники <a href="http://code.google.com/p/mongoose/">Mongoose</a>, берем файлы <code>mongoose.c</code> и <code>mongoose.h</code>, кидаем в папку с проектом (здесь и далее пусть папка называется project)</li>
+<li>Качаем исходники <a href="http://zlib.net/">zlib</a>, кидаем в папку <code>project/zlib/</code></li>
+<li>Создаём файл <code>project/main.cpp</code></li>
+</ul>
+
+<p>Я не рассматриваю создание проекта с точки зрения конкретной IDE. Программа будет переносимой, а выбор компилятора уже будет зависеть от платформы.</p>
+
+<p>Содержимое <code>project/main.cpp</code> на данный момент пусть выглядит так:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="cp">#include &lt;cstdlib&gt;</span>
+<span class="cp">#include &lt;iostream&gt;</span>
+<span class="cp">#include &lt;fstream&gt;</span>
+
+<span class="cp">#include &quot;mongoose.h&quot;</span>
+<span class="cp">#include &quot;zlib/zlib.h&quot;</span>
+
+<span class="c1">/// Пользовательская функция, вызывается сервером при наступлении </span>
+<span class="c1">/// очередного события, например, HTTP запроса. Сигнатура должна </span>
+<span class="c1">/// быть в точности такой, чтобы соответствовать </span>
+<span class="c1">/// типу mg_callback_t (см. mongoose.h)</span>
+<span class="kt">void</span> <span class="o">*</span> <span class="nf">callback</span><span class="p">(</span><span class="k">enum</span> <span class="n">mg_event</span> <span class="n">event</span><span class="p">,</span> <span class="k">struct</span> <span class="n">mg_connection</span> <span class="o">*</span><span class="n">conn</span><span class="p">,</span> 
+    <span class="k">const</span> <span class="k">struct</span> <span class="n">mg_request_info</span> <span class="o">*</span><span class="n">request_info</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">/// Пока бездействуем. Возврат NULL указывает серверу</span>
+    <span class="c1">/// использовать дефолтное поведение при обработке </span>
+    <span class="c1">/// запроса - отдавать список файлов корневой папки</span>
+    <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">/// Опции сервера - корневой каталог и порты, которые</span>
+    <span class="c1">/// должен слушать сервер (можно указать через запятую, </span>
+    <span class="c1">/// например, &quot;9990,9995&quot;)</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">options</span><span class="p">[]</span> <span class="o">=</span> 
+    <span class="p">{</span>
+        <span class="s">&quot;document_root&quot;</span><span class="p">,</span> <span class="s">&quot;.&quot;</span><span class="p">,</span>
+        <span class="s">&quot;listening_ports&quot;</span><span class="p">,</span> <span class="s">&quot;9990&quot;</span><span class="p">,</span>
+        <span class="nb">NULL</span>
+    <span class="p">};</span>
+
+    <span class="c1">/// Стартуем Mongoose, передавая ему указатель на </span>
+    <span class="c1">/// пользовательскую функцию обработки событий </span>
+    <span class="c1">/// и массив опций</span>
+    <span class="n">mg_context</span> <span class="o">*</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">mg_start</span><span class="p">(</span><span class="n">callback</span><span class="p">,</span> <span class="n">options</span><span class="p">);</span>
+
+    <span class="c1">/// Тут нужно как-то зациклить программу, чтобы </span>
+    <span class="c1">/// сервер продолжал работать. Удобно использовать </span>
+    <span class="c1">/// блокирующий вызов, например, std::cin.get()</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Press any key to stop server&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cin</span><span class="p">.</span><span class="n">get</span><span class="p">();</span>
+
+    <span class="c1">/// Завершаем работу Mongoose</span>
+    <span class="n">mg_stop</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Пока что наш сервер умеет возвращать только список файлов корневой папки. Перейдём к тому, ради чего всё
+затевалось – к генерации текстового ответа с поддержкой сжатия. Для этого дополним функцию callback:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="kt">void</span> <span class="o">*</span> <span class="nf">callback</span><span class="p">(</span><span class="k">enum</span> <span class="n">mg_event</span> <span class="n">event</span><span class="p">,</span> <span class="k">struct</span> <span class="n">mg_connection</span> <span class="o">*</span><span class="n">conn</span><span class="p">,</span> 
+    <span class="k">const</span> <span class="k">struct</span> <span class="n">mg_request_info</span> <span class="o">*</span><span class="n">request_info</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">/// В качестве источника данных выступает файл,</span>
+    <span class="c1">/// но в реальной практике тут скорее всего будет</span>
+    <span class="c1">/// происходить их генерация по определённому</span>
+    <span class="c1">/// алгоритму. Главное в итоге - получить данные в</span>
+    <span class="c1">/// &quot;сыром&quot; виде - как массив байтов</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">ifstream</span> <span class="n">input</span><span class="p">(</span><span class="s">&quot;test.txt&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">ifstream</span><span class="o">::</span><span class="n">binary</span><span class="p">);</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Reading file...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">/// Определяем размер файла, чтобы выделить</span>
+    <span class="c1">/// необходимое количество памяти</span>
+    <span class="n">input</span><span class="p">.</span><span class="n">seekg</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">end</span><span class="p">);</span>
+    <span class="kt">unsigned</span> <span class="n">uncompressedLength</span> <span class="o">=</span> <span class="n">input</span><span class="p">.</span><span class="n">tellg</span><span class="p">();</span>
+    <span class="n">input</span><span class="p">.</span><span class="n">seekg</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">beg</span><span class="p">);</span>
+
+    <span class="c1">/// Читаем файл в выделенный буфер</span>
+    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">unsigned</span> <span class="kt">char</span><span class="p">[</span><span class="n">uncompressedLength</span><span class="p">];</span>
+    <span class="n">input</span><span class="p">.</span><span class="n">read</span><span class="p">((</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">data</span><span class="p">,</span> <span class="n">uncompressedLength</span><span class="p">);</span>
+
+    <span class="n">input</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Read &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">uncompressedLength</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; bytes&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Compressing...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="c1">/// zlib рекомендует выделять буфер для сжатых данных </span>
+    <span class="c1">/// как минимум такого размера</span>
+    <span class="kt">unsigned</span> <span class="n">compressedLength</span> <span class="o">=</span> 
+        <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span><span class="p">)((</span><span class="n">uncompressedLength</span> <span class="o">*</span> <span class="mf">1.001f</span><span class="p">)</span> <span class="o">+</span> <span class="mi">12</span><span class="p">);</span>
+    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">compressedData</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">unsigned</span> <span class="kt">char</span><span class="p">[</span><span class="n">uncompressedLength</span><span class="p">];</span>
+    <span class="c1">/// Сжимаем данные, записывая результат в буфер compressedData.</span>
+    <span class="c1">/// После выполнения compressedLength будет содержать размер </span>
+    <span class="c1">/// сжатых данных</span>
+    <span class="n">compress</span><span class="p">(</span><span class="n">compressedData</span><span class="p">,</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">compressedLength</span><span class="p">,</span> 
+        <span class="n">data</span><span class="p">,</span> <span class="n">uncompressedLength</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Compressed length: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">compressedLength</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">/// Пишем заголовки ответа клиенту.</span>
+    <span class="c1">/// Важно указать верный MIME (text/plain),</span>
+    <span class="c1">/// алгоритм сжатия (Content-Encoding: deflate) </span>
+    <span class="c1">/// и размер данных (Content-Length)</span>
+    <span class="n">mg_printf</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> 
+        <span class="s">&quot;HTTP/1.1 200 OK</span><span class="se">\r\n</span><span class="s">&quot;</span>
+        <span class="s">&quot;Cache: no-cache</span><span class="se">\r\n</span><span class="s">&quot;</span>
+        <span class="s">&quot;Content-Type: text/plain</span><span class="se">\r\n</span><span class="s">&quot;</span>
+        <span class="s">&quot;Content-Encoding: deflate</span><span class="se">\r\n</span><span class="s">&quot;</span>
+        <span class="s">&quot;Content-Length: %d</span><span class="se">\r\n</span><span class="s">&quot;</span>
+        <span class="s">&quot;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">compressedLength</span><span class="p">);</span>
+
+    <span class="c1">/// Пишем сами данные</span>
+    <span class="n">mg_write</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">compressedData</span><span class="p">,</span> <span class="n">compressedLength</span><span class="p">);</span>
+    
+    <span class="k">delete</span> <span class="p">[]</span> <span class="n">data</span><span class="p">;</span>
+    <span class="k">delete</span> <span class="p">[]</span> <span class="n">compressedData</span><span class="p">;</span>
+
+    <span class="c1">/// Теперь вместо NULL возвращаем &quot;yes&quot;, тем самым</span>
+    <span class="c1">/// говоря серверу, что мы обработали запрос</span>
+    <span class="k">return</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="s">&quot;yes&quot;</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Теперь собираем проект и пробуем. Библиотеки Mongoose и zlib можно собирать отдельно в статическом или динамическом виде,
+а можно включить прямо в проект, как это сделал я. После запуска сервера набираем в браузере <code>http://localhost:9990/</code>,
+и если всё хорошо, видим содержимое файла <code>test.txt</code>. Если в браузере есть инструменты отладки, можно посмотреть,
+сколько данных принял браузер, и сравнить с размером исходного файла. Например, в моём эксперименте test.txt
+состоял из 6502 одинаковых строчек по 50 символов (я просто копипастил, не заморачиваясь) – в сумме 323.78KB.
+В то же время браузер принял всего лишь 1.01KB – экономия при использовании сжатия (особенно однотипных данных) очевидна.</p>
+
+	</div>
+</div>
+
+			<div>
+
+			
+	<div id="disqus_thread">
+	</div>
+	<script type="text/javascript">
+		var disqus_shortname = 'raycastnet'; // required: replace example with your forum shortname
+		(function() {
+			var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+			dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		})();
+	</script>
+	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+		</div>
+
+		<div class="footer">
+	<p class="text-muted">© 2014-2016 Aleksey Fedotov</p>
+</div>
+
+<script src="/js/vendor/jquery.min.js"></script>
+<script src="/js/vendor/video.js"></script>
+<script src="/js/flat-ui.min.js"></script>
+<script src="/js/fancybox/jquery.fancybox.pack.js"></script>
+<script src="/js/fancybox/jquery.fancybox-buttons.js"></script>
+<script src="/js/fancybox/jquery.fancybox-media.js"></script>
+<script src="/js/fancybox/jquery.fancybox-thumbs.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-50872849-1', 'raycast.net');
+  ga('send', 'pageview', {
+    "page": "/2011/03/02/cpp-http-server.html",
+    "title": 'C++ embedded HTTP server with compression'
+  });
+</script>
+
+<script>
+	$(document).ready(function() {
+		$(".lightbox").fancybox();
+	});
+</script>
+
+	</body>
+</html>

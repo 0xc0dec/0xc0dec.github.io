@@ -1,0 +1,15 @@
+---
+layout: page
+title:  Abandoned hospital vs. unfinished hospital
+date:   2011-09-25 00:00:00
+---
+
+I like this abandoned hospital located in one of the central parks of our city – it’s very impressive and murky.
+
+<div class="row text-center"><img src="/data/hospital10.jpg" class="margined20"/></div>
+
+Once I came up with the idea that I must reproduce this great place in 3D. Having said that, I made this “sketch”:
+
+<div class="row text-center"><img src="/data/hospital_in_progress_2.png" class="margined20"/></div>
+
+I hope that I'll have time to finish it: continue modelling, texture and render the final image. But yet, that’s all I have for now, so this post is like a TODO reminder for me.

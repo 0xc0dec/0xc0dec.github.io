@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Building multiple linked binaries in CLion on Mac OS X | Raycast</title>
+
+		<link href="/css/vendor/bootstrap.min.css" rel="stylesheet">
+    	<link href="/css/flat-ui.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="/css/style.css"/>
+		<link rel="stylesheet" href="/css/syntax.css" media="screen"/>
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox.css" media="screen"/>
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-buttons.css" media="screen" />
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-thumbs.css" media="screen" />
+		<link rel="shortcut icon" type="image/png" href="/data/gamepad2.png">
+
+	</head>
+	<body>
+		<div class="container page">
+			<div class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/">
+				<img src="/data/gamepad_large.png"/>
+			</a>
+			<div class="navbar-text">Home page of one programmer</div>
+		</div>
+		<ul class="nav navbar-nav navbar-right">
+			<li ><a href="/">Blog</a></li>
+			<li ><a href="/portfolio/">Portfolio</a></li>
+			<li ><a href="/about/">About</a></li>
+		</ul>
+	</div>
+</div>
+
+
+			<div class="content">
+				<div class="article">
+	<div class="row">
+		<div class="col-xs-12">
+			<h2>Building multiple linked binaries in CLion on Mac OS X</h2>
+			
+				<span class="small text-muted">19 Oct 2014</span>
+			
+		</div>
+	</div>
+	
+	<div class="article-content">
+		<div class="row text-center"><img src="/data/clion_logo.png" class="margined20"/></div>
+
+<p><a href="https://www.jetbrains.com/clion/">CLion</a> is a new C/C++ IDE from JetBrains, the creators of ReSharper, IntelliJ IDEA and many other great products for software developers. CLion is claimed to support a full-featured refactoring workflow for C++, similar to how it is already implemented in other JetBrains products. At this moment the IDE is available in early access mode, which means that we can download and use it freely, keeping in mind that the product is not stable yet, so bugs are possible.</p>
+
+<p>I decided to move one of my projects from XCode to CLion. The refactoring capabilities of XCode for C++ are far from being good (in fact, there is no refactoring support for C++), and after using ReSharper for my C# projects, I simply don&#39;t understand how to work without &quot;Rename&quot;, &quot;Find usages&quot;, &quot;Generate missing members&quot;, smart highlighting and a plenty of other super-useful features.</p>
+
+<p>CLion uses CMake to describe and manage its projects (at least yet). If you&#39;re not very familiar with CMake (like me), creating and building anything more complex than the default Hello world will be sort of a nightmare. In this post I&#39;ll share my experience in building a static library and a project that uses this library in CLion, hoping that this will save a lot of googling time for anyone having the similar task.</p>
+
+<!--break-->
+
+<p>For example, we want to build a static library named <em>solo</em> and a test project <em>Test1</em> that links against it. My project structure looks like this:</p>
+
+<div class="row text-center"><img src="/data/solo_project.png" class="margined20"/></div>
+
+<p>The <em>src</em> folder contains the library source files and the <em>include</em> folder contains the interface headers. The <em>Test1</em> project resides inside the <em>tests/test1</em> folder. I&#39;m using a single CMakeLists.txt for everything for the sake of simplicity. As the project grows bigger, you might consider splitting it into several CMakeLists&#39; to make it modular and easier to manage.</p>
+
+<p>Lets examine the CMakeLists.txt file. The first two lines are added by CLion by default:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">cmake_minimum_required</span><span class="p">(</span><span class="n">VERSION</span> <span class="mf">2.8.4</span><span class="p">)</span>
+<span class="n">project</span><span class="p">(</span><span class="n">solo</span><span class="p">)</span></code></pre></div>
+
+<p>They state that we want CMake version to be at least 2.8.4, and our project is called <em>solo</em>.</p>
+
+<p>Here comes the first interesting part: we tell CLion where to save the output binaries. By default, they are put into some wierd location like <em>/Users/&lt;username&gt;/Library/Caches/clion10/cmake/generated/707a014b/707a014b/Debug</em>. Here we want to store them in some more conventional place like the <em>build</em> folder inside the project folder:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">set</span><span class="p">(</span><span class="n">EXECUTABLE_OUTPUT_PATH</span> <span class="s">&quot;${PROJECT_SOURCE_DIR}/build/&quot;</span><span class="p">)</span>
+<span class="n">set</span><span class="p">(</span><span class="n">LIBRARY_OUTPUT_PATH</span> <span class="s">&quot;${PROJECT_SOURCE_DIR}/build/&quot;</span><span class="p">)</span></code></pre></div>
+
+<p>The next line tells CMake to pass specific flags to the Clang compiler:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">add_compile_options</span><span class="p">(</span><span class="o">-</span><span class="n">std</span><span class="o">=</span><span class="n">c</span><span class="o">++</span><span class="mi">0</span><span class="n">x</span><span class="p">)</span></code></pre></div>
+
+<p>Our library needs some headers to compile, so we tell CMake to search them in a number of directores:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">include_directories</span><span class="p">(</span>
+    <span class="err">$</span><span class="p">{</span><span class="n">PROJECT_SOURCE_DIR</span><span class="p">}</span><span class="o">/</span><span class="n">include</span>
+    <span class="err">$</span><span class="p">{</span><span class="n">PROJECT_SOURCE_DIR</span><span class="p">}</span><span class="o">/</span><span class="n">external</span><span class="o">/</span><span class="n">SDL</span><span class="o">/</span><span class="mf">2.0.3</span><span class="o">/</span><span class="n">include</span><span class="p">)</span></code></pre></div>
+
+<p>Here the <em>${PROJECT_SOURCE_DIR}</em> refers to the root project folder.</p>
+
+<p>We also need to specify where to look for the external libraries when linking our library against them:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">link_directories</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">PROJECT_SOURCE_DIR</span><span class="p">}</span><span class="o">/</span><span class="n">external</span><span class="o">/</span><span class="n">SDL</span><span class="o">/</span><span class="mf">2.0.3</span><span class="p">)</span></code></pre></div>
+
+<p>Next we tell CMake to find all *.cpp files inside the <em>src</em> folder and put them into the <em>sources</em> variable:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">file</span><span class="p">(</span><span class="n">GLOB</span> <span class="n">sources</span> <span class="s">&quot;src/*.cpp&quot;</span><span class="p">)</span></code></pre></div>
+
+<p>In the next chunk of code we tell CMake to find some frameworks that we&#39;re going to be using, and save their paths to the <em>frameworks</em> variable:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">find_library</span><span class="p">(</span><span class="n">carbon_lib</span> <span class="n">Carbon</span><span class="p">)</span> <span class="err">#</span> <span class="n">we</span> <span class="n">look</span> <span class="k">for</span> <span class="n">the</span> <span class="n">Carbon</span> <span class="n">framework</span> <span class="n">and</span> <span class="n">use</span> <span class="n">carbon_lib</span> <span class="n">as</span> <span class="n">an</span> <span class="n">alias</span> <span class="k">for</span> <span class="n">it</span>
+<span class="n">find_library</span><span class="p">(</span><span class="n">iokit_lib</span> <span class="n">IOKit</span><span class="p">)</span>
+<span class="n">find_library</span><span class="p">(</span><span class="n">forcefeedback_lib</span> <span class="n">ForceFeedback</span><span class="p">)</span>
+<span class="n">find_library</span><span class="p">(</span><span class="n">cocoa_lib</span> <span class="n">Cocoa</span><span class="p">)</span>
+<span class="n">find_library</span><span class="p">(</span><span class="n">audiounit_lib</span> <span class="n">AudioUnit</span><span class="p">)</span>
+<span class="n">find_library</span><span class="p">(</span><span class="n">coreaudio_lib</span> <span class="n">CoreAudio</span><span class="p">)</span>
+<span class="n">find_library</span><span class="p">(</span><span class="n">opengl_lib</span> <span class="n">OpenGL</span><span class="p">)</span>
+<span class="n">find_library</span><span class="p">(</span><span class="n">corefoundation_lib</span> <span class="n">CoreFoundation</span><span class="p">)</span>
+
+<span class="n">set</span><span class="p">(</span><span class="n">frameworks</span>
+    <span class="err">$</span><span class="p">{</span><span class="n">carbon_lib</span><span class="p">}</span>
+    <span class="err">$</span><span class="p">{</span><span class="n">iokit_lib</span><span class="p">}</span>
+    <span class="err">$</span><span class="p">{</span><span class="n">forcefeedback_lib</span><span class="p">}</span>
+    <span class="err">$</span><span class="p">{</span><span class="n">cocoa_lib</span><span class="p">}</span>
+    <span class="err">$</span><span class="p">{</span><span class="n">audiounit_lib</span><span class="p">}</span>
+    <span class="err">$</span><span class="p">{</span><span class="n">coreaudio_lib</span><span class="p">}</span>
+    <span class="err">$</span><span class="p">{</span><span class="n">opengl_lib</span><span class="p">}</span>
+    <span class="err">$</span><span class="p">{</span><span class="n">corefoundation_lib</span><span class="p">})</span></code></pre></div>
+
+<p>Finally, we say that we want to build a static library from the given sources and link it against the <em>SDL2</em> library and the frameworks that we found before:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">add_library</span><span class="p">(</span><span class="n">solo</span> <span class="n">STATIC</span> <span class="err">$</span><span class="p">{</span><span class="n">sources</span><span class="p">})</span>
+<span class="n">target_link_libraries</span><span class="p">(</span><span class="n">solo</span> <span class="n">SDL2</span> <span class="err">$</span><span class="p">{</span><span class="n">frameworks</span><span class="p">})</span></code></pre></div>
+
+<p>Adding the second binary (the <em>Test1</em> executable) is as easy as it is. We tell CMake to build it from the <em>Main.cpp</em> file and link agains the <em>solo</em> library:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">add_executable</span><span class="p">(</span><span class="n">Test1</span> <span class="n">tests</span><span class="o">/</span><span class="n">test1</span><span class="o">/</span><span class="n">Main</span><span class="p">.</span><span class="n">cpp</span><span class="p">)</span>
+<span class="n">target_link_libraries</span><span class="p">(</span><span class="n">Test1</span> <span class="n">LINK_PUBLIC</span> <span class="n">solo</span><span class="p">)</span></code></pre></div>
+
+<p>Now if you hit <em>Cmd + F9</em> (Build), you should see two new files inside the <em>build</em> folder: <em>Test1</em> and <em>libsolo.a</em>.</p>
+
+<p>The whole CMakeLists.txt file:</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">cmake_minimum_required</span><span class="p">(</span><span class="n">VERSION</span> <span class="mf">2.8.4</span><span class="p">)</span>
+<span class="n">project</span><span class="p">(</span><span class="n">solo</span><span class="p">)</span>
+
+<span class="n">set</span><span class="p">(</span><span class="n">EXECUTABLE_OUTPUT_PATH</span> <span class="s">&quot;${PROJECT_SOURCE_DIR}/build/&quot;</span><span class="p">)</span>
+<span class="n">set</span><span class="p">(</span><span class="n">LIBRARY_OUTPUT_PATH</span> <span class="s">&quot;${PROJECT_SOURCE_DIR}/build/&quot;</span><span class="p">)</span>
+
+<span class="n">add_compile_options</span><span class="p">(</span><span class="o">-</span><span class="n">std</span><span class="o">=</span><span class="n">c</span><span class="o">++</span><span class="mi">0</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">include_directories</span><span class="p">(</span>
+    <span class="err">$</span><span class="p">{</span><span class="n">PROJECT_SOURCE_DIR</span><span class="p">}</span><span class="o">/</span><span class="n">include</span>
+    <span class="err">$</span><span class="p">{</span><span class="n">PROJECT_SOURCE_DIR</span><span class="p">}</span><span class="o">/</span><span class="n">external</span><span class="o">/</span><span class="n">SDL</span><span class="o">/</span><span class="mf">2.0.3</span><span class="o">/</span><span class="n">include</span><span class="p">)</span>
+
+<span class="n">link_directories</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">PROJECT_SOURCE_DIR</span><span class="p">}</span><span class="o">/</span><span class="n">external</span><span class="o">/</span><span class="n">SDL</span><span class="o">/</span><span class="mf">2.0.3</span><span class="p">)</span>
+
+<span class="cp"># Engine</span>
+
+<span class="n">file</span><span class="p">(</span><span class="n">GLOB</span> <span class="n">sources</span> <span class="s">&quot;src/*.cpp&quot;</span><span class="p">)</span>
+
+<span class="n">find_library</span><span class="p">(</span><span class="n">carbon_lib</span> <span class="n">Carbon</span><span class="p">)</span>
+<span class="n">find_library</span><span class="p">(</span><span class="n">iokit_lib</span> <span class="n">IOKit</span><span class="p">)</span>
+<span class="n">find_library</span><span class="p">(</span><span class="n">forcefeedback_lib</span> <span class="n">ForceFeedback</span><span class="p">)</span>
+<span class="n">find_library</span><span class="p">(</span><span class="n">cocoa_lib</span> <span class="n">Cocoa</span><span class="p">)</span>
+<span class="n">find_library</span><span class="p">(</span><span class="n">audiounit_lib</span> <span class="n">AudioUnit</span><span class="p">)</span>
+<span class="n">find_library</span><span class="p">(</span><span class="n">coreaudio_lib</span> <span class="n">CoreAudio</span><span class="p">)</span>
+<span class="n">find_library</span><span class="p">(</span><span class="n">opengl_lib</span> <span class="n">OpenGL</span><span class="p">)</span>
+<span class="n">find_library</span><span class="p">(</span><span class="n">corefoundation_lib</span> <span class="n">CoreFoundation</span><span class="p">)</span>
+
+<span class="n">set</span><span class="p">(</span><span class="n">frameworks</span>
+    <span class="err">$</span><span class="p">{</span><span class="n">carbon_lib</span><span class="p">}</span>
+    <span class="err">$</span><span class="p">{</span><span class="n">iokit_lib</span><span class="p">}</span>
+    <span class="err">$</span><span class="p">{</span><span class="n">forcefeedback_lib</span><span class="p">}</span>
+    <span class="err">$</span><span class="p">{</span><span class="n">cocoa_lib</span><span class="p">}</span>
+    <span class="err">$</span><span class="p">{</span><span class="n">audiounit_lib</span><span class="p">}</span>
+    <span class="err">$</span><span class="p">{</span><span class="n">coreaudio_lib</span><span class="p">}</span>
+    <span class="err">$</span><span class="p">{</span><span class="n">opengl_lib</span><span class="p">}</span>
+    <span class="err">$</span><span class="p">{</span><span class="n">corefoundation_lib</span><span class="p">})</span>
+
+<span class="n">add_library</span><span class="p">(</span><span class="n">solo</span> <span class="n">STATIC</span> <span class="err">$</span><span class="p">{</span><span class="n">sources</span><span class="p">})</span>
+<span class="n">target_link_libraries</span><span class="p">(</span><span class="n">solo</span> <span class="n">SDL2</span> <span class="err">$</span><span class="p">{</span><span class="n">frameworks</span><span class="p">})</span>
+
+<span class="cp"># Tests</span>
+<span class="n">add_executable</span><span class="p">(</span><span class="n">Test1</span> <span class="n">tests</span><span class="o">/</span><span class="n">test1</span><span class="o">/</span><span class="n">Main</span><span class="p">.</span><span class="n">cpp</span><span class="p">)</span>
+<span class="n">target_link_libraries</span><span class="p">(</span><span class="n">Test1</span> <span class="n">LINK_PUBLIC</span> <span class="n">solo</span><span class="p">)</span></code></pre></div>
+
+<h3>Conclusion</h3>
+
+<p>This article gives a recipe for writing a simple CMake file for building two linked binaries in CLion. Keep in mind that I&#39;m not an expert in CMake, neither in Clion, so the given file might not be the best that you can make to get the job done. However, it gives a good start for working with CLion, which, as I have noticed, is not well covered in the online tutorials yet.</p>
+
+	</div>
+</div>
+
+			<div>
+
+			
+	<div id="disqus_thread">
+	</div>
+	<script type="text/javascript">
+		var disqus_shortname = 'raycastnet'; // required: replace example with your forum shortname
+		(function() {
+			var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+			dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		})();
+	</script>
+	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+		</div>
+
+		<div class="footer">
+	<p class="text-muted">© 2014-2016 Aleksey Fedotov</p>
+</div>
+
+<script src="/js/vendor/jquery.min.js"></script>
+<script src="/js/vendor/video.js"></script>
+<script src="/js/flat-ui.min.js"></script>
+<script src="/js/fancybox/jquery.fancybox.pack.js"></script>
+<script src="/js/fancybox/jquery.fancybox-buttons.js"></script>
+<script src="/js/fancybox/jquery.fancybox-media.js"></script>
+<script src="/js/fancybox/jquery.fancybox-thumbs.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-50872849-1', 'raycast.net');
+  ga('send', 'pageview', {
+    "page": "/2014/10/19/clion-multiple-binaries.html",
+    "title": 'Building multiple linked binaries in CLion on Mac OS X'
+  });
+</script>
+
+<script>
+	$(document).ready(function() {
+		$(".lightbox").fancybox();
+	});
+</script>
+
+	</body>
+</html>

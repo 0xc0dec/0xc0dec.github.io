@@ -1,0 +1,21 @@
+---
+layout: default
+enable_comments: true
+---
+
+<div class="article">
+	<div class="row">
+		<div class="col-xs-12">
+			<h2>{{ page.title }}</h2>
+			{% if page.date %}
+				<span class="small text-muted">{{ page.date | date_to_string }}</span>
+			{% endif %}
+		</div>
+	</div>
+	{% unless page.date %}
+		<hr>
+	{% endunless %}
+	<div class="article-content">
+		{{ content }}
+	</div>
+</div>

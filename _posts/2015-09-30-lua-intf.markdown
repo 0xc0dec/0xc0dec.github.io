@@ -1,0 +1,249 @@
+---
+layout: page
+title: C++ embedded scripting&#58; LuaIntf recipes
+date:   2015-09-30 00:00:00
+---
+
+In [my previous post]({% post_url 2015-07-07-chaiscript-recipes %}) on C++ embedded scripting I talked about ChaiScript and described how to implement some tricky cases
+when embedding this language into your C++ application.
+Although the language is really interesting, there are some flaws in it that I find serious, like, for example, not very rich syntax or long compilation times.
+
+Having said that, I decided to search again in attempt to find a good Lua binding library. After some research I found one - [LuaInft](https://github.com/SteveKChiu/lua-intf) (C++11), which I want to talk about today.
+A good documentation (at least it has one!) plus the fact that its author positions the library as a modern remake of LuaBridge (another good, but abandoned library), attracted my attention immediately.
+
+<!--break-->
+
+As with many libraries, at some point you'll come across a task that you won't find in the documentation.
+The major flaw of LuaInft is the lack of tests or samples that could shed more light on the examples of library usage, aside from rather "generic" docs.
+This article is aimed at saving your time and fixing this particular problem. I'll illustrate the results of my experiments with this library in a form
+of code examples - the way that I find most convenient for learning libraries and discovering their possibilities.
+Be warned: consult documentation a lot if you don't know the very basics yet. These snippets won't cover
+things that are in the docs already.
+
+Lets start with the bare minimum - the **simplest, ready-to-use program running LuaIntf**. Unfortunately the documentation doesn't seem to have it in one piece:
+{% highlight cpp %}
+#include <LuaIntf.h>
+
+namespace LuaIntf
+{
+	// Enable support for shared_ptr, vector and map.
+	// This will allow us to use shared_ptr almost interchangeably with raw pointers,
+	// as well as use Lua tables to handle C++ vectors and maps
+	LUA_USING_SHARED_PTR_TYPE(std::shared_ptr)
+	LUA_USING_LIST_TYPE(std::vector)
+	LUA_USING_MAP_TYPE(std::map)
+}
+
+int main()
+{
+	using namespace LuaIntf;
+	LuaState lua;
+	lua.openLibs();
+	lua.doString("lua code here");
+	return 0;
+}
+{% endhighlight %}
+
+(btw, setting header search paths and linking to the library is outside the scope of this article).
+
+Let's **bind some enums**. Unfortunately if you Ctrl+F "enum" in the docs, you'll find no mentions. I can think of two ways:
+{% highlight cpp %}
+enum class TestEnum // should be no different from classic enums
+{
+	Value
+};
+
+LuaBinding(lua).beginModule("test")
+	.addConstant("TestEnum_Value", TestEnum::Value)
+.endModule();
+
+// or
+
+LuaBinding(lua).beginModule("test")
+	.beginModule("TestEnum")
+		.addConstant("Value", TestEnum::Value)
+	.endModule()
+.endModule();
+
+// Lua
+print(test.TestEnum_Value)
+-- or
+print(test.TestEnum.Value)
+{% endhighlight %}
+
+The second way is probably better, because it'd allow you to easily enumerate all enum values in Lua. If it's ever needed.
+
+Working with **inheritance and smart pointers**:
+{% highlight cpp %}
+class Base
+{
+public:
+	virtual ~Base() {}
+	virtual std::string first() = 0;
+	virtual int second() const { return 123; }
+};
+
+class A : public Base
+{
+public:
+	virtual std::string first() override { return "Hello, world"; }
+	virtual int second() const override { return 2; }
+	virtual int third() const { return 3; }
+	int fourth() const { return 4; }
+};
+
+std::shared_ptr<Base> make()
+{
+	return std::make_shared<A>();
+}
+
+// ...
+
+LuaBinding(lua).beginModule("test")
+	.beginClass<Base>("Base")
+		.addFunction("first", &Base::first)
+		.addFunction("second", &Base::second)
+	.endClass()
+	.beginExtendClass<A, Base>("A")
+		.addFunction("third", &A::third)
+		.addFunction("fourth", &A::fourth)
+	.endClass()
+	.addFunction("make", &make)
+.endModule();
+
+// Lua
+local a = test.make()
+print(a:first())
+print(a:second())
+print(a:third())
+print(a:fourth())
+
+// Output
+Hello, world
+2
+3
+4
+{% endhighlight %}
+So basically if you have a pointer to an object Lua will figure out what methods are available on it and perform downcast if needed.
+
+**Passing Lua objects to C++ code**:
+{% highlight cpp %}
+std::string acceptStuff(LuaRef luaObj,
+	const std::vector<std::string>& stringVector,
+	std::map<std::string, int>& dict)
+{
+	// Assume that this function expects Lua object (table) as first argument
+	auto func = luaObj.get<std::function<std::string(int)>>("func");
+	auto stringField = luaObj.get<std::string>("str");
+	std::ostringstream s;
+	s << "func() result: " << func(10) << ", string field value: " << stringField << "\n";
+	s << "Vector size: " << stringVector.size() << ", first element: " << stringVector[0] << "\n";
+	s << "Dictionary size: " << dict.size() << ", first element: (" <<
+		dict.begin()->first << ", " << dict.begin()->second << ")";
+	return s.str();
+}
+
+LuaBinding(lua).beginModule("test")
+	.addFunction("acceptStuff", &acceptStuff)
+.endModule();
+
+// Lua
+local obj = {
+	func = function(i)
+		return "You passed number " .. i
+	end,
+	str = "Hello, world"
+}
+local v = { 1, 2, 3 }
+local dict = { first = 1, second = 2 }
+print(test.acceptStuff(obj, v, dict))
+
+// Output
+func() result: You passed number 10, string field value: Hello, world
+Vector size: 3, first element: 1
+Dictionary size: 2, first element: (first, 1)
+{% endhighlight %}
+
+Now to the interesting part: **attaching C++ functions to C++ objects for using inside Lua**.
+Let's say you want to bind a C++ class to Lua, but at some point you realize you need a few more methods in the class
+for use inside scripts only. An easy way would be to include those methods directly into the class or into some
+"mixin" class that you would later inherit from. This is not a very good solution, at least if you're aiming at keeping code clean,
+separating concerns, maintainability and flexibility.
+Luckily LuaIntf allows us to attach arbitrary C++ methods to a class. For instance:
+{% highlight cpp %}
+class Base
+{
+public:
+	virtual ~Base() {}
+
+	virtual int one() const
+	{
+		return 123;
+	}
+};
+
+class A : public Base
+{
+public:
+	virtual int one() const override
+	{
+		return 2;
+	}
+
+	int two() const
+	{
+		return 4;
+	}
+};
+
+std::shared_ptr<Base> makeAsBase()
+{
+	return std::make_shared<A>();
+}
+
+std::shared_ptr<A> makeAsA()
+{
+	return std::make_shared<A>();
+}
+
+int externalBaseFunc(Base* obj)
+{
+	return obj->one();
+}
+
+int externalAFunc(A* obj)
+{
+	return obj->two();
+}
+
+LuaBinding(lua).beginModule("test")
+	.beginClass<Base>("Base")
+		.addFunction("externalBaseFunc", &externalBaseFunc)
+	.endClass()
+	.beginExtendClass<A, Base>("A")
+		.addFunction("externalAFunc", &externalAFunc)
+	.endClass()
+	.addFunction("makeAsBase", &makeAsBase)
+	.addFunction("makeAsA", &makeAsA)
+.endModule();
+
+lua.doString(R"s(
+	local a = test.makeAsBase()
+	print(a:externalBaseFunc())
+	print(a:externalAFunc())
+
+	local b = test.makeAsA()
+	print(b:externalBaseFunc())
+	print(b:externalAFunc())
+)s");
+
+// Output:
+2
+4
+2
+4
+{% endhighlight %}
+
+Liked it? Then go to the [library Github](https://github.com/SteveKChiu/lua-intf) page and show it some support. Overall I think LuaIntf
+is a great choice in terms of feature set, but the only bad thing about this library is the lack of tests.
+Really, how does the author know it works?

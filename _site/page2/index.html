@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Blog | Raycast</title>
+
+		<link href="/css/vendor/bootstrap.min.css" rel="stylesheet">
+    	<link href="/css/flat-ui.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="/css/style.css"/>
+		<link rel="stylesheet" href="/css/syntax.css" media="screen"/>
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox.css" media="screen"/>
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-buttons.css" media="screen" />
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-thumbs.css" media="screen" />
+		<link rel="shortcut icon" type="image/png" href="/data/gamepad2.png">
+
+	</head>
+	<body>
+		<div class="container page">
+			<div class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/">
+				<img src="/data/gamepad_large.png"/>
+			</a>
+			<div class="navbar-text">Home page of one programmer</div>
+		</div>
+		<ul class="nav navbar-nav navbar-right">
+			<li ><a href="/">Blog</a></li>
+			<li ><a href="/portfolio/">Portfolio</a></li>
+			<li ><a href="/about/">About</a></li>
+		</ul>
+	</div>
+</div>
+
+
+			<div class="content">
+				
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2013/12/25/my-fav-astyle-cmd-args.html">My fav AStyle cmd args</a></h2>
+				<span class="small text-muted">25 Dec 2013</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<p>Quick tip mostly for myself to not forget my favorite options of the magic AStyle tool, which makes someones’ ugly C++ code look more readable:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">astyle --style<span class="o">=</span>allman --indent<span class="o">=</span>force-tab --align-pointer<span class="o">=</span>name --remove-brackets --pad-oper file.cpp</code></pre></div>
+
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2013/11/17/main-entry-point-in-windows-apps.html">Main entry point in Windows apps</a></h2>
+				<span class="small text-muted">17 Nov 2013</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<p>Most of the time when you use external libraries to create window for your app (for example, graphics engines like OGRE),
+the app doesn’t actually need to have WinMain entry point. Moreover, if you’re going to port the app to other platforms, you’ll have to adapt
+the entry point to be main instead of WinMain. I think having the same main entry point on all platforms could be quite convenient.</p>
+
+<p>On the other hand, only console apps normally have main entry point on Windows. They also auto-create console window, which isn’t
+what we want in a GUI application. The following steps will help us to solve the problem (assuming that we use Visual Studio):</p>
+
+<ul>
+<li>Open project properties</li>
+<li>Change “Linker -&gt; System -&gt; SubSystem” option to WINDOWS</li>
+<li>Change “Linker -&gt; Advanced -&gt; Entry Point” option to mainCRTStartup</li>
+</ul>
+
+<p>The System option set to WINDOWS makes application run with no console window. The Entry Point option allows us to specify what
+entry point the compiler should expect to find in our code (main in this case).</p>
+
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2013/09/29/custom-engine-in-the-witness-game.html">Custom engine in The Witness game</a></h2>
+				<span class="small text-muted">29 Sep 2013</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<p>Recently I had a twitter conversation with Jonathan Blow, the creator of <a href="http://braid-game.com/">Braid</a> and leader of the team behind the upcoming game <a href="http://the-witness.net/">The Witness</a>.
+I was wondering why developers decided to use custom engine in their project, considering many good engines already available out there.</p>
+
+<p>Jonathan spoke of the following reasons:
+<ul>
+<li>You have full control of your code</li>
+<li>You have no restrictions</li>
+<li>You can achieve any level of quality you wish (clearly because of 1. and 2.)</li>
+<li>You owe no money to anyone whose commercial engine you might have been using</li>
+</ul></p>
+
+<p>These are good points, however they shouldn’t be considered as a 100% guide for you to go and roll your own engine.
+Do that <em>only if you really need to</em>, if other engines don’t provide you with the necessary tools. Sadly,
+there were no technical details discussed about what was actually impossible to achieve with existing engines
+when developing The Witness. Hopefully we’ll hear about it from developers in the future.</p>
+
+<p>Below is the conversation:</p>
+
+
+			
+				<a href="/2013/09/29/custom-engine-in-the-witness-game.html">Read more...</a>
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2013/09/25/test-chambers-for-ld-27.html">Test Chambers for Ludum Dare 27</a></h2>
+				<span class="small text-muted">25 Sep 2013</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<div class="row text-center"><img src="/data/ld.png" class="margined20"/></div>
+
+<p><a href="http://www.ludumdare.com/compo/2013/08/22/welcome-to-ludum-dare-27/">Ludum Dare #27</a> was held in August 23rd-26th, 2013. That was the first LD for me, so I was very excited and actually nervous,
+because I was not sure that I was able to do the task in two days. Things got worse when the theme was announced: 10 seconds. I had no idea what game to make.</p>
+
+<p>But I did it. I actually managed to make a complete game in two days, including graphics and music.
+Music was the most difficult part because I’ve almost never been doing it before (except two episodic cases that I don’t count).
+The bad news for me was that three weeks later (after the voting period ended) my game didn’t make it to the top 100.
+Luckily I didn’t expected that to happen, so I wasn’t very upset.</p>
+
+<p>As usual, I used Unity + GIMP + Inkscape, and FL Studio for music.</p>
+
+<p><a href="http://www.ludumdare.com/compo/ludum-dare-27/?action=preview&amp;uid=20100">Link to my entry.</a></p>
+
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2013/08/10/unity3d-tasks-concept.html">Unity3d tip&#58; tasks concept</a></h2>
+				<span class="small text-muted">10 Aug 2013</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<p>You are coding a game with Unity3D. What do you normally do when you need to perform some non-instant, continuous action, which will last for a certain
+amount of time (during a number of frames)? For example, you need to move an object 10 units forward. I bet you write a special component that will be
+responsible for this particular action. Then you add this component to that object and fill the necessary parameters:</p>
+
+<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="kt">var</span> <span class="n">action</span> <span class="p">=</span> <span class="n">obj</span><span class="p">.</span><span class="n">AddComponent</span><span class="p">&lt;</span><span class="n">SomeAction</span><span class="p">&gt;();</span>
+<span class="n">action</span><span class="p">.</span><span class="n">duration</span> <span class="p">=</span> <span class="m">2</span><span class="p">;</span>
+<span class="n">action</span><span class="p">.</span><span class="n">speed</span> <span class="p">=</span> <span class="m">3</span><span class="p">;</span>
+<span class="c1">// and so on...</span></code></pre></div>
+
+
+			
+				<a href="/2013/08/10/unity3d-tasks-concept.html">Read more...</a>
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2013/05/22/nether-devblog-intro.html">Project Nether devblog. Intro</a></h2>
+				<span class="small text-muted">22 May 2013</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<p>I’ve decided to start a series of posts describing how things are going on with the development of my current game projects.
+I hope this activity will motivate me not to abandon those projects and, probably, receive some feedback from readers.</p>
+
+<p>This first post is about my new game called <strong>Nether</strong>. Currently it’s a working title and might change in future.
+Meanwhile it’s a beautiful word, which somehow describes the game look and feel, and is also easy to print in
+terminal when doing some work with Git, <code>cd</code>ing, <code>ls</code>ing and so on, you know.</p>
+
+
+			
+				<a href="/2013/05/22/nether-devblog-intro.html">Read more...</a>
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2013/05/05/unity3d-array-of-custom-objects.html">Unity3D tip&#58; edit arrays of custom objects in object inspector</a></h2>
+				<span class="small text-muted">05 May 2013</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<p>Say I have the following component:</p>
+
+<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">Test</span><span class="p">:</span> <span class="n">MonoBehaviour</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="n">Vector3</span><span class="p">[]</span> <span class="n">PivotPoints</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>It’s OK to edit the PivotPoints field in object inspector, because Unity natively understands
+<code>Vector3</code> struct and displays it properly. Things get more complicated when I add field representing an array of custom objects:</p>
+
+<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">class</span> <span class="nc">NodeSetup</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="n">Vector3</span> <span class="n">Position</span><span class="p">;</span>
+    <span class="k">public</span> <span class="n">Vector3</span> <span class="n">Weight</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">...</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">Test</span><span class="p">:</span> <span class="n">MonoBehaviour</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="n">Vector3</span><span class="p">[]</span> <span class="n">PivotPoints</span><span class="p">;</span>
+    <span class="k">public</span> <span class="n">NodeSetup</span><span class="p">[]</span> <span class="n">NodeSetups</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Unity ignores field NodeSetups. First I thought I should write a custom editor in order to edit such fields.
+Fortunately the problem has simple solution – just mark your custom class with Serializable attribute:</p>
+
+<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="na">[Serializable]</span>
+<span class="k">class</span> <span class="nc">NodeSetup</span>
+<span class="p">{</span> <span class="p">...</span> <span class="p">}</span></code></pre></div>
+
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2013/03/31/freeglut-fixed-window.html">FreeGlut fixed window</a></h2>
+				<span class="small text-muted">31 Mar 2013</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<p>It seems like FreeGLUT has no support for fixed-size windows at the moment
+(i.e. having normal border, but non-resizable). For my needs I wrote a small patch (for windows version only) which fixes this failing.</p>
+
+<p>In FreeGLUT sources find the freeglut_ext.h file and modify it as follows (new lines are marked with ++):</p>
+
+<div class="highlight"><pre><code class="language-c" data-lang="c"><span class="cm">/*</span>
+<span class="cm"> * GLUT API macro definitions -- the display mode definitions</span>
+<span class="cm"> */</span>
+<span class="cp">#define  GLUT_CAPTIONLESS                   0x0400</span>
+<span class="cp">#define  GLUT_BORDERLESS                    0x0800</span>
+<span class="cp">#define  GLUT_SRGB                          0x1000</span>
+<span class="o">++</span> <span class="err">#</span><span class="n">define</span>  <span class="n">GLUT_FIXED_SIZE</span>                    <span class="mh">0x0040</span></code></pre></div>
+
+<p>Next, modify the freeglut_window.c file:</p>
+
+<div class="highlight"><pre><code class="language-c" data-lang="c"><span class="k">else</span> <span class="nf">if</span><span class="p">(</span> <span class="n">window</span><span class="o">-&gt;</span><span class="n">Parent</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">fgState</span><span class="p">.</span><span class="n">DisplayMode</span> <span class="o">&amp;</span> <span class="n">GLUT_BORDERLESS</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="cm">/* no window decorations needed */</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">fgState</span><span class="p">.</span><span class="n">DisplayMode</span> <span class="o">&amp;</span> <span class="n">GLUT_CAPTIONLESS</span> <span class="p">)</span>
+        <span class="cm">/* only window decoration is a border, no title bar or buttons */</span>
+        <span class="n">flags</span> <span class="o">|=</span> <span class="n">WS_DLGFRAME</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="cm">/* window decoration are a border, title bar and buttons.</span>
+<span class="cm">         * NB: we later query whether the window has a title bar or</span>
+<span class="cm">         * not by testing for the maximize button, as the test for</span>
+<span class="cm">         * WS_CAPTION can be true without the window having a title</span>
+<span class="cm">         * bar. This style WS_OVERLAPPEDWINDOW gives you a maximize</span>
+<span class="cm">         * button. */</span>
+         <span class="n">flags</span> <span class="o">|=</span> <span class="n">WS_OVERLAPPEDWINDOW</span><span class="p">;</span>
+<span class="o">++</span>    <span class="k">if</span> <span class="p">(</span><span class="n">fgState</span><span class="p">.</span><span class="n">DisplayMode</span> <span class="o">&amp;</span> <span class="n">GLUT_FIXED_SIZE</span><span class="p">)</span>
+<span class="o">++</span>   <span class="n">flags</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="p">(</span><span class="n">WS_MAXIMIZEBOX</span> <span class="o">|</span> <span class="n">WS_THICKFRAME</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>This is a dirty hack, but probably FreeGLUT developers will introduce a good solution soon.</p>
+
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2013/03/09/cpp-oddities.html">Something you probably didn’t know about C/C++</a></h2>
+				<span class="small text-muted">09 Mar 2013</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<p>I love to collect mind-blowing and not too widely known C/C++ language constructions and facts. This post carries my collection and will be updated
+when new entries appear.</p>
+
+<p>C/C++</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="c1">// zero-sized bit fields</span>
+<span class="k">struct</span> <span class="n">S</span>
+<span class="p">{</span>
+  <span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="nl">b</span><span class="p">:</span><span class="mi">2</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="nl">c</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span>
+  <span class="o">:</span><span class="mi">0</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">d</span><span class="p">;</span>
+<span class="p">};</span></code></pre></div>
+
+
+			
+				<a href="/2013/03/09/cpp-oddities.html">Read more...</a>
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2013/02/05/invalid-binary.html">Possible reason of “Invalid binary” ITunes Connect error (with Unity3D app)</a></h2>
+				<span class="small text-muted">05 Feb 2013</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<p>That was a nightmare for me recently to figure out why I get this error when submitting my app to the ITunes. The text I got by email was the following:</p>
+
+<blockquote>
+<p>Invalid Signature – the main app bundle Uncopy at path Uncopy.app is signed but the signature is invalid. The following error(s) were reported from codesign:
+a sealed resource is missing or invalid
+In architecture: i386</p>
+</blockquote>
+
+<p>Thanks to <a href="http://stackoverflow.com/questions/13814506/mac-store-invalid-binary-on-itunesconnect-the-signature-is-invalid">this question</a> (see the second and third comments), the reason was a file named <code>._unity default resources</code> that Unity put into the <code>&lt;App bundle&gt;.app/Resources</code> folder.
+The solution for me was simple, I just deleted that file, re-signed the app and re-submitted, with no errors. I have no clue what’s that file for,
+but my app launches well without it. Big thanks to the guy who posted that question and answer.</p>
+
+			
+		</div>
+	</div>
+
+
+<div class="row">
+  <div class="col-xs-12">
+  	<div class="pagination pagination-inverse">
+  		
+			
+				<a class="btn btn-inverse previous" href="/"><i class="fui-arrow-left"></i>Newer</a></li>
+			
+	    
+
+	    <ul>
+	        
+				<li><a href="/">1</a></li>
+	        
+			
+	        
+				
+					<li class="active"><span >2</span></li>
+				
+	        
+				
+					<li><a href="/page3">3</a></li>
+				
+	        
+				
+					<li><a href="/page4">4</a></li>
+				
+	        
+	    </ul>
+
+	    
+			<a class="btn btn-inverse next" href="/page3">Older<i class="fui-arrow-right"></i></a>
+        
+	</div>
+  </div>
+</div>
+
+			<div>
+
+			
+
+		</div>
+
+		<div class="footer">
+	<p class="text-muted">© 2014-2016 Aleksey Fedotov</p>
+</div>
+
+<script src="/js/vendor/jquery.min.js"></script>
+<script src="/js/vendor/video.js"></script>
+<script src="/js/flat-ui.min.js"></script>
+<script src="/js/fancybox/jquery.fancybox.pack.js"></script>
+<script src="/js/fancybox/jquery.fancybox-buttons.js"></script>
+<script src="/js/fancybox/jquery.fancybox-media.js"></script>
+<script src="/js/fancybox/jquery.fancybox-thumbs.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-50872849-1', 'raycast.net');
+  ga('send', 'pageview', {
+    "page": "/page2/index.html",
+    "title": 'Blog'
+  });
+</script>
+
+<script>
+	$(document).ready(function() {
+		$(".lightbox").fancybox();
+	});
+</script>
+
+	</body>
+</html>

@@ -1,0 +1,3 @@
+A collection of shaders and materials for high-quality wireframe rendering in Unity.
+Lines are rendered with the help of geometry shader, so at this moment the package supports only Windows systems running DX10-compatible
+video cards. Linux or MacOS are not an option because Unity does not (currently) support geometry shaders in OpenGL mode.
