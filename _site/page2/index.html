@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>Blog | Raycast</title>
+		<title>Home | Raycast</title>
 
 		<link href="/css/vendor/bootstrap.min.css" rel="stylesheet">
     	<link href="/css/flat-ui.min.css" rel="stylesheet">
@@ -26,7 +26,7 @@
 			<div class="navbar-text">Home page of one programmer</div>
 		</div>
 		<ul class="nav navbar-nav navbar-right">
-			<li ><a href="/">Blog</a></li>
+			<li ><a href="/">Articles</a></li>
 			<li ><a href="/portfolio/">Portfolio</a></li>
 			<li ><a href="/about/">About</a></li>
 		</ul>
@@ -36,50 +36,6 @@
 
 			<div class="content">
 				
-	<div class="article">
-		<div class="row">
-			<div class="col-xs-12">
-				<h2><a href="/2013/12/25/my-fav-astyle-cmd-args.html">My fav AStyle cmd args</a></h2>
-				<span class="small text-muted">25 Dec 2013</span>
-			</div>
-		</div>
-		<div class="article-content">
-			<p>Quick tip mostly for myself to not forget my favorite options of the magic AStyle tool, which makes someones’ ugly C++ code look more readable:</p>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">astyle --style<span class="o">=</span>allman --indent<span class="o">=</span>force-tab --align-pointer<span class="o">=</span>name --remove-brackets --pad-oper file.cpp</code></pre></div>
-
-			
-		</div>
-	</div>
-
-	<div class="article">
-		<div class="row">
-			<div class="col-xs-12">
-				<h2><a href="/2013/11/17/main-entry-point-in-windows-apps.html">Main entry point in Windows apps</a></h2>
-				<span class="small text-muted">17 Nov 2013</span>
-			</div>
-		</div>
-		<div class="article-content">
-			<p>Most of the time when you use external libraries to create window for your app (for example, graphics engines like OGRE),
-the app doesn’t actually need to have WinMain entry point. Moreover, if you’re going to port the app to other platforms, you’ll have to adapt
-the entry point to be main instead of WinMain. I think having the same main entry point on all platforms could be quite convenient.</p>
-
-<p>On the other hand, only console apps normally have main entry point on Windows. They also auto-create console window, which isn’t
-what we want in a GUI application. The following steps will help us to solve the problem (assuming that we use Visual Studio):</p>
-
-<ul>
-<li>Open project properties</li>
-<li>Change “Linker -&gt; System -&gt; SubSystem” option to WINDOWS</li>
-<li>Change “Linker -&gt; Advanced -&gt; Entry Point” option to mainCRTStartup</li>
-</ul>
-
-<p>The System option set to WINDOWS makes application run with no console window. The Entry Point option allows us to specify what
-entry point the compiler should expect to find in our code (main in this case).</p>
-
-			
-		</div>
-	</div>
-
 	<div class="article">
 		<div class="row">
 			<div class="col-xs-12">
@@ -109,32 +65,6 @@ when developing The Witness. Hopefully we’ll hear about it from developers in 
 
 			
 				<a href="/2013/09/29/custom-engine-in-the-witness-game.html">Read more...</a>
-			
-		</div>
-	</div>
-
-	<div class="article">
-		<div class="row">
-			<div class="col-xs-12">
-				<h2><a href="/2013/09/25/test-chambers-for-ld-27.html">Test Chambers for Ludum Dare 27</a></h2>
-				<span class="small text-muted">25 Sep 2013</span>
-			</div>
-		</div>
-		<div class="article-content">
-			<div class="row text-center"><img src="/data/ld.png" class="margined20"/></div>
-
-<p><a href="http://www.ludumdare.com/compo/2013/08/22/welcome-to-ludum-dare-27/">Ludum Dare #27</a> was held in August 23rd-26th, 2013. That was the first LD for me, so I was very excited and actually nervous,
-because I was not sure that I was able to do the task in two days. Things got worse when the theme was announced: 10 seconds. I had no idea what game to make.</p>
-
-<p>But I did it. I actually managed to make a complete game in two days, including graphics and music.
-Music was the most difficult part because I’ve almost never been doing it before (except two episodic cases that I don’t count).
-The bad news for me was that three weeks later (after the voting period ended) my game didn’t make it to the top 100.
-Luckily I didn’t expected that to happen, so I wasn’t very upset.</p>
-
-<p>As usual, I used Unity + GIMP + Inkscape, and FL Studio for music.</p>
-
-<p><a href="http://www.ludumdare.com/compo/ludum-dare-27/?action=preview&amp;uid=20100">Link to my entry.</a></p>
-
 			
 		</div>
 	</div>
@@ -311,23 +241,46 @@ when new entries appear.</p>
 	<div class="article">
 		<div class="row">
 			<div class="col-xs-12">
-				<h2><a href="/2013/02/05/invalid-binary.html">Possible reason of “Invalid binary” ITunes Connect error (with Unity3D app)</a></h2>
-				<span class="small text-muted">05 Feb 2013</span>
+				<h2><a href="/2012/11/28/unity3d-spectator-camera.html">Unity3d tip&#58; spectator and FPS camera without overturning</a></h2>
+				<span class="small text-muted">28 Nov 2012</span>
 			</div>
 		</div>
 		<div class="article-content">
-			<p>That was a nightmare for me recently to figure out why I get this error when submitting my app to the ITunes. The text I got by email was the following:</p>
+			<p>It’s pretty simple to code a camera to move in a spectator-like (and FPS) fashion. The
+only trick you should do to make this movement production-ready is to restrict camera movement around the horizontal axis.</p>
 
-<blockquote>
-<p>Invalid Signature – the main app bundle Uncopy at path Uncopy.app is signed but the signature is invalid. The following error(s) were reported from codesign:
-a sealed resource is missing or invalid
-In architecture: i386</p>
-</blockquote>
+<p>Basically, spectator camera rotates either &quot;left-right&quot; (around global vertical Z axis), or &quot;up-down&quot;
+(around its local X axis). This local X axis is always horizontal, i.e. lies in XZ global plane. When a camera
+rotates around this axis, the player looks up or down. This leads to a camera overturning problem when he tries to look
+upper and upper, or lower and lower. All games you’ve seen so far restrict this movement, so that the camera can only look
+vertically up or vertically down in the &quot;worst case&quot;.</p>
 
-<p>Thanks to <a href="http://stackoverflow.com/questions/13814506/mac-store-invalid-binary-on-itunesconnect-the-signature-is-invalid">this question</a> (see the second and third comments), the reason was a file named <code>._unity default resources</code> that Unity put into the <code>&lt;App bundle&gt;.app/Resources</code> folder.
-The solution for me was simple, I just deleted that file, re-signed the app and re-submitted, with no errors. I have no clue what’s that file for,
-but my app launches well without it. Big thanks to the guy who posted that question and answer.</p>
 
+			
+				<a href="/2012/11/28/unity3d-spectator-camera.html">Read more...</a>
+			
+		</div>
+	</div>
+
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2011/08/22/observer.html">Observer pattern via templates in C++</a></h2>
+				<span class="small text-muted">22 Aug 2011</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<p>Observer pattern is very useful when you need one object to notify a number of other objects on its state changes.
+I had a plenty of times when I needed to implement this pattern in my projects, mostly related to real-time graphics.
+One of the problems I faced when following the pattern was that I had to write a separate interface for every type of
+event that was going to be supported (of course this drawback can be partially avoided by using various tricks like inheritance,
+flags, type casting, and so on). Here I present a template-based method used to implement the pattern. I thought templates
+can help me shorten my code size and eliminate some routine work. I don’t know if it is already known, however I’ve never
+seen it used in any library I worked with. I also don’t guarantee that it is perfect – probably, it’s only of academic interest.</p>
+
+
+			
+				<a href="/2011/08/22/observer.html">Read more...</a>
 			
 		</div>
 	</div>
@@ -342,28 +295,20 @@ but my app launches well without it. Big thanks to the guy who posted that quest
 			
 	    
 
-	    <ul>
+	    <!-- <ul>
 	        
 				<li><a href="/">1</a></li>
 	        
-			
+
 	        
 				
 					<li class="active"><span >2</span></li>
 				
 	        
-				
-					<li><a href="/page3">3</a></li>
-				
-	        
-				
-					<li><a href="/page4">4</a></li>
-				
-	        
-	    </ul>
+	    </ul> -->
 
 	    
-			<a class="btn btn-inverse next" href="/page3">Older<i class="fui-arrow-right"></i></a>
+			<a class="btn btn-inverse next disabled">Older<i class="fui-arrow-right"></i></a>
         
 	</div>
   </div>
@@ -395,7 +340,7 @@ but my app launches well without it. Big thanks to the guy who posted that quest
   ga('create', 'UA-50872849-1', 'raycast.net');
   ga('send', 'pageview', {
     "page": "/page2/index.html",
-    "title": 'Blog'
+    "title": 'Home'
   });
 </script>
 

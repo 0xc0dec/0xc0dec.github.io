@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>Blog | Raycast</title>
+		<title>Home | Raycast</title>
 
 		<link href="/css/vendor/bootstrap.min.css" rel="stylesheet">
     	<link href="/css/flat-ui.min.css" rel="stylesheet">
@@ -26,7 +26,7 @@
 			<div class="navbar-text">Home page of one programmer</div>
 		</div>
 		<ul class="nav navbar-nav navbar-right">
-			<li ><a href="/">Blog</a></li>
+			<li ><a href="/">Articles</a></li>
 			<li ><a href="/portfolio/">Portfolio</a></li>
 			<li ><a href="/about/">About</a></li>
 		</ul>
@@ -162,24 +162,6 @@ another try and see what happens this time. I had no ideas better than the one a
 	<div class="article">
 		<div class="row">
 			<div class="col-xs-12">
-				<h2><a href="/2015/01/01/happy-2015.html">Happy New Year!</a></h2>
-				<span class="small text-muted">01 Jan 2015</span>
-			</div>
-		</div>
-		<div class="article-content">
-			<div class="row">
-    <div class="col-xs-4 col-xs-offset-4" style="font-size: 35pt; text-align: center">2015</div>
-    <div class="col-xs-6 col-xs-offset-3" style="text-align: center">= 1024 + 512 + 256 + 128 + 64 + :) + 16 + 8 + 4 + 2 + 1</div>
-    <div class="col-xs-2 col-xs-offset-5" style="text-align: center">= 11111011111</div>
-</div>
-
-			
-		</div>
-	</div>
-
-	<div class="article">
-		<div class="row">
-			<div class="col-xs-12">
 				<h2><a href="/2014/10/19/clion-multiple-binaries.html">Building multiple linked binaries in CLion on Mac OS X</a></h2>
 				<span class="small text-muted">19 Oct 2014</span>
 			</div>
@@ -273,6 +255,34 @@ because most of the files differ only by extension.</p>
 		</div>
 	</div>
 
+	<div class="article">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2><a href="/2013/11/17/main-entry-point-in-windows-apps.html">Main entry point in Windows apps</a></h2>
+				<span class="small text-muted">17 Nov 2013</span>
+			</div>
+		</div>
+		<div class="article-content">
+			<p>Most of the time when you use external libraries to create window for your app (for example, graphics engines like OGRE),
+the app doesn’t actually need to have WinMain entry point. Moreover, if you’re going to port the app to other platforms, you’ll have to adapt
+the entry point to be main instead of WinMain. I think having the same main entry point on all platforms could be quite convenient.</p>
+
+<p>On the other hand, only console apps normally have main entry point on Windows. They also auto-create console window, which isn’t
+what we want in a GUI application. The following steps will help us to solve the problem (assuming that we use Visual Studio):</p>
+
+<ul>
+<li>Open project properties</li>
+<li>Change “Linker -&gt; System -&gt; SubSystem” option to WINDOWS</li>
+<li>Change “Linker -&gt; Advanced -&gt; Entry Point” option to mainCRTStartup</li>
+</ul>
+
+<p>The System option set to WINDOWS makes application run with no console window. The Entry Point option allows us to specify what
+entry point the compiler should expect to find in our code (main in this case).</p>
+
+			
+		</div>
+	</div>
+
 
 <div class="row">
   <div class="col-xs-12">
@@ -281,25 +291,17 @@ because most of the files differ only by extension.</p>
 			<a class="btn btn-inverse previous" disabled href="/"><i class="fui-arrow-left"></i>Newer</a></li>
 	    
 
-	    <ul>
+	    <!-- <ul>
 	        
 				<li class="active"><span>1</span></li>
 	        
-			
+
 	        
 				
 					<li><a href="/page2">2</a></li>
 				
 	        
-				
-					<li><a href="/page3">3</a></li>
-				
-	        
-				
-					<li><a href="/page4">4</a></li>
-				
-	        
-	    </ul>
+	    </ul> -->
 
 	    
 			<a class="btn btn-inverse next" href="/page2">Older<i class="fui-arrow-right"></i></a>
@@ -334,7 +336,7 @@ because most of the files differ only by extension.</p>
   ga('create', 'UA-50872849-1', 'raycast.net');
   ga('send', 'pageview', {
     "page": "/index.html",
-    "title": 'Blog'
+    "title": 'Home'
   });
 </script>
 

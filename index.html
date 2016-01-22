@@ -1,7 +1,7 @@
 ---
 layout: default
-title: Blog
-name: blog
+title: Home
+name: home
 ---
 
 {% for post in paginator.posts %}
@@ -34,13 +34,13 @@ name: blog
 			<a class="btn btn-inverse previous" disabled href="/"><i class="fui-arrow-left"></i>Newer</a></li>
 	    {% endif %}
 
-	    <ul>
+	    <!-- <ul>
 	        {% if paginator.page == 1 %}
 				<li class="active"><span>1</span></li>
 	        {% else %}
 				<li><a href="/">1</a></li>
 	        {% endif %}
-			
+
 	        {% for count in (2..paginator.total_pages) %}
 				{% if count == paginator.page %}
 					<li class="active"><span >{{ count }}</span></li>
@@ -48,7 +48,7 @@ name: blog
 					<li><a href="/page{{ count }}">{{ count }}</a></li>
 				{% endif %}
 	        {% endfor %}
-	    </ul>
+	    </ul> -->
 
 	    {% if paginator.next_page %}
 			<a class="btn btn-inverse next" href="/page{{ paginator.next_page }}">Older<i class="fui-arrow-right"></i></a>
