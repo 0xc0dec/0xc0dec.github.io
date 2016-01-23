@@ -13,7 +13,7 @@ enable_comments: true
 			{% include descriptions/wireframe %}
 		</p>
 		<p>
-			<a href="https://www.assetstore.unity3d.com/#/content/11638">Asset Store link</a>.
+			<a href="https://www.assetstore.unity3d.com/#/content/11638">Get from Unity Asset Store</a>.
 		</p>
 	</div>
 </div>
