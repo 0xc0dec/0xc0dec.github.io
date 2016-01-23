@@ -15,12 +15,12 @@ enable_comments: true
 		<p>
 			<b>Note:</b> intended to be used with Unity3d versions prior 4.0. Unity v.4.0 has native support for hardware cursor.
 		</p>
-		<p><a target="_blank" href="http://u3d.as/3eH">Asset Store link</a>
+		<p><a target="_blank" href="http://u3d.as/3eH">Get from Unity Asset Store</a>.
 	</div>
 </div>
 
 ### Installation
-Copy HardwareCursor.dll into your project Assets folder.
+Copy `HardwareCursor.dll` into your project Assets folder.
 
 ### Usage
 Create cursor, initialize it from file and set as active:
