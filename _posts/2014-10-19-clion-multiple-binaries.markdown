@@ -5,7 +5,7 @@ date:   2014-10-19 00:00:00
 permalink: clion-multiple-binaries
 ---
 
-<div class="row text-center"><img src="/data/clion_logo.png" class="margined20"/></div>
+<div class="row text-center"><img src="/images/clion_logo.png" class="margined20"/></div>
 
 <a href="https://www.jetbrains.com/clion/">CLion</a> is a new C/C++ IDE from JetBrains, the creators of ReSharper, IntelliJ IDEA and many other great products for software developers. CLion is claimed to support a full-featured refactoring workflow for C++, similar to how it is already implemented in other JetBrains products. At this moment the IDE is available in early access mode, which means that we can download and use it freely, keeping in mind that the product is not stable yet, so bugs are possible.
 
@@ -17,7 +17,7 @@ CLion uses CMake to describe and manage its projects (at least yet). If you're n
 
 For example, we want to build a static library named *solo* and a test project *Test1* that links against it. My project structure looks like this:
 
-<div class="row text-center"><img src="/data/solo_project.png" class="margined20"/></div>
+<div class="row text-center"><img src="/images/solo_project.png" class="margined20"/></div>
 
 The *src* folder contains the library source files and the *include* folder contains the interface headers. The *Test1* project resides inside the *tests/test1* folder. I'm using a single CMakeLists.txt for everything for the sake of simplicity. As the project grows bigger, you might consider splitting it into several CMakeLists' to make it modular and easier to manage.
 

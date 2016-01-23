@@ -27,7 +27,7 @@ of movements. My previous game [Uncopy](/uncopy/) was a puzzle, so now I feel I 
 activity to play :) Note here that I don’t plan this game to have many levels. It’s going to be hardcore, forcing player
 to approach each level many-many times until he completes it.
 
-<div class="row text-center"><img src="/data/nether_gameplay.png" class="margined20"/></div>
+<div class="row text-center"><img src="/images/nether_gameplay.png" class="margined20"/></div>
 
 When making art for my games, I pursue one important purpose: they must look stylish. This is not only cool, but also
 has some pragmatic reason to it. If you’re a programmer making game, you basically have two realistic ways to make the
@@ -35,7 +35,7 @@ game attractive. You either hire an artist or make all graphics yourself, but ma
 have some background in 3D modelling and vector drawing, I don’t have much experience in other aspects of artistic work
 (for example, making textures), so I choose the second way, because hiring an artist would be pretty expensive for me.
 
-<div class="row text-center"><img src="/data/nether_menu.png" class="margined20"/></div>
+<div class="row text-center"><img src="/images/nether_menu.png" class="margined20"/></div>
 
 Currently **Nether** has about three levels, and I think ten would be enough for the first release. There are no menus yet,
 except the very raw draft of the main menu. I’m concentrating on making levels and switch to other activity only when

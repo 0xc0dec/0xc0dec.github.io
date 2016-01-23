@@ -5,7 +5,7 @@ date:   2014-03-29 00:00:00
 permalink: far-quick-search
 ---
 
-<img src="/data/far.png" class="img-thumbnail pull-left margined20">
+<img src="/images/far.png" class="img-thumbnail pull-left margined20">
 
 A few testimonials first. FAR Manager was the kind of software which I used a lot on a daily basis.
 Really, it’s fast, has a rich feature set and looks cool (console-styled interface is quite competitive with those native Windows GUI’s that other managers have).

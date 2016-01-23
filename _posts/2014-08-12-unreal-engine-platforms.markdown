@@ -5,7 +5,7 @@ date:   2014-08-12 00:00:00
 permalink: unreal-platforms
 ---
 
-<div class="row text-center"><img src="/data/ue_logo.png" class="margined20"/></div>
+<div class="row text-center"><img src="/images/ue_logo.png" class="margined20"/></div>
 
 When Epic Games introduced their new type of license for the Unreal Engine 4 (the so-called EaaS, i.e. "engine as a service"), it was only a matter of time for me to start testing and using the engine.
 To be honest, I had certain difficulties understanding some basic concepts of various things that make up the engine editor. Most importantly, the blueprints. It is indeed a very powerful system, and judging by
@@ -26,8 +26,8 @@ the player steps on a button on the floor). That is, not automatically - not wha
 My solution requires basic understanding of concepts such as matinee and level blueprint, so if these words are new to you, I recommend reading the [official wiki](https://wiki.unrealengine.com/Main_Page)
 on these topics. Here is how the solution looks in the level blueprint editor:
 
-<a class="thumbnail lightbox" rel="gallery" href="/data/platform_blueprint.png" target="_blank">
-	<img src="/data/platform_blueprint.png" class="margined20"/>
+<a class="thumbnail lightbox" rel="gallery" href="/images/platform_blueprint.png" target="_blank">
+	<img src="/images/platform_blueprint.png" class="margined20"/>
 </a>
 
 These nodes have to be placed in the level blueprint. I wanted to maked them a separate component (a reusable blueprint), but failed to figure out how to do that. So, for every platform you have in the scene,

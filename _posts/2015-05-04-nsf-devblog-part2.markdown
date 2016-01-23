@@ -5,7 +5,7 @@ date:   2015-05-04 20:00:00
 permalink: nsf-devblog2
 ---
 
-<div class="row text-center"><img src="/data/notsoflat/player2.png" class="margined20"/></div>
+<div class="row text-center"><img src="/images/nsf/player2.png" class="margined20"/></div>
 
 <a href="/nsf-devblog">Part 1</a>
 
@@ -27,7 +27,7 @@ For example, to calculate distance to the nearest obstacle below the character I
 Having three distances calculated, the final distance in this case would be the minimum of the three.
 Three rays represent the character geometric dimensions and allow it, for example, to stand on a platform by touching it with a small area of the bottom edge:
 
-<div class="row text-center"><img src="/data/notsoflat/screenshot1.png" class="margined20"/></div>
+<div class="row text-center"><img src="/images/nsf/screenshot1.png" class="margined20"/></div>
 
 The three-ray approach, however, has its flaws.
 For example, if I made a platform that has a width of, say, 1/4 of the character width, the character would fall through it once the platform is placed right between the casted rays.
@@ -39,7 +39,7 @@ If the resulting distance is less than the character half-width then the charact
 This whole procedure is quite complex and has many nuances, so I won't go into further details here. An in-depth description probably deserves a separate blog post. Just to give you an idea of how many
 rays are involved:
 
-<div class="row text-center"><img src="/data/notsoflat/screenshot2.png" class="margined20"/></div>
+<div class="row text-center"><img src="/images/nsf/screenshot2.png" class="margined20"/></div>
 
 ### Running and jumping
 

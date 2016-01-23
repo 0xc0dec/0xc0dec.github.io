@@ -5,7 +5,7 @@ date:   2014-09-07 00:00:00
 permalink: unity3d-pick-and-drag
 ---
 
-<div class="row text-center"><img src="/data/companion_cube.png" class="margined20"/></div>
+<div class="row text-center"><img src="/images/companion_cube.png" class="margined20"/></div>
 
 Picking and dragging objects around is something that you can see quite often in various games with the first-person camera view.
 This features adds a lot to the level of interactivity with the game environment, so developers build their game mechanics around

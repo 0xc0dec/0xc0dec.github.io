@@ -12,8 +12,7 @@
 		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox.css" media="screen"/>
 		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-buttons.css" media="screen" />
 		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-thumbs.css" media="screen" />
-		<link rel="shortcut icon" type="image/png" href="/data/gamepad.png">
-
+		<link rel="shortcut icon" type="image/png" href="/images/gamepad.png">
 	</head>
 	<body>
 		<div class="container page">
@@ -21,7 +20,7 @@
 	<div class="container-fluid">
 		<div class="navbar-header">
 			<a class="navbar-brand" href="/">
-				<img src="/data/gamepad_large.png"/>
+				<img src="/images/gamepad_large.png"/>
 			</a>
 			<div class="navbar-text">Home page of one programmer</div>
 		</div>
@@ -46,7 +45,7 @@
 	</div>
 	
 	<div class="article-content">
-		<div class="row text-center"><img src="/data/notsoflat/player2.png" class="margined20"/></div>
+		<div class="row text-center"><img src="/images/nsf/player2.png" class="margined20"/></div>
 
 <p><a href="/nsf-devblog">Part 1</a></p>
 
@@ -68,7 +67,7 @@ For example, to calculate distance to the nearest obstacle below the character I
 Having three distances calculated, the final distance in this case would be the minimum of the three.
 Three rays represent the character geometric dimensions and allow it, for example, to stand on a platform by touching it with a small area of the bottom edge:</p>
 
-<div class="row text-center"><img src="/data/notsoflat/screenshot1.png" class="margined20"/></div>
+<div class="row text-center"><img src="/images/nsf/screenshot1.png" class="margined20"/></div>
 
 <p>The three-ray approach, however, has its flaws.
 For example, if I made a platform that has a width of, say, 1/4 of the character width, the character would fall through it once the platform is placed right between the casted rays.
@@ -80,7 +79,7 @@ If the resulting distance is less than the character half-width then the charact
 This whole procedure is quite complex and has many nuances, so I won&#39;t go into further details here. An in-depth description probably deserves a separate blog post. Just to give you an idea of how many
 rays are involved:</p>
 
-<div class="row text-center"><img src="/data/notsoflat/screenshot2.png" class="margined20"/></div>
+<div class="row text-center"><img src="/images/nsf/screenshot2.png" class="margined20"/></div>
 
 <h3>Running and jumping</h3>
 
