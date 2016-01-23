@@ -2,6 +2,7 @@
 layout: page
 title:  Unity3d tip&#58; tasks concept
 date:   2013-08-10 00:00:00
+permalink: unity3d-tasks
 ---
 
 You are coding a game with Unity3D. What do you normally do when you need to perform some non-instant, continuous action, which will last for a certain

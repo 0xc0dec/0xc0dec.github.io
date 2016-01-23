@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Unity3d tip&#58; spectator and FPS camera without overturning | Raycast</title>
+
+		<link href="/css/vendor/bootstrap.min.css" rel="stylesheet">
+    	<link href="/css/flat-ui.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="/css/style.css"/>
+		<link rel="stylesheet" href="/css/syntax.css" media="screen"/>
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox.css" media="screen"/>
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-buttons.css" media="screen" />
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-thumbs.css" media="screen" />
+		<link rel="shortcut icon" type="image/png" href="/data/gamepad.png">
+
+	</head>
+	<body>
+		<div class="container page">
+			<div class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/">
+				<img src="/data/gamepad_large.png"/>
+			</a>
+			<div class="navbar-text">Home page of one programmer</div>
+		</div>
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="/">Articles</a></li>
+			<li><a href="/portfolio/">Portfolio</a></li>
+			<li><a href="/about/">About</a></li>
+		</ul>
+	</div>
+</div>
+
+
+			<div class="content">
+				<div class="article">
+	<div class="row">
+		<div class="col-xs-12">
+			<h2>Unity3d tip&#58; spectator and FPS camera without overturning</h2>
+			
+				<span class="small text-muted">28 Nov 2012</span>
+			
+		</div>
+	</div>
+	
+	<div class="article-content">
+		<p>It’s pretty simple to code a camera to move in a spectator-like (and FPS) fashion. The
+only trick you should do to make this movement production-ready is to restrict camera movement around the horizontal axis.</p>
+
+<p>Basically, spectator camera rotates either &quot;left-right&quot; (around global vertical Z axis), or &quot;up-down&quot;
+(around its local X axis). This local X axis is always horizontal, i.e. lies in XZ global plane. When a camera
+rotates around this axis, the player looks up or down. This leads to a camera overturning problem when he tries to look
+upper and upper, or lower and lower. All games you’ve seen so far restrict this movement, so that the camera can only look
+vertically up or vertically down in the &quot;worst case&quot;.</p>
+
+<!--break-->
+
+<p>Below is the code I use in my projects for a spectator and FPS cameras. It’s not ideal, because it restricts vertical
+rotation approximately, so that the camera stops rotating when it almost reached the vertical axis. Approximation amount is adjustable. Anyway, it does the job</p>
+
+<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="nn">UnityEngine</span><span class="p">;</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">FreeLook</span> <span class="p">:</span> <span class="n">MonoBehaviour</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="kt">float</span> <span class="n">rotationSpeed</span> <span class="p">=</span> <span class="m">0.05f</span><span class="p">;</span>
+    <span class="k">public</span> <span class="kt">float</span> <span class="n">normalSpeed</span> <span class="p">=</span> <span class="m">10</span><span class="p">;</span>
+    <span class="k">public</span> <span class="kt">float</span> <span class="n">highSpeed</span> <span class="p">=</span> <span class="m">20</span><span class="p">;</span>
+
+    <span class="k">private</span> <span class="kt">bool</span> <span class="n">_ownCursor</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+
+    <span class="k">private</span> <span class="k">void</span> <span class="nf">Start</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(!</span><span class="n">Screen</span><span class="p">.</span><span class="n">lockCursor</span> <span class="p">&amp;&amp;</span> <span class="n">Screen</span><span class="p">.</span><span class="n">showCursor</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">Screen</span><span class="p">.</span><span class="n">lockCursor</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+            <span class="n">Screen</span><span class="p">.</span><span class="n">showCursor</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+            <span class="n">_ownCursor</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">void</span> <span class="nf">OnDisable</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">_ownCursor</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">Screen</span><span class="p">.</span><span class="n">lockCursor</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+            <span class="n">Screen</span><span class="p">.</span><span class="n">showCursor</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">void</span> <span class="nf">Update</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">Vector3</span> <span class="n">dp</span> <span class="p">=</span> <span class="n">Vector3</span><span class="p">.</span><span class="n">zero</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">Input</span><span class="p">.</span><span class="n">GetKey</span><span class="p">(</span><span class="n">KeyCode</span><span class="p">.</span><span class="n">W</span><span class="p">))</span> <span class="n">dp</span><span class="p">.</span><span class="n">z</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">Input</span><span class="p">.</span><span class="n">GetKey</span><span class="p">(</span><span class="n">KeyCode</span><span class="p">.</span><span class="n">S</span><span class="p">))</span> <span class="n">dp</span><span class="p">.</span><span class="n">z</span> <span class="p">=</span> <span class="p">-</span><span class="m">1</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">Input</span><span class="p">.</span><span class="n">GetKey</span><span class="p">(</span><span class="n">KeyCode</span><span class="p">.</span><span class="n">A</span><span class="p">))</span> <span class="n">dp</span><span class="p">.</span><span class="n">x</span> <span class="p">=</span> <span class="p">-</span><span class="m">1</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">Input</span><span class="p">.</span><span class="n">GetKey</span><span class="p">(</span><span class="n">KeyCode</span><span class="p">.</span><span class="n">D</span><span class="p">))</span> <span class="n">dp</span><span class="p">.</span><span class="n">x</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">Input</span><span class="p">.</span><span class="n">GetKey</span><span class="p">(</span><span class="n">KeyCode</span><span class="p">.</span><span class="n">Q</span><span class="p">))</span> <span class="n">dp</span><span class="p">.</span><span class="n">y</span> <span class="p">=</span> <span class="p">-</span><span class="m">1</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">Input</span><span class="p">.</span><span class="n">GetKey</span><span class="p">(</span><span class="n">KeyCode</span><span class="p">.</span><span class="n">E</span><span class="p">))</span> <span class="n">dp</span><span class="p">.</span><span class="n">y</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+
+        <span class="kt">var</span> <span class="n">speed</span> <span class="p">=</span> <span class="n">normalSpeed</span> <span class="p">*</span> <span class="p">(</span><span class="n">Input</span><span class="p">.</span><span class="n">GetKey</span><span class="p">(</span><span class="n">KeyCode</span><span class="p">.</span><span class="n">LeftShift</span><span class="p">)</span> <span class="p">?</span> <span class="m">5</span> <span class="p">:</span> <span class="m">1</span><span class="p">);</span>
+
+        <span class="n">dp</span><span class="p">.</span><span class="n">Normalize</span><span class="p">();</span>
+        <span class="n">dp</span> <span class="p">*=</span> <span class="n">speed</span> <span class="p">*</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span><span class="p">;</span>
+        <span class="n">camera</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">Translate</span><span class="p">(</span><span class="n">dp</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">dp</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">dp</span><span class="p">.</span><span class="n">z</span><span class="p">,</span> <span class="n">Space</span><span class="p">.</span><span class="n">Self</span><span class="p">);</span>
+
+        <span class="kt">float</span> <span class="n">rotY</span> <span class="p">=</span> <span class="n">rotationSpeed</span> <span class="p">*</span> <span class="n">Input</span><span class="p">.</span><span class="n">GetAxis</span><span class="p">(</span><span class="s">&quot;Mouse X&quot;</span><span class="p">);</span>
+        <span class="kt">float</span> <span class="n">rotX</span> <span class="p">=</span> <span class="p">-</span><span class="n">rotationSpeed</span> <span class="p">*</span> <span class="n">Input</span><span class="p">.</span><span class="n">GetAxis</span><span class="p">(</span><span class="s">&quot;Mouse Y&quot;</span><span class="p">);</span>
+
+        <span class="kt">float</span> <span class="n">toTop</span> <span class="p">=</span> <span class="n">Vector3</span><span class="p">.</span><span class="n">Angle</span><span class="p">(</span><span class="n">camera</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">forward</span><span class="p">,</span> <span class="n">Vector3</span><span class="p">.</span><span class="n">up</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">rotX</span> <span class="p">&lt;</span> <span class="m">0</span><span class="p">)</span>
+            <span class="n">rotX</span> <span class="p">=</span> <span class="p">-</span><span class="n">Mathf</span><span class="p">.</span><span class="n">Min</span><span class="p">(</span><span class="n">Mathf</span><span class="p">.</span><span class="n">Abs</span><span class="p">(</span><span class="n">rotX</span><span class="p">),</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Max</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="n">toTop</span> <span class="p">-</span> <span class="m">20</span><span class="p">));</span>
+        <span class="k">else</span>
+            <span class="n">rotX</span> <span class="p">=</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Min</span><span class="p">(</span><span class="n">Mathf</span><span class="p">.</span><span class="n">Abs</span><span class="p">(</span><span class="n">rotX</span><span class="p">),</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Max</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">160</span> <span class="p">-</span> <span class="n">toTop</span><span class="p">));</span>
+
+        <span class="n">camera</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">RotateAround</span><span class="p">(</span><span class="n">Vector3</span><span class="p">.</span><span class="n">up</span><span class="p">,</span> <span class="n">rotY</span><span class="p">);</span>
+        <span class="n">camera</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">RotateAround</span><span class="p">(</span><span class="n">camera</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">rotX</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+	</div>
+</div>
+
+			<div>
+
+			
+	<div id="disqus_thread">
+	</div>
+	<script type="text/javascript">
+		var disqus_shortname = 'raycastnet'; // required: replace example with your forum shortname
+		(function() {
+			var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+			dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		})();
+	</script>
+	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+		</div>
+
+		<div class="footer">
+	<p class="text-muted">© 2014-2016 Aleksey Fedotov</p>
+</div>
+
+<script src="/js/vendor/jquery.min.js"></script>
+<script src="/js/vendor/video.js"></script>
+<script src="/js/flat-ui.min.js"></script>
+<script src="/js/fancybox/jquery.fancybox.pack.js"></script>
+<script src="/js/fancybox/jquery.fancybox-buttons.js"></script>
+<script src="/js/fancybox/jquery.fancybox-media.js"></script>
+<script src="/js/fancybox/jquery.fancybox-thumbs.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-50872849-1', 'raycast.net');
+  ga('send', 'pageview', {
+    "page": "/unity3d-spectator-camera",
+    "title": 'Unity3d tip&#58; spectator and FPS camera without overturning'
+  });
+</script>
+
+<script>
+	$(document).ready(function() {
+		$(".lightbox").fancybox();
+	});
+</script>
+
+	</body>
+</html>

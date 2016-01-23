@@ -2,6 +2,7 @@
 layout: page
 title:  Unity3d tip&#58; spectator and FPS camera without overturning
 date:   2012-11-28 00:00:00
+permalink: unity3d-spectator-camera
 ---
 
 It’s pretty simple to code a camera to move in a spectator-like (and FPS) fashion. The
@@ -20,7 +21,7 @@ rotation approximately, so that the camera stops rotating when it almost reached
 {% highlight csharp %}
 using UnityEngine;
 
-public class FreeLook : MonoBehaviour 
+public class FreeLook : MonoBehaviour
 {
     public float rotationSpeed = 0.05f;
     public float normalSpeed = 10;

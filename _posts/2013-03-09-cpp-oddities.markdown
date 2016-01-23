@@ -2,15 +2,7 @@
 layout: page
 title:  Something you probably didn’t know about C/C++
 date:   2013-03-09 00:00:00
-redirect_from:
-  - /2013/03/09/cpp-oddities1
-  - /2013/03/09/cpp-oddities1.html
-  - /2013/07/20/cpp-oddities2
-  - /2013/07/20/cpp-oddities2.html
-  - /2013/07/26/cpp-oddities3
-  - /2013/07/26/cpp-oddities3.html
-  - /2013/10/28/cpp-oddities4
-  - /2013/10/28/cpp-oddities4.html
+permalink: odd-cpp
 ---
 
 I love to collect mind-blowing and not too widely known C/C++ language constructions and facts. This post carries my collection and will be updated
@@ -121,10 +113,10 @@ return ((int []){1,2,3,4})[1];
 C-only
 {% highlight cpp %}
 // Initializer with designators hell
-struct { 
-   int x; 
-   struct { 
-       int y, z; 
+struct {
+   int x;
+   struct {
+       int y, z;
    } nested;
 } i = { .nested.y = 5, 6, .x = 1, 2 };  
 // i.nested.y == 2, i.nested.z == 6
@@ -189,7 +181,7 @@ struct node
   struct node *next;
 };
 // ...
-struct node n = 
+struct node n =
 {
   .value = "Hello, world!",
   .next = (&(struct node) { .value = "Next node" }) // wow!

@@ -2,6 +2,7 @@
 layout: page
 title:  Observer pattern via templates in C++
 date:   2011-08-22 00:00:00
+permalink: cpp-observer
 ---
 
 Observer pattern is very useful when you need one object to notify a number of other objects on its state changes.

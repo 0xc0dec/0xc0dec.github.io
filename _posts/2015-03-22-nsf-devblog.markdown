@@ -2,11 +2,12 @@
 layout: page
 title:  Not So Flat devblog
 date:   2015-03-22 13:00:00
+permalink: nsf-devblog
 ---
 
 <div class="row text-center"><img src="/data/notsoflat/player.png" class="margined20"/></div>
 
-<a href="/2015/05/04/nsf-devblog-part2.html">Part 2</a>
+<a href="/nsf-devblog2">Part 2</a>
 
 Not So Flat is the name of the new game that I'm currently working on. When I first started the development (late December 2014),
 it's been already more than half a year since my previous game <a href="/cubicroll/">Cubic Roll</a> came out. At that time I was struggling to come up with
@@ -35,7 +36,7 @@ the character might find itself in the next level. I believe that this topic des
 <div class="row text-center"><img src="/data/notsoflat/2.gif" class="margined20"/></div>
 
 The second great deal of work was (and still is) required by the very levels. There are four currently and the rate at which I make them impresses me with its slowness.
-Each new level not only introduces a bunch of new bugs that are difficult to reproduce, but also makes it harder to actually design the level itself. 
+Each new level not only introduces a bunch of new bugs that are difficult to reproduce, but also makes it harder to actually design the level itself.
 Since the game mechanics permits it, I try to make multiple uses of some elements in a level. For example, if there is an immovable block acting like a platform,
 I might want to plan the character path to follow through this block several times. At first time the character might encounter this platform while moving from left to right, jumping onto
 one of the sides of the platform. As the path continues, the character might come across this block again while moving in the orthogonal direction, and this time the active side of the block would be different.

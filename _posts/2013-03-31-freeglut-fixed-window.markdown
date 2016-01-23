@@ -2,6 +2,7 @@
 layout: page
 title:  FreeGlut fixed window
 date:   2013-03-31 00:00:00
+permalink: freeglut-fixed-window
 ---
 
 It seems like FreeGLUT has no support for fixed-size windows at the moment

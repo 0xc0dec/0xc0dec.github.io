@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Unity3d tip&#58; implementing pick-and-drag mechanics in a first-person game | Raycast</title>
+
+		<link href="/css/vendor/bootstrap.min.css" rel="stylesheet">
+    	<link href="/css/flat-ui.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="/css/style.css"/>
+		<link rel="stylesheet" href="/css/syntax.css" media="screen"/>
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox.css" media="screen"/>
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-buttons.css" media="screen" />
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-thumbs.css" media="screen" />
+		<link rel="shortcut icon" type="image/png" href="/data/gamepad.png">
+
+	</head>
+	<body>
+		<div class="container page">
+			<div class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/">
+				<img src="/data/gamepad_large.png"/>
+			</a>
+			<div class="navbar-text">Home page of one programmer</div>
+		</div>
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="/">Articles</a></li>
+			<li><a href="/portfolio/">Portfolio</a></li>
+			<li><a href="/about/">About</a></li>
+		</ul>
+	</div>
+</div>
+
+
+			<div class="content">
+				<div class="article">
+	<div class="row">
+		<div class="col-xs-12">
+			<h2>Unity3d tip&#58; implementing pick-and-drag mechanics in a first-person game</h2>
+			
+				<span class="small text-muted">07 Sep 2014</span>
+			
+		</div>
+	</div>
+	
+	<div class="article-content">
+		<div class="row text-center"><img src="/data/companion_cube.png" class="margined20"/></div>
+
+<p>Picking and dragging objects around is something that you can see quite often in various games with the first-person camera view.
+This features adds a lot to the level of interactivity with the game environment, so developers build their game mechanics around
+this feature for a good reason.</p>
+
+<p>So, how to implement this inside Unity? I&#39;ve seen some implementations ranging from the very simple to the more advanced ones. In this post
+I&#39;ll try to explain what I don&#39;t like about some of them and propose my own solution with an interesting hack behind it.</p>
+
+<!--break-->
+
+<p>Lets assume that we have a camera object in the scene. It doesn&#39;t matter how the camera is controlled, in my case it is attached to the player object.
+Let&#39;s say we want, while looking through this camera, to pick objects, hold them in front of the camera, carry them around while the camera is moving,
+then put them to the ground or throw away. Assume picked objects to be rigid bodies. Here and throughout the rest of this article I will refer to the point to which
+objects are attached to while moving as the pivot point.</p>
+
+<p><strong>Solution 1</strong>: calculate pivot point offset each frame and move the picked object by that offset.</p>
+
+<p>Pros:</p>
+
+<ul>
+<li>Easy to implement.</li>
+</ul>
+
+<p>Cons:</p>
+
+<ul>
+<li>Direct manipulation with the rigid body position may lead to the physics simulation instability and artifacts. It&#39;s always a good rule to move (non-kinematic) rigid bodies by applying forces.</li>
+</ul>
+
+<p><strong>Solution 2</strong>: make object be a child of the camera.</p>
+
+<p>Pros:</p>
+
+<ul>
+<li>Easy to implement.</li>
+</ul>
+
+<p>Cons:</p>
+
+<ul>
+<li>Same as for solution 1. (Non-kinematic) Rigid bodies should only be controlled by forces and not by direct position manipulations, which is what parent-child relationship actually does.</li>
+</ul>
+
+<p><strong>Solution 3</strong>: use joints. Construct a joint and attach one end of it to the rigid body, and the other end to the pivot point.</p>
+
+<p>Pros:</p>
+
+<ul>
+<li>&quot;Physically correct&quot; way to control the rigid body. The body follows the pivot point and is able to react to collisions.</li>
+</ul>
+
+<p>Cons:</p>
+
+<ul>
+<li>Object reaction to camera movements is laggy and twitching (lag amount depends on the joint type).</li>
+<li>Object starts to jump around the pivot point when camera makes sudden movements (true for spring joints, can be fixed by setting a high dumping value).</li>
+<li>Difficult to adjust the joint parameters to achieve somewhat of a believable result.</li>
+</ul>
+
+<p>The solution utilising joints is the most complex of the three, but after a good tuning it produces believable results. Its main flaw for me, however, was the twitching object movement.
+When you drag a body that is attached to the pivot point with a fixed joint, the body is supposed to strictly preserve its position relative to the pivot point. The thing is that
+physical joints have &quot;springy&quot; nature (even if they are not spring joints), so the body will always behave a bit strange at high movement rates, twitching and slightly moving around the pivot point.
+What I want is to have the picked object be directly at the same spot all the time when it is dragged.</p>
+
+<h2>Solution</h2>
+
+<p>My solution doesn&#39;t rely on joints. Instead, it moves the body by changing its velocity, which is also an acceptable way of moving rigid bodies.
+It also implements a hack that allows you to completely eliminate the body movement relative to the pivot point. You can see the final result in this video:</p>
+
+<div class="row text-center">
+    <iframe class="margined20" width="640" height="360" src="//www.youtube.com/embed/zM_o6zB9B5s" frameborder="0" allowfullscreen></iframe>
+</div>
+
+<p>The hack is to drag <em>two</em> objects instead of one. The first object is the visual representation (avatar) of the initial body. It has no RigidBody component and is moved by directly manipulating its position.
+The second object is not visible at all and represents the physical aspect of the body, having a RigidBody component attached to it. Fast camera movements might somehow
+make it behave oddly, but the player doesn&#39;t see it anyway. There&#39;s no need to perform complex tweaking of the joint to make results look good (which is extremely hard from what I&#39;ve experienced).
+The only tricky part is when the physical avatar collides with other objects in the scene. When this occurs, we just align the visual avatar with the physical one so that both of them react to collisions.
+When nothing happens, the visual avatar moves with the camera.</p>
+
+<p>Below is the code with some explaining comments:</p>
+
+<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">HeldObject</span> <span class="p">:</span> <span class="n">MonoBehaviour</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="kt">bool</span> <span class="n">IsColliding</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">void</span> <span class="nf">OnCollisionEnter</span><span class="p">(</span><span class="n">Collision</span> <span class="n">collision</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">IsColliding</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">void</span> <span class="nf">OnTriggerStay</span><span class="p">(</span><span class="n">Collider</span> <span class="n">other</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">IsColliding</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">void</span> <span class="nf">OnCollisionExit</span><span class="p">(</span><span class="n">Collision</span> <span class="n">collision</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">IsColliding</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">PlayerPick</span> <span class="p">:</span> <span class="n">MonoBehaviour</span>
+<span class="p">{</span>
+    <span class="c1">// Maximum distance from the camera at which the object can be picked up</span>
+    <span class="k">public</span> <span class="kt">float</span> <span class="n">MaxPickDistance</span><span class="p">;</span>
+    <span class="k">public</span> <span class="kt">float</span> <span class="n">ThrowStrength</span> <span class="p">=</span> <span class="m">10</span><span class="p">;</span>
+    <span class="k">public</span> <span class="kt">float</span> <span class="n">HeldObjectFollowStrength</span> <span class="p">=</span> <span class="m">50</span><span class="p">;</span>
+
+    <span class="k">private</span> <span class="n">Player</span> <span class="n">_player</span><span class="p">;</span>
+    <span class="k">private</span> <span class="n">Camera</span> <span class="n">_playerCam</span><span class="p">;</span>
+    <span class="k">private</span> <span class="n">GameObject</span> <span class="n">_pivot</span><span class="p">;</span>
+
+    <span class="k">private</span> <span class="n">HeldObject</span> <span class="n">_heldObject</span><span class="p">;</span> <span class="c1">// physical avatar</span>
+    <span class="k">private</span> <span class="n">GameObject</span> <span class="n">_heldBodyAvatar</span><span class="p">;</span> <span class="c1">// visual avatar</span>
+    <span class="k">private</span> <span class="kt">float</span> <span class="n">_heldBodyAngularDrag</span><span class="p">;</span>
+
+    <span class="k">private</span> <span class="n">RaycastHit</span><span class="p">?</span> <span class="n">_raycast</span><span class="p">;</span>
+
+    <span class="k">private</span> <span class="k">void</span> <span class="nf">Start</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">_player</span> <span class="p">=</span> <span class="n">Player</span><span class="p">.</span><span class="n">Instance</span><span class="p">;</span>
+        <span class="n">_playerCam</span> <span class="p">=</span> <span class="n">Player</span><span class="p">.</span><span class="n">Camera</span><span class="p">;</span>
+        <span class="n">_pivot</span> <span class="p">=</span> <span class="n">Player</span><span class="p">.</span><span class="n">PickPivot</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">void</span> <span class="nf">Update</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">Raycast</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">Input</span><span class="p">.</span><span class="n">GetKeyDown</span><span class="p">(</span><span class="n">KeyCode</span><span class="p">.</span><span class="n">E</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(!</span><span class="n">_heldObject</span><span class="p">)</span>
+                <span class="n">TakeObject</span><span class="p">();</span>
+            <span class="k">else</span>
+                <span class="nf">ReleaseObject</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="n">HoldObject</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">Input</span><span class="p">.</span><span class="n">GetMouseButton</span><span class="p">(</span><span class="m">0</span><span class="p">)</span> <span class="p">&amp;&amp;</span> <span class="n">_heldObject</span><span class="p">)</span>
+            <span class="n">ThrowObject</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">void</span> <span class="nf">Raycast</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">_raycast</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+        <span class="k">const</span> <span class="kt">int</span> <span class="n">layerMask</span> <span class="p">=</span> <span class="m">1</span> <span class="p">&lt;&lt;</span> <span class="m">8</span><span class="p">;</span>
+        <span class="kt">var</span> <span class="n">raycastHits</span> <span class="p">=</span> <span class="n">Physics</span><span class="p">.</span><span class="n">RaycastAll</span><span class="p">(</span><span class="n">_playerCam</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">,</span> <span class="n">_playerCam</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">forward</span><span class="p">,</span>
+                                             <span class="n">MaxPickDistance</span><span class="p">,</span> <span class="p">~</span><span class="n">layerMask</span><span class="p">);</span>
+        <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">hit</span> <span class="k">in</span> <span class="n">raycastHits</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">hit</span><span class="p">.</span><span class="n">collider</span> <span class="p">==</span> <span class="n">_player</span><span class="p">.</span><span class="n">collider</span> <span class="p">||</span> <span class="p">!</span><span class="n">hit</span><span class="p">.</span><span class="n">collider</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">)</span> <span class="c1">// avoid colliding with the player object itself</span>
+                <span class="k">continue</span><span class="p">;</span>
+            <span class="n">_raycast</span> <span class="p">=</span> <span class="n">hit</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">void</span> <span class="nf">HoldObject</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(!</span><span class="n">_heldObject</span><span class="p">)</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="c1">// Drag the physical avatar by changing its velocity</span>
+        <span class="n">_heldObject</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">.</span><span class="n">velocity</span> <span class="p">=</span> <span class="n">HeldObjectFollowStrength</span> <span class="p">*</span> <span class="p">(</span><span class="n">_pivot</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span> <span class="p">-</span> <span class="n">_heldObject</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">);</span>
+        <span class="c1">// When the physical avatar collides, we move the visual one to the same position. When this doesn&#39;t happen,</span>
+        <span class="c1">// move the visuals back to the pivot point.</span>
+        <span class="n">_heldBodyAvatar</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span> <span class="p">=</span> <span class="n">_heldObject</span><span class="p">.</span><span class="n">IsColliding</span>
+            <span class="p">?</span> <span class="n">_heldObject</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span>
+            <span class="p">:</span> <span class="n">_pivot</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">;</span>
+        <span class="c1">// If the physical avatar is colliding with something, change visuals rotation to correspond</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">_heldObject</span><span class="p">.</span><span class="n">IsColliding</span><span class="p">)</span>
+            <span class="n">_heldBodyAvatar</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">rotation</span> <span class="p">=</span> <span class="n">_heldObject</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">rotation</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">void</span> <span class="nf">TakeObject</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(!</span><span class="n">_raycast</span><span class="p">.</span><span class="n">HasValue</span><span class="p">)</span>
+            <span class="k">return</span><span class="p">;</span>
+
+        <span class="kt">var</span> <span class="n">heldBody</span> <span class="p">=</span> <span class="n">_raycast</span><span class="p">.</span><span class="n">Value</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">;</span>
+        <span class="n">heldBody</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span> <span class="p">=</span> <span class="n">_pivot</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">;</span>
+        <span class="n">heldBody</span><span class="p">.</span><span class="n">useGravity</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+
+        <span class="n">_heldBodyAngularDrag</span> <span class="p">=</span> <span class="n">heldBody</span><span class="p">.</span><span class="n">angularDrag</span><span class="p">;</span>
+        <span class="n">heldBody</span><span class="p">.</span><span class="n">angularDrag</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span> <span class="c1">// so that the object doesn&#39;t continue rotating after each collision</span>
+        <span class="n">heldBody</span><span class="p">.</span><span class="n">renderer</span><span class="p">.</span><span class="n">enabled</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+        <span class="n">_heldObject</span> <span class="p">=</span> <span class="n">heldBody</span><span class="p">.</span><span class="n">gameObject</span><span class="p">.</span><span class="n">AddComponent</span><span class="p">&lt;</span><span class="n">HeldObject</span><span class="p">&gt;();</span>
+
+        <span class="n">_heldBodyAvatar</span> <span class="p">=</span> <span class="k">new</span> <span class="n">GameObject</span><span class="p">(</span><span class="s">&quot;Held body avatar&quot;</span><span class="p">);</span>
+        <span class="n">_heldBodyAvatar</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">parent</span> <span class="p">=</span> <span class="n">_playerCam</span><span class="p">.</span><span class="n">transform</span><span class="p">;</span>
+        <span class="n">_heldBodyAvatar</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span> <span class="p">=</span> <span class="n">_pivot</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">;</span>
+        <span class="n">_heldBodyAvatar</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">rotation</span> <span class="p">=</span> <span class="n">heldBody</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">rotation</span><span class="p">;</span>
+        <span class="n">_heldBodyAvatar</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">localScale</span> <span class="p">=</span> <span class="n">heldBody</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">localScale</span><span class="p">;</span>
+        <span class="n">_heldBodyAvatar</span><span class="p">.</span><span class="n">AddComponent</span><span class="p">&lt;</span><span class="n">MeshFilter</span><span class="p">&gt;().</span><span class="n">sharedMesh</span> <span class="p">=</span> <span class="n">heldBody</span><span class="p">.</span><span class="n">gameObject</span><span class="p">.</span><span class="n">GetComponent</span><span class="p">&lt;</span><span class="n">MeshFilter</span><span class="p">&gt;().</span><span class="n">sharedMesh</span><span class="p">;</span>
+        <span class="n">_heldBodyAvatar</span><span class="p">.</span><span class="n">AddComponent</span><span class="p">&lt;</span><span class="n">MeshRenderer</span><span class="p">&gt;().</span><span class="n">sharedMaterial</span> <span class="p">=</span> <span class="n">heldBody</span><span class="p">.</span><span class="n">gameObject</span><span class="p">.</span><span class="n">renderer</span><span class="p">.</span><span class="n">sharedMaterial</span><span class="p">;</span>
+
+        <span class="n">Physics</span><span class="p">.</span><span class="n">IgnoreCollision</span><span class="p">(</span><span class="n">heldBody</span><span class="p">.</span><span class="n">collider</span><span class="p">,</span> <span class="n">Player</span><span class="p">.</span><span class="n">Controller</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">void</span> <span class="nf">ReleaseObject</span><span class="p">(</span><span class="n">Action</span> <span class="n">onRelease</span> <span class="p">=</span> <span class="k">null</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Physics</span><span class="p">.</span><span class="n">IgnoreCollision</span><span class="p">(</span><span class="n">_heldObject</span><span class="p">.</span><span class="n">collider</span><span class="p">,</span> <span class="n">Player</span><span class="p">.</span><span class="n">Controller</span><span class="p">,</span> <span class="k">false</span><span class="p">);</span>
+        <span class="n">_heldObject</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">.</span><span class="n">useGravity</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+        <span class="n">_heldObject</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">.</span><span class="n">angularDrag</span> <span class="p">=</span> <span class="n">_heldBodyAngularDrag</span><span class="p">;</span>
+        <span class="n">_heldObject</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span> <span class="p">=</span> <span class="n">_heldBodyAvatar</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">;</span>
+        <span class="n">_heldObject</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">rotation</span> <span class="p">=</span> <span class="n">_heldBodyAvatar</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">rotation</span><span class="p">;</span>
+        <span class="n">_heldObject</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">.</span><span class="n">renderer</span><span class="p">.</span><span class="n">enabled</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+        <span class="n">_heldBodyAvatar</span><span class="p">.</span><span class="n">renderer</span><span class="p">.</span><span class="n">enabled</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+        <span class="n">Destroy</span><span class="p">(</span><span class="n">_heldObject</span><span class="p">);</span>
+        <span class="n">Destroy</span><span class="p">(</span><span class="n">_heldBodyAvatar</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">onRelease</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+            <span class="n">onRelease</span><span class="p">();</span>
+        <span class="n">_heldObject</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">void</span> <span class="nf">ThrowObject</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">ReleaseObject</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="n">_heldObject</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">.</span><span class="n">AddForce</span><span class="p">(</span><span class="n">_playerCam</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">forward</span> <span class="p">*</span> <span class="n">ThrowStrength</span><span class="p">,</span> <span class="n">ForceMode</span><span class="p">.</span><span class="n">Impulse</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>This algorithm could probably be improved by, for example, simplifying the <code>TakeObject</code> method. If the body that has been picked has complex visuals and a lot of components on it,
+it might be easier not to copy everything into a new visual avatar. Instead, you can leave the visuals on the object, and just create a new physical avatar. In my case
+the object itself remains physical, and all visuals go to the new object.</p>
+
+	</div>
+</div>
+
+			<div>
+
+			
+	<div id="disqus_thread">
+	</div>
+	<script type="text/javascript">
+		var disqus_shortname = 'raycastnet'; // required: replace example with your forum shortname
+		(function() {
+			var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+			dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		})();
+	</script>
+	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+		</div>
+
+		<div class="footer">
+	<p class="text-muted">© 2014-2016 Aleksey Fedotov</p>
+</div>
+
+<script src="/js/vendor/jquery.min.js"></script>
+<script src="/js/vendor/video.js"></script>
+<script src="/js/flat-ui.min.js"></script>
+<script src="/js/fancybox/jquery.fancybox.pack.js"></script>
+<script src="/js/fancybox/jquery.fancybox-buttons.js"></script>
+<script src="/js/fancybox/jquery.fancybox-media.js"></script>
+<script src="/js/fancybox/jquery.fancybox-thumbs.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-50872849-1', 'raycast.net');
+  ga('send', 'pageview', {
+    "page": "/unity3d-pick-and-drag",
+    "title": 'Unity3d tip&#58; implementing pick-and-drag mechanics in a first-person game'
+  });
+</script>
+
+<script>
+	$(document).ready(function() {
+		$(".lightbox").fancybox();
+	});
+</script>
+
+	</body>
+</html>

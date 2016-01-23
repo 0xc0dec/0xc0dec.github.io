@@ -2,11 +2,12 @@
 layout: page
 title:  Not So Flat devblog, part 2
 date:   2015-05-04 20:00:00
+permalink: nsf-devblog2
 ---
 
 <div class="row text-center"><img src="/data/notsoflat/player2.png" class="margined20"/></div>
 
-<a href="{% post_url 2015-03-22-nsf-devblog %}">Part 1</a>
+<a href="/nsf-devblog">Part 1</a>
 
 Whoa, that did happen! Not So Flat has finally been released and is <a href="http://0xc0dec.itch.io/notsoflat">available for free on itch.io</a>.
 

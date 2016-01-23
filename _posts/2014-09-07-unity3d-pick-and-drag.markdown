@@ -2,6 +2,7 @@
 layout: page
 title:  Unity3d tip&#58; implementing pick-and-drag mechanics in a first-person game
 date:   2014-09-07 00:00:00
+permalink: unity3d-pick-and-drag
 ---
 
 <div class="row text-center"><img src="/data/companion_cube.png" class="margined20"/></div>

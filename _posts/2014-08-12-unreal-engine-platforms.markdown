@@ -1,7 +1,8 @@
 ---
 layout: page
-title:  How to make moving platforms in Unreal Engine 4
+title:  Making moving platforms in Unreal Engine 4
 date:   2014-08-12 00:00:00
+permalink: unreal-platforms
 ---
 
 <div class="row text-center"><img src="/data/ue_logo.png" class="margined20"/></div>

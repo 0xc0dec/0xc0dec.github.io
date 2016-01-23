@@ -2,6 +2,7 @@
 layout: page
 title:  Custom engine in The Witness game
 date:   2013-09-29 00:00:00
+permalink: the-witness-engine
 ---
 
 Recently I had a twitter conversation with Jonathan Blow, the creator of [Braid](http://braid-game.com/) and leader of the team behind the upcoming game [The Witness](http://the-witness.net/).
