@@ -23,7 +23,7 @@ enable_comments: true
 			</ul>
 		</p>
 		<p>
-			The game is available with sources for Windows and Linux. <a target="_blank" href="http://code.google.com/p/yetanotherrubikscube/">View on GoogleCode</a>.
+			<a target="_blank" href="https://github.com/0xc0dec/yarc/releases">View on Github</a>.
 		</p>
 	</div>
 </div>
