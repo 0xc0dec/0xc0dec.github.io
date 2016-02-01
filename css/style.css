@@ -6,7 +6,7 @@
 }*/
 
 @font-face {
-    font-family: 'clear_sansregular';
+    font-family: 'ClearSansRegular';
     src: url('/fonts/clear-sans/ClearSans-Regular-webfont.eot');
     src: url('/fonts/clear-sans/ClearSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),
          url('/fonts/clear-sans/ClearSans-Regular-webfont.woff') format('woff'),
@@ -25,8 +25,8 @@ body {
 	padding-top: 20px;
 	padding-bottom: 20px;
 	margin-bottom: 60px;
-	font-family: clear_sansregular, Helvetica, Arial, sans-serif;
-	background-color: rgb(238, 238, 238);
+	font-family: ClearSansRegular, Helvetica, Arial, sans-serif;
+	background-color: rgb(245, 245, 245);
 }
 
 a {
@@ -42,7 +42,7 @@ a:hover, a:focus {
 
 .navbar-default {
 	background-color: white;
-	box-shadow: 0 0 5px rgba(0,0,0,0.1);
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.04);
 }
 
 .navbar-default .navbar-nav > li > a {
@@ -109,7 +109,7 @@ h4 {
 	padding-right: 40px;
 	padding-top: 0px;
 	padding-bottom: 30px;
-	box-shadow: 0 0 5px rgba(0,0,0,0.1);
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.04);
 }
 
 .page-header {
