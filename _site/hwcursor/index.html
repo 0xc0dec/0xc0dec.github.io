@@ -69,31 +69,31 @@ does NOT require Unity PRO. Can load cursor images from both files and memory (t
 
 <p>Create cursor, initialize it from file and set as active:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="nn">UnityEngine</span><span class="p">;</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="nn">UnityEngine</span><span class="p">;</span>
 <span class="k">using</span> <span class="nn">HardwareCursor</span><span class="p">;</span>
-<span class="c1">///...</span>
-<span class="kt">var</span> <span class="n">cursor</span> <span class="p">=</span> <span class="n">Cursor</span><span class="p">.</span><span class="n">Create</span><span class="p">();</span>
-<span class="kt">var</span> <span class="n">hotSpotX</span> <span class="p">=</span> <span class="m">0f</span><span class="p">;</span>
-<span class="kt">var</span> <span class="n">hotSpotY</span> <span class="p">=</span> <span class="m">0f</span><span class="p">;</span>
-<span class="n">cursor</span><span class="p">.</span><span class="n">InitFromFile</span><span class="p">(</span><span class="s">&quot;cursor.cur&quot;</span><span class="p">,</span> <span class="n">hotSpotX</span><span class="p">,</span> <span class="n">hotSpotY</span><span class="p">);</span> <span class="c1">// supports CUR, ICO, PNG</span>
-<span class="n">cursor</span><span class="p">.</span><span class="n">SetActive</span><span class="p">();</span>
-<span class="c1">///...</span></code></pre></div>
+<span class="c1">///...
+</span><span class="n">var</span> <span class="n">cursor</span> <span class="p">=</span> <span class="n">Cursor</span><span class="p">.</span><span class="nf">Create</span><span class="p">();</span>
+<span class="n">var</span> <span class="n">hotSpotX</span> <span class="p">=</span> <span class="m">0f</span><span class="p">;</span>
+<span class="n">var</span> <span class="n">hotSpotY</span> <span class="p">=</span> <span class="m">0f</span><span class="p">;</span>
+<span class="n">cursor</span><span class="p">.</span><span class="nf">InitFromFile</span><span class="p">(</span><span class="s">"cursor.cur"</span><span class="p">,</span> <span class="n">hotSpotX</span><span class="p">,</span> <span class="n">hotSpotY</span><span class="p">);</span> <span class="c1">// supports CUR, ICO, PNG
+</span><span class="n">cursor</span><span class="p">.</span><span class="nf">SetActive</span><span class="p">();</span>
+<span class="p">///...</span></code></pre></figure>
 
 <p>Create cursor, initialize it from an asset and set as active:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="nn">UnityEngine</span><span class="p">;</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="nn">UnityEngine</span><span class="p">;</span>
 <span class="k">using</span> <span class="nn">HardwareCursor</span><span class="p">;</span>
-<span class="c1">//...</span>
-<span class="kt">var</span> <span class="n">data</span> <span class="p">=</span> <span class="p">(</span><span class="n">Resources</span><span class="p">.</span><span class="n">Load</span><span class="p">(</span><span class="s">&quot;Textures/cursor&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">Texture2D</span><span class="p">).</span><span class="n">EncodeToPNG</span><span class="p">();</span>
-<span class="kt">var</span> <span class="n">hotSpotX</span> <span class="p">=</span> <span class="m">0f</span><span class="p">;</span>
-<span class="kt">var</span> <span class="n">hotSpotY</span> <span class="p">=</span> <span class="m">0f</span><span class="p">;</span>
-<span class="n">cursor</span><span class="p">.</span><span class="n">InitFromMemory</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">hotSpotX</span><span class="p">,</span> <span class="n">hotSpotY</span><span class="p">);</span>
-<span class="n">cursor</span><span class="p">.</span><span class="n">SetActive</span><span class="p">();</span>
-<span class="c1">//...</span></code></pre></div>
+<span class="c1">//...
+</span><span class="n">var</span> <span class="n">data</span> <span class="p">=</span> <span class="p">(</span><span class="n">Resources</span><span class="p">.</span><span class="nf">Load</span><span class="p">(</span><span class="s">"Textures/cursor"</span><span class="p">)</span> <span class="k">as</span> <span class="n">Texture2D</span><span class="p">).</span><span class="nf">EncodeToPNG</span><span class="p">();</span>
+<span class="n">var</span> <span class="n">hotSpotX</span> <span class="p">=</span> <span class="m">0f</span><span class="p">;</span>
+<span class="n">var</span> <span class="n">hotSpotY</span> <span class="p">=</span> <span class="m">0f</span><span class="p">;</span>
+<span class="n">cursor</span><span class="p">.</span><span class="nf">InitFromMemory</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">hotSpotX</span><span class="p">,</span> <span class="n">hotSpotY</span><span class="p">);</span>
+<span class="n">cursor</span><span class="p">.</span><span class="nf">SetActive</span><span class="p">();</span>
+<span class="p">//...</span></code></pre></figure>
 
 <p>Reset to default cursor:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="n">cursor</span><span class="p">.</span><span class="n">ActivateDefaultCursor</span><span class="p">();</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="n">cursor</span><span class="p">.</span><span class="nf">ActivateDefaultCursor</span><span class="p">();</span></code></pre></figure>
 
 <p><strong>Note</strong>: to be able to use texture asset as a cursor image, the texture should be imported with Advanced texture type,
 should have Read/Write enabled set to true and its format set to ARGB 32 bit.</p>

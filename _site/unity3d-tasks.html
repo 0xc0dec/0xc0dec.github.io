@@ -49,17 +49,17 @@
 amount of time (during a number of frames)? For example, you need to move an object 10 units forward. I bet you write a special component that will be
 responsible for this particular action. Then you add this component to that object and fill the necessary parameters:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="kt">var</span> <span class="n">action</span> <span class="p">=</span> <span class="n">obj</span><span class="p">.</span><span class="n">AddComponent</span><span class="p">&lt;</span><span class="n">SomeAction</span><span class="p">&gt;();</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="n">var</span> <span class="n">action</span> <span class="p">=</span> <span class="n">obj</span><span class="p">.</span><span class="n">AddComponent</span><span class="p">&lt;</span><span class="n">SomeAction</span><span class="p">&gt;();</span>
 <span class="n">action</span><span class="p">.</span><span class="n">duration</span> <span class="p">=</span> <span class="m">2</span><span class="p">;</span>
 <span class="n">action</span><span class="p">.</span><span class="n">speed</span> <span class="p">=</span> <span class="m">3</span><span class="p">;</span>
-<span class="c1">// and so on...</span></code></pre></div>
+<span class="p">//</span> <span class="n">and</span> <span class="n">so</span> <span class="n">on</span><span class="p">...</span></code></pre></figure>
 
 <!--break-->
 
 <p>You could go further and write a static factory method in SomeAction class, which will do all that stuff and keep your code cleaner:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="kt">var</span> <span class="n">action</span> <span class="p">=</span> <span class="n">SomeAction</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span> <span class="n">speed</span><span class="p">);</span>
-<span class="c1">// ...</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="n">var</span> <span class="n">action</span> <span class="p">=</span> <span class="n">SomeAction</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span> <span class="n">speed</span><span class="p">);</span>
+<span class="p">//</span> <span class="p">...</span></code></pre></figure>
 
 <p>Okay, you’ve done it. But soon you come across another problem which could be solved by this component, but the component must be slightly
 altered to fit the new needs. For example, you’ve always moved your object in the same direction, but now you want to set an arbitrary movement
@@ -72,71 +72,71 @@ begin to drown in a pool of tiny task-oriented classes. I didn’t even mention 
 <p>For me I found a simple solution to the problem of a large number of small task-oriented components. I wrote a single component
 Task capable to run any code I want. It can be used as follows:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="c1">// wait 3 seconds and play sound</span>
-<span class="n">Task</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span><span class="m">3</span><span class="p">).</span><span class="n">EndCallback</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="n">audioSource</span><span class="p">.</span><span class="n">Play</span><span class="p">()).</span><span class="n">Run</span><span class="p">();</span>
-<span class="c1">// Can also be accomplished with StartCoroutine + yield statement, but hey, this is one line! :)</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="c1">// wait 3 seconds and play sound
+</span><span class="n">Task</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="m">3</span><span class="p">).</span><span class="nf">EndCallback</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="n">audioSource</span><span class="p">.</span><span class="nf">Play</span><span class="p">()).</span><span class="nf">Run</span><span class="p">();</span>
+<span class="c1">// Can also be accomplished with StartCoroutine + yield statement, but hey, this is one line! :)
+</span>
+<span class="c1">// material color transition from black to white in a second
+</span><span class="n">Task</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="m">1</span><span class="p">).</span><span class="nf">UpdateCallback</span><span class="p">(</span><span class="n">time</span> <span class="p">=&gt;</span> <span class="n">material</span><span class="p">.</span><span class="n">color</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Color</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="m">1</span><span class="p">)).</span><span class="nf">Run</span><span class="p">();</span>
 
-<span class="c1">// material color transition from black to white in a second</span>
-<span class="n">Task</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span><span class="m">1</span><span class="p">).</span><span class="n">UpdateCallback</span><span class="p">(</span><span class="n">time</span> <span class="p">=&gt;</span> <span class="n">material</span><span class="p">.</span><span class="n">color</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Color</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="m">1</span><span class="p">)).</span><span class="n">Run</span><span class="p">();</span>
-
-<span class="c1">// or anything</span>
-<span class="n">Task</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span><span class="m">10</span><span class="p">)</span>
-    <span class="p">.</span><span class="n">StartCallback</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="n">Debug</span><span class="p">.</span><span class="n">Log</span><span class="p">(</span><span class="s">&quot;I started&quot;</span><span class="p">))</span>
-    <span class="p">.</span><span class="n">UpdateCallback</span><span class="p">(</span><span class="n">time</span> <span class="p">=&gt;</span> <span class="n">Debug</span><span class="p">.</span><span class="n">Log</span><span class="p">(</span><span class="n">time</span><span class="p">))</span>
-    <span class="p">.</span><span class="n">EndCallback</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="n">Debug</span><span class="p">.</span><span class="n">Log</span><span class="p">(</span><span class="s">&quot;Done&quot;</span><span class="p">))</span>
-    <span class="p">.</span><span class="n">Run</span><span class="p">();</span></code></pre></div>
+<span class="c1">// or anything
+</span><span class="n">Task</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="m">10</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">StartCallback</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="n">Debug</span><span class="p">.</span><span class="nf">Log</span><span class="p">(</span><span class="s">"I started"</span><span class="p">))</span>
+    <span class="p">.</span><span class="nf">UpdateCallback</span><span class="p">(</span><span class="n">time</span> <span class="p">=&gt;</span> <span class="n">Debug</span><span class="p">.</span><span class="nf">Log</span><span class="p">(</span><span class="n">time</span><span class="p">))</span>
+    <span class="p">.</span><span class="nf">EndCallback</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="n">Debug</span><span class="p">.</span><span class="nf">Log</span><span class="p">(</span><span class="s">"Done"</span><span class="p">))</span>
+    <span class="p">.</span><span class="nf">Run</span><span class="p">();</span></code></pre></figure>
 
 <p>In a nutshell the Task class simply creates en empty host object “Tasks” (if it does not exist yet), adds Task component to that object and fills its parameters.
 From that moment the new task knows how long to run and what action to perform. You can also subclass the Task class to incapsulate more complex logic and use it like this:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="c1">// make scene fade to black in 3 seconds</span>
-<span class="n">Task</span><span class="p">.</span><span class="n">Create</span><span class="p">&lt;</span><span class="n">FadeOut</span><span class="p">&gt;(</span><span class="m">3</span><span class="p">).</span><span class="n">Run</span><span class="p">();</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="c1">// make scene fade to black in 3 seconds
+</span><span class="n">Task</span><span class="p">.</span><span class="n">Create</span><span class="p">&lt;</span><span class="n">FadeOut</span><span class="p">&gt;(</span><span class="m">3</span><span class="p">).</span><span class="nf">Run</span><span class="p">();</span></code></pre></figure>
 
 <p>Tasks class should not be misused. When you feel that action you’re going to code will be run only from one place in your surrounding application code, it’s OK to use the inline version</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="n">Task</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
-    <span class="p">.</span><span class="n">UpdateCallback</span><span class="p">(</span><span class="n">time</span> <span class="p">=&gt;</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="n">Task</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">UpdateCallback</span><span class="p">(</span><span class="n">time</span> <span class="p">=&gt;</span>
     <span class="p">{</span>
-        <span class="c1">// do something</span>
-        <span class="c1">// and more</span>
-        <span class="c1">// and even more...</span>
-    <span class="p">})</span>
-    <span class="p">.</span><span class="n">EndCallback</span><span class="p">(()</span> <span class="p">=&gt;</span>
+        <span class="c1">// do something
+</span>     <span class="c1">// and more
+</span>     <span class="c1">// and even more...
+</span> <span class="p">})</span>
+    <span class="p">.</span><span class="nf">EndCallback</span><span class="p">(()</span> <span class="p">=&gt;</span>
     <span class="p">{</span>
-        <span class="c1">// react to task completion</span>
-    <span class="p">}</span>
-    <span class="p">.</span><span class="n">Run</span><span class="p">();</span></code></pre></div>
+        <span class="c1">// react to task completion
+</span> <span class="p">}</span>
+    <span class="p">.</span><span class="nf">Run</span><span class="p">();</span></code></pre></figure>
 
 <p>But as soon as you need some action to be run from several places, you should go the classic way and create a separate component. Do not copy-paste you code! Subclass the Task class
 instead, and you will be provided with a convenient way to run it:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">CustomTask</span><span class="p">:</span> <span class="n">Task</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">CustomTask</span><span class="p">:</span> <span class="n">Task</span>
 <span class="p">{</span>
     <span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">UpdateImpl</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="n">Debug</span><span class="p">.</span><span class="n">Log</span><span class="p">(</span><span class="n">_time</span><span class="p">);</span>
-        <span class="n">Debug</span><span class="p">.</span><span class="n">Log</span><span class="p">(</span><span class="n">_duration</span><span class="p">);</span>
+        <span class="n">Debug</span><span class="p">.</span><span class="nf">Log</span><span class="p">(</span><span class="n">_time</span><span class="p">);</span>
+        <span class="n">Debug</span><span class="p">.</span><span class="nf">Log</span><span class="p">(</span><span class="n">_duration</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">StartImpl</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="n">Debug</span><span class="p">.</span><span class="n">Log</span><span class="p">(</span><span class="s">&quot;Started&quot;</span><span class="p">);</span>
+        <span class="n">Debug</span><span class="p">.</span><span class="nf">Log</span><span class="p">(</span><span class="s">"Started"</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">EndImpl</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="n">Debug</span><span class="p">.</span><span class="n">Log</span><span class="p">(</span><span class="s">&quot;Stopped&quot;</span><span class="p">);</span>
+        <span class="n">Debug</span><span class="p">.</span><span class="nf">Log</span><span class="p">(</span><span class="s">"Stopped"</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
 <span class="n">Task</span><span class="p">.</span><span class="n">Create</span><span class="p">&lt;</span><span class="n">CustomTask</span><span class="p">&gt;(</span><span class="m">3</span><span class="p">)</span>
-    <span class="p">.</span><span class="n">UpdateCallback</span><span class="p">(</span><span class="n">time</span> <span class="p">=&gt;</span> <span class="n">Debug</span><span class="p">.</span><span class="n">Log</span><span class="p">(</span><span class="s">&quot;Whatever&quot;</span><span class="p">)</span> <span class="c1">// custom tasks also allow you to use callbacks!</span>
-    <span class="p">.</span><span class="n">EndCallback</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">})</span>
-    <span class="p">.</span><span class="n">Run</span><span class="p">();</span></code></pre></div>
+    <span class="p">.</span><span class="nf">UpdateCallback</span><span class="p">(</span><span class="n">time</span> <span class="p">=&gt;</span> <span class="n">Debug</span><span class="p">.</span><span class="nf">Log</span><span class="p">(</span><span class="s">"Whatever"</span><span class="p">)</span> <span class="c1">// custom tasks also allow you to use callbacks!
+</span> <span class="p">.</span><span class="nf">EndCallback</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">})</span>
+    <span class="p">.</span><span class="nf">Run</span><span class="p">();</span></code></pre></figure>
 
 <p>Below is the code of my current Task class version. Use it freely if you find it useful.</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
 <span class="k">using</span> <span class="nn">UnityEngine</span><span class="p">;</span>
 
 <span class="k">public</span> <span class="k">class</span> <span class="nc">Task</span> <span class="p">:</span> <span class="n">MonoBehaviour</span>
@@ -154,18 +154,18 @@ instead, and you will be provided with a convenient way to run it:</p>
 
     <span class="k">public</span> <span class="k">static</span> <span class="n">Task</span> <span class="nf">Create</span><span class="p">(</span><span class="kt">float</span> <span class="n">duration</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">autoDestroy</span> <span class="p">=</span> <span class="k">true</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="n">InitHost</span><span class="p">();</span>
-        <span class="kt">var</span> <span class="n">job</span> <span class="p">=</span> <span class="n">_host</span><span class="p">.</span><span class="n">AddComponent</span><span class="p">();</span>
+        <span class="nf">InitHost</span><span class="p">();</span>
+        <span class="n">var</span> <span class="n">job</span> <span class="p">=</span> <span class="n">_host</span><span class="p">.</span><span class="nf">AddComponent</span><span class="p">();</span>
         <span class="n">job</span><span class="p">.</span><span class="n">_duration</span> <span class="p">=</span> <span class="n">duration</span><span class="p">;</span>
         <span class="n">job</span><span class="p">.</span><span class="n">_autoDestroy</span> <span class="p">=</span> <span class="n">autoDestroy</span><span class="p">;</span>
         <span class="n">job</span><span class="p">.</span><span class="n">_started</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
         <span class="k">return</span> <span class="n">job</span><span class="p">;</span>
     <span class="p">}</span>
 
-    <span class="k">public</span> <span class="k">static</span> <span class="n">T</span> <span class="n">Create</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;(</span><span class="kt">float</span> <span class="n">duration</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">autoDestroy</span> <span class="p">=</span> <span class="k">true</span><span class="p">)</span> <span class="k">where</span> <span class="n">T</span> <span class="p">:</span> <span class="n">Task</span>
+    <span class="k">public</span> <span class="k">static</span> <span class="n">T</span> <span class="n">Create</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;(</span><span class="kt">float</span> <span class="n">duration</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">autoDestroy</span> <span class="p">=</span> <span class="k">true</span><span class="p">)</span> <span class="n">where</span> <span class="n">T</span> <span class="p">:</span> <span class="n">Task</span>
     <span class="p">{</span>
-        <span class="n">InitHost</span><span class="p">();</span>
-        <span class="kt">var</span> <span class="n">task</span> <span class="p">=</span> <span class="n">_host</span><span class="p">.</span><span class="n">AddComponent</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;();</span>
+        <span class="nf">InitHost</span><span class="p">();</span>
+        <span class="n">var</span> <span class="n">task</span> <span class="p">=</span> <span class="n">_host</span><span class="p">.</span><span class="n">AddComponent</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;();</span>
         <span class="n">task</span><span class="p">.</span><span class="n">_duration</span> <span class="p">=</span> <span class="n">duration</span><span class="p">;</span>
         <span class="n">task</span><span class="p">.</span><span class="n">_autoDestroy</span> <span class="p">=</span> <span class="n">autoDestroy</span><span class="p">;</span>
         <span class="k">return</span> <span class="n">task</span><span class="p">;</span>
@@ -193,8 +193,8 @@ instead, and you will be provided with a convenient way to run it:</p>
     <span class="p">{</span>
         <span class="n">_started</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">_start</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
-            <span class="n">_start</span><span class="p">();</span>
-        <span class="n">StartImpl</span><span class="p">();</span>
+            <span class="nf">_start</span><span class="p">();</span>
+        <span class="nf">StartImpl</span><span class="p">();</span>
     <span class="p">}</span>
 
     <span class="k">protected</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">UpdateImpl</span><span class="p">()</span>
@@ -212,33 +212,33 @@ instead, and you will be provided with a convenient way to run it:</p>
     <span class="k">private</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">InitHost</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="k">if</span> <span class="p">(!</span><span class="n">_host</span><span class="p">)</span>
-            <span class="n">_host</span> <span class="p">=</span> <span class="k">new</span> <span class="n">GameObject</span><span class="p">(</span><span class="s">&quot;Tasks&quot;</span><span class="p">);</span>
+            <span class="n">_host</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">GameObject</span><span class="p">(</span><span class="s">"Tasks"</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="c1">// ReSharper disable UnusedMember.Local</span>
-    <span class="k">private</span> <span class="k">void</span> <span class="nf">Update</span><span class="p">()</span>
-    <span class="c1">// ReSharper restore UnusedMember.Local</span>
-    <span class="p">{</span>
+    <span class="c1">// ReSharper disable UnusedMember.Local
+</span> <span class="k">private</span> <span class="k">void</span> <span class="nf">Update</span><span class="p">()</span>
+    <span class="c1">// ReSharper restore UnusedMember.Local
+</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(!</span><span class="n">_started</span><span class="p">)</span>
             <span class="k">return</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">_update</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
-            <span class="n">_update</span><span class="p">(</span><span class="n">_time</span><span class="p">);</span>
-        <span class="n">UpdateImpl</span><span class="p">();</span>
-        <span class="c1">// Tasks having _autoDestroy == false will continue running after _time &gt;= _duration,</span>
-        <span class="c1">// but their _time will stop increasing</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">_time</span> <span class="p">&gt;=</span> <span class="n">_duration</span><span class="p">)</span>
+            <span class="nf">_update</span><span class="p">(</span><span class="n">_time</span><span class="p">);</span>
+        <span class="nf">UpdateImpl</span><span class="p">();</span>
+        <span class="c1">// Tasks having _autoDestroy == false will continue running after _time &gt;= _duration,
+</span>     <span class="c1">// but their _time will stop increasing
+</span>     <span class="k">if</span> <span class="p">(</span><span class="n">_time</span> <span class="p">&gt;=</span> <span class="n">_duration</span><span class="p">)</span>
             <span class="k">return</span><span class="p">;</span>
         <span class="n">_time</span> <span class="p">+=</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">_time</span> <span class="p">&gt;=</span> <span class="n">_duration</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">_end</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
-                <span class="n">_end</span><span class="p">();</span>
-            <span class="n">EndImpl</span><span class="p">();</span>
+                <span class="nf">_end</span><span class="p">();</span>
+            <span class="nf">EndImpl</span><span class="p">();</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">_autoDestroy</span><span class="p">)</span>
-                <span class="n">Destroy</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+                <span class="nf">Destroy</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 	</div>
 </div>
@@ -246,19 +246,6 @@ instead, and you will be provided with a convenient way to run it:</p>
 			<div>
 
 			
-	<div id="disqus_thread">
-	</div>
-	<script type="text/javascript">
-		var disqus_shortname = 'raycastnet'; // required: replace example with your forum shortname
-		(function() {
-			var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-			dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-		})();
-	</script>
-	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-	<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
 
 		</div>
 

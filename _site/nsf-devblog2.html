@@ -94,20 +94,20 @@ rays are involved:</p>
 
 <p>The process can be split into two parts. The first part is responsible for the horizontal component of the movement. It is the easiest of the two and is implemented as follows:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">private</span> <span class="k">const</span> <span class="kt">float</span> <span class="n">groundAcceleration</span> <span class="p">=</span> <span class="m">10f</span><span class="p">;</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">private</span> <span class="k">const</span> <span class="kt">float</span> <span class="n">groundAcceleration</span> <span class="p">=</span> <span class="m">10f</span><span class="p">;</span>
 <span class="k">private</span> <span class="k">const</span> <span class="kt">float</span> <span class="n">airAccelerationX</span> <span class="p">=</span> <span class="m">5f</span><span class="p">;</span>
 <span class="k">private</span> <span class="k">const</span> <span class="kt">float</span> <span class="n">maxSpeedX</span> <span class="p">=</span> <span class="m">4</span><span class="p">;</span>
 <span class="p">...</span>
 
-<span class="kt">var</span> <span class="n">accelerationX</span> <span class="p">=</span> <span class="n">groundAcceleration</span><span class="p">;</span>
-<span class="k">if</span> <span class="p">(</span><span class="n">ContinueJumping</span><span class="p">())</span>
+<span class="n">var</span> <span class="n">accelerationX</span> <span class="p">=</span> <span class="n">groundAcceleration</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="nf">ContinueJumping</span><span class="p">())</span>
     <span class="n">accelerationX</span> <span class="p">=</span> <span class="n">airAccelerationX</span><span class="p">;</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">MoveLeft</span> <span class="p">^</span> <span class="n">MoveRight</span><span class="p">)</span>
     <span class="n">targetSpeedX</span> <span class="p">=</span> <span class="n">MoveRight</span> <span class="p">?</span> <span class="n">maxSpeedX</span> <span class="p">:</span> <span class="n">MoveLeft</span> <span class="p">?</span> <span class="p">-</span><span class="n">maxSpeedX</span> <span class="p">:</span> <span class="m">0</span><span class="p">;</span>
 <span class="k">else</span>
     <span class="n">targetSpeedX</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
-<span class="n">speedX</span> <span class="p">=</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Lerp</span><span class="p">(</span><span class="n">speedX</span><span class="p">,</span> <span class="n">targetSpeedX</span><span class="p">,</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span> <span class="p">*</span> <span class="n">accelerationX</span><span class="p">);</span>
-<span class="n">dx</span> <span class="p">=</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span> <span class="p">*</span> <span class="n">speedX</span><span class="p">;</span></code></pre></div>
+<span class="n">speedX</span> <span class="p">=</span> <span class="n">Mathf</span><span class="p">.</span><span class="nf">Lerp</span><span class="p">(</span><span class="n">speedX</span><span class="p">,</span> <span class="n">targetSpeedX</span><span class="p">,</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span> <span class="p">*</span> <span class="n">accelerationX</span><span class="p">);</span>
+<span class="n">dx</span> <span class="p">=</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span> <span class="p">*</span> <span class="n">speedX</span><span class="p">;</span></code></pre></figure>
 
 <p>First we define the current horizontal acceleration (<code>accelerationX</code>). If the character is in the air (i.e. is jumping, so that the ContinueJumping() function returns <code>true</code>), the acceleration gets a smaller value, which is exactly what &quot;a bit of control in the air&quot; stands for. The constants are adjustable, so I can make the character be super-controllable in the air as well as make it not controllable at all.</p>
 
@@ -118,7 +118,7 @@ rays are involved:</p>
 <p>The vertical component of the movement is a little bit trickier. The main difficulty comes from our wish to allow jumping by a variable height: the character jumps higher as the player presses the button longer.
 Let&#39;s look at the code:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">private</span> <span class="k">const</span> <span class="kt">float</span> <span class="n">maxDownSpeed</span> <span class="p">=</span> <span class="m">12</span><span class="p">;</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">private</span> <span class="k">const</span> <span class="kt">float</span> <span class="n">maxDownSpeed</span> <span class="p">=</span> <span class="m">12</span><span class="p">;</span>
 <span class="k">private</span> <span class="k">const</span> <span class="kt">float</span> <span class="n">jumpExtraGravityTime</span> <span class="p">=</span> <span class="m">0.5f</span><span class="p">;</span>
 <span class="k">private</span> <span class="k">const</span> <span class="kt">float</span> <span class="n">jumpAccelerationDuration</span> <span class="p">=</span> <span class="m">0.2f</span><span class="p">;</span>
 <span class="k">private</span> <span class="kt">float</span> <span class="n">jumpTime</span> <span class="p">=</span> <span class="n">jumpExtraGravityTime</span><span class="p">;</span>
@@ -159,23 +159,23 @@ Let&#39;s look at the code:</p>
 <span class="p">...</span>
 
 
-<span class="k">if</span> <span class="p">(</span><span class="n">ContinueJumping</span><span class="p">())</span>
+<span class="k">if</span> <span class="p">(</span><span class="nf">ContinueJumping</span><span class="p">())</span>
 <span class="p">...</span>
 
 <span class="k">if</span> <span class="p">(</span><span class="n">jumpAccelerationDone</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="kt">var</span> <span class="n">acceleration</span> <span class="p">=</span> <span class="n">gravityAcceleration</span><span class="p">;</span>
+    <span class="n">var</span> <span class="n">acceleration</span> <span class="p">=</span> <span class="n">gravityAcceleration</span><span class="p">;</span>
     <span class="k">if</span> <span class="p">(!</span><span class="n">Jump</span><span class="p">)</span>
-        <span class="n">acceleration</span> <span class="p">*=</span> <span class="m">2</span> <span class="p">-</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Min</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">jumpTime</span> <span class="p">/</span> <span class="n">jumpExtraGravityTime</span><span class="p">);</span>
-    <span class="n">speedY</span> <span class="p">=</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Max</span><span class="p">(</span><span class="n">speedY</span> <span class="p">-</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span> <span class="p">*</span> <span class="n">acceleration</span><span class="p">,</span> <span class="p">-</span><span class="n">maxDownSpeed</span><span class="p">);</span>
+        <span class="n">acceleration</span> <span class="p">*=</span> <span class="m">2</span> <span class="p">-</span> <span class="n">Mathf</span><span class="p">.</span><span class="nf">Min</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">jumpTime</span> <span class="p">/</span> <span class="n">jumpExtraGravityTime</span><span class="p">);</span>
+    <span class="n">speedY</span> <span class="p">=</span> <span class="n">Mathf</span><span class="p">.</span><span class="nf">Max</span><span class="p">(</span><span class="n">speedY</span> <span class="p">-</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span> <span class="p">*</span> <span class="n">acceleration</span><span class="p">,</span> <span class="p">-</span><span class="n">maxDownSpeed</span><span class="p">);</span>
 <span class="p">}</span>
-<span class="n">dy</span> <span class="p">=</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span> <span class="p">*</span> <span class="n">speedY</span><span class="p">;</span></code></pre></div>
+<span class="n">dy</span> <span class="p">=</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span> <span class="p">*</span> <span class="n">speedY</span><span class="p">;</span></code></pre></figure>
 
 <p>The idea here is as follows. When the jump starts, we instantly set the character vertical speed to a certain maximum (as many other games do). We also keep track of how long the jump lasts (<code>jumpTime</code>). The first jump phase is a special acceleration phase, which lasts for <code>jumpAccelerationDuration</code>. During this phase we don&#39;t apply gravity, so the character keeps moving up with a constant maximum speed. This phase ends when either of the two events occur: 1) the <code>jumpTime</code> exceeds the <code>jumpAccelerationDuration</code> 2) the player stops pressing the jump button.</p>
 
 <p>Once the acceleration phase ends, we start applying the gravity. The trick here is that the gravity value depends on the duration of the acceleration phase. If the player has been pressing the jump button for a very short amount of time, the gravity will be stronger than it would be for a longer jump. This tuning is done in the line</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="n">acceleration</span> <span class="p">*=</span> <span class="m">2</span> <span class="p">-</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Min</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">jumpTime</span> <span class="p">/</span> <span class="n">jumpExtraGravityTime</span><span class="p">);</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="n">acceleration</span> <span class="p">*=</span> <span class="m">2</span> <span class="p">-</span> <span class="n">Mathf</span><span class="p">.</span><span class="nf">Min</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">jumpTime</span> <span class="p">/</span> <span class="n">jumpExtraGravityTime</span><span class="p">);</span></code></pre></figure>
 
 <p>I found that variable gravity, while being not realistic in theory, produces more enjoyable results in practice. As always in gamedev, I had to playtest a lot to figure out the implementation that works best for me.</p>
 
@@ -191,19 +191,6 @@ Let&#39;s look at the code:</p>
 			<div>
 
 			
-	<div id="disqus_thread">
-	</div>
-	<script type="text/javascript">
-		var disqus_shortname = 'raycastnet'; // required: replace example with your forum shortname
-		(function() {
-			var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-			dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-		})();
-	</script>
-	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-	<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
 
 		</div>
 

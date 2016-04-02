@@ -80,10 +80,10 @@ when developing The Witness. Hopefully we’ll hear about it from developers in 
 amount of time (during a number of frames)? For example, you need to move an object 10 units forward. I bet you write a special component that will be
 responsible for this particular action. Then you add this component to that object and fill the necessary parameters:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="kt">var</span> <span class="n">action</span> <span class="p">=</span> <span class="n">obj</span><span class="p">.</span><span class="n">AddComponent</span><span class="p">&lt;</span><span class="n">SomeAction</span><span class="p">&gt;();</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="n">var</span> <span class="n">action</span> <span class="p">=</span> <span class="n">obj</span><span class="p">.</span><span class="n">AddComponent</span><span class="p">&lt;</span><span class="n">SomeAction</span><span class="p">&gt;();</span>
 <span class="n">action</span><span class="p">.</span><span class="n">duration</span> <span class="p">=</span> <span class="m">2</span><span class="p">;</span>
 <span class="n">action</span><span class="p">.</span><span class="n">speed</span> <span class="p">=</span> <span class="m">3</span><span class="p">;</span>
-<span class="c1">// and so on...</span></code></pre></div>
+<span class="p">//</span> <span class="n">and</span> <span class="n">so</span> <span class="n">on</span><span class="p">...</span></code></pre></figure>
 
 
 			
@@ -124,15 +124,15 @@ terminal when doing some work with Git, <code>cd</code>ing, <code>ls</code>ing a
 		<div class="article-content">
 			<p>Say I have the following component:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">Test</span><span class="p">:</span> <span class="n">MonoBehaviour</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">Test</span><span class="p">:</span> <span class="n">MonoBehaviour</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="n">Vector3</span><span class="p">[]</span> <span class="n">PivotPoints</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>It’s OK to edit the PivotPoints field in object inspector, because Unity natively understands
 <code>Vector3</code> struct and displays it properly. Things get more complicated when I add field representing an array of custom objects:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">class</span> <span class="nc">NodeSetup</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">class</span> <span class="nc">NodeSetup</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="n">Vector3</span> <span class="n">Position</span><span class="p">;</span>
     <span class="k">public</span> <span class="n">Vector3</span> <span class="n">Weight</span><span class="p">;</span>
@@ -144,14 +144,14 @@ terminal when doing some work with Git, <code>cd</code>ing, <code>ls</code>ing a
 <span class="p">{</span>
     <span class="k">public</span> <span class="n">Vector3</span><span class="p">[]</span> <span class="n">PivotPoints</span><span class="p">;</span>
     <span class="k">public</span> <span class="n">NodeSetup</span><span class="p">[]</span> <span class="n">NodeSetups</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>Unity ignores field NodeSetups. First I thought I should write a custom editor in order to edit such fields.
 Fortunately the problem has simple solution – just mark your custom class with Serializable attribute:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="na">[Serializable]</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="na">[Serializable]</span>
 <span class="k">class</span> <span class="nc">NodeSetup</span>
-<span class="p">{</span> <span class="p">...</span> <span class="p">}</span></code></pre></div>
+<span class="p">{</span> <span class="p">...</span> <span class="p">}</span></code></pre></figure>
 
 			
 		</div>
@@ -170,17 +170,17 @@ Fortunately the problem has simple solution – just mark your custom class with
 
 <p>In FreeGLUT sources find the freeglut_ext.h file and modify it as follows (new lines are marked with ++):</p>
 
-<div class="highlight"><pre><code class="language-c" data-lang="c"><span class="cm">/*</span>
-<span class="cm"> * GLUT API macro definitions -- the display mode definitions</span>
-<span class="cm"> */</span>
-<span class="cp">#define  GLUT_CAPTIONLESS                   0x0400</span>
-<span class="cp">#define  GLUT_BORDERLESS                    0x0800</span>
-<span class="cp">#define  GLUT_SRGB                          0x1000</span>
-<span class="o">++</span> <span class="err">#</span><span class="n">define</span>  <span class="n">GLUT_FIXED_SIZE</span>                    <span class="mh">0x0040</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="cm">/*
+ * GLUT API macro definitions -- the display mode definitions
+ */</span>
+<span class="cp">#define  GLUT_CAPTIONLESS                   0x0400
+#define  GLUT_BORDERLESS                    0x0800
+#define  GLUT_SRGB                          0x1000
+</span><span class="o">++</span> <span class="err">#</span><span class="n">define</span>  <span class="n">GLUT_FIXED_SIZE</span>                    <span class="mh">0x0040</span></code></pre></figure>
 
 <p>Next, modify the freeglut_window.c file:</p>
 
-<div class="highlight"><pre><code class="language-c" data-lang="c"><span class="k">else</span> <span class="nf">if</span><span class="p">(</span> <span class="n">window</span><span class="o">-&gt;</span><span class="n">Parent</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="p">)</span>
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="k">else</span> <span class="nf">if</span><span class="p">(</span> <span class="n">window</span><span class="o">-&gt;</span><span class="n">Parent</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="p">)</span>
 <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span> <span class="n">fgState</span><span class="p">.</span><span class="n">DisplayMode</span> <span class="o">&amp;</span> <span class="n">GLUT_BORDERLESS</span> <span class="p">)</span>
     <span class="p">{</span>
@@ -190,16 +190,16 @@ Fortunately the problem has simple solution – just mark your custom class with
         <span class="cm">/* only window decoration is a border, no title bar or buttons */</span>
         <span class="n">flags</span> <span class="o">|=</span> <span class="n">WS_DLGFRAME</span><span class="p">;</span>
     <span class="k">else</span>
-        <span class="cm">/* window decoration are a border, title bar and buttons.</span>
-<span class="cm">         * NB: we later query whether the window has a title bar or</span>
-<span class="cm">         * not by testing for the maximize button, as the test for</span>
-<span class="cm">         * WS_CAPTION can be true without the window having a title</span>
-<span class="cm">         * bar. This style WS_OVERLAPPEDWINDOW gives you a maximize</span>
-<span class="cm">         * button. */</span>
+        <span class="cm">/* window decoration are a border, title bar and buttons.
+         * NB: we later query whether the window has a title bar or
+         * not by testing for the maximize button, as the test for
+         * WS_CAPTION can be true without the window having a title
+         * bar. This style WS_OVERLAPPEDWINDOW gives you a maximize
+         * button. */</span>
          <span class="n">flags</span> <span class="o">|=</span> <span class="n">WS_OVERLAPPEDWINDOW</span><span class="p">;</span>
 <span class="o">++</span>    <span class="k">if</span> <span class="p">(</span><span class="n">fgState</span><span class="p">.</span><span class="n">DisplayMode</span> <span class="o">&amp;</span> <span class="n">GLUT_FIXED_SIZE</span><span class="p">)</span>
 <span class="o">++</span>   <span class="n">flags</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="p">(</span><span class="n">WS_MAXIMIZEBOX</span> <span class="o">|</span> <span class="n">WS_THICKFRAME</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>This is a dirty hack, but probably FreeGLUT developers will introduce a good solution soon.</p>
 
@@ -220,15 +220,15 @@ when new entries appear.</p>
 
 <p>C/C++</p>
 
-<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="c1">// zero-sized bit fields</span>
-<span class="k">struct</span> <span class="n">S</span>
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="c1">// zero-sized bit fields
+</span><span class="k">struct</span> <span class="n">S</span>
 <span class="p">{</span>
   <span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
-  <span class="kt">int</span> <span class="nl">b</span><span class="p">:</span><span class="mi">2</span><span class="p">;</span>
-  <span class="kt">int</span> <span class="nl">c</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="n">b</span><span class="o">:</span><span class="mi">2</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">c</span><span class="o">:</span><span class="mi">6</span><span class="p">,</span>
   <span class="o">:</span><span class="mi">0</span><span class="p">;</span>
   <span class="kt">int</span> <span class="n">d</span><span class="p">;</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
 
 			
@@ -338,7 +338,7 @@ seen it used in any library I worked with. I also don’t guarantee that it is p
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-50872849-1', 'raycast.net');
   ga('send', 'pageview', {
-    "page": "/page2/index.html",
+    "page": "/page2/",
     "title": 'Home'
   });
 </script>

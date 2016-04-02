@@ -72,10 +72,10 @@ for example they can activate the search when you just start typing, no need to 
 <p>Honestly, I don’t use FAR for my personal needs anymore. But at work I use it sometimes to read logs, so today I’ve hacked the program a bit to make the quick search more usable.
 If you have Visual Studio and experience the same problems, go to Google code and download the source code. Navigate to the file <code>far_unicode/filelist.cpp</code> and add one line:</p>
 
-<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="n">FileList</span><span class="o">::</span><span class="n">FindPartName</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">Name</span><span class="p">,</span><span class="kt">int</span> <span class="n">Next</span><span class="p">,</span><span class="kt">int</span> <span class="n">Direct</span><span class="p">,</span><span class="kt">int</span> <span class="n">ExcludeSets</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="n">FileList</span><span class="o">::</span><span class="n">FindPartName</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">Name</span><span class="p">,</span><span class="kt">int</span> <span class="n">Next</span><span class="p">,</span><span class="kt">int</span> <span class="n">Direct</span><span class="p">,</span><span class="kt">int</span> <span class="n">ExcludeSets</span><span class="p">)</span>
 <span class="p">{</span>
-<span class="cp">#if !defined(Mantis_698)</span>
-    <span class="kt">int</span> <span class="n">DirFind</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="cp">#if !defined(Mantis_698)
+</span> <span class="kt">int</span> <span class="n">DirFind</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="n">string</span> <span class="n">strMask</span> <span class="o">=</span> <span class="n">Name</span><span class="p">;</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">Name</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">IsSlash</span><span class="p">(</span><span class="n">Name</span><span class="p">.</span><span class="n">back</span><span class="p">()))</span>
@@ -84,11 +84,11 @@ If you have Visual Studio and experience the same problems, go to Google code an
         <span class="n">strMask</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span>
     <span class="p">}</span>
 
-<span class="o">+</span>    <span class="n">strMask</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">L&quot;*&quot;</span><span class="p">);</span>
-    <span class="n">strMask</span> <span class="o">+=</span> <span class="s">L&quot;*&quot;</span><span class="p">;</span>
+<span class="o">+</span>    <span class="n">strMask</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">L"*"</span><span class="p">);</span>
+    <span class="n">strMask</span> <span class="o">+=</span> <span class="s">L"*"</span><span class="p">;</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="n">ExcludeSets</span><span class="p">)</span>
-    <span class="p">{</span></code></pre></div>
+    <span class="p">{</span></code></pre></figure>
 
 <p>As you can see, FAR already turns your string into a mask by adding ‘<em>’ to the end. We go further and add ‘</em>’ to the beginning so that the input string
 is searched somewhere in the middle of a file name. Select the required configuration (debug/release, x86/x64) and build the program. Fortunately you
@@ -104,19 +104,6 @@ the necessary command there. That will allow you to start the tool fast and from
 			<div>
 
 			
-	<div id="disqus_thread">
-	</div>
-	<script type="text/javascript">
-		var disqus_shortname = 'raycastnet'; // required: replace example with your forum shortname
-		(function() {
-			var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-			dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-		})();
-	</script>
-	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-	<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
 
 		</div>
 

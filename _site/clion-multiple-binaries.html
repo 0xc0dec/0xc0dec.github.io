@@ -63,39 +63,39 @@
 
 <p>Lets examine the CMakeLists.txt file. The first two lines are added by CLion by default:</p>
 
-<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">cmake_minimum_required</span><span class="p">(</span><span class="n">VERSION</span> <span class="mf">2.8.4</span><span class="p">)</span>
-<span class="n">project</span><span class="p">(</span><span class="n">solo</span><span class="p">)</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">cmake_minimum_required</span><span class="p">(</span><span class="n">VERSION</span> <span class="mf">2.8.4</span><span class="p">)</span>
+<span class="n">project</span><span class="p">(</span><span class="n">solo</span><span class="p">)</span></code></pre></figure>
 
 <p>They state that we want CMake version to be at least 2.8.4, and our project is called <em>solo</em>.</p>
 
 <p>Here comes the first interesting part: we tell CLion where to save the output binaries. By default, they are put into some wierd location like <em>/Users/&lt;username&gt;/Library/Caches/clion10/cmake/generated/707a014b/707a014b/Debug</em>. Here we want to store them in some more conventional place like the <em>build</em> folder inside the project folder:</p>
 
-<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">set</span><span class="p">(</span><span class="n">EXECUTABLE_OUTPUT_PATH</span> <span class="s">&quot;${PROJECT_SOURCE_DIR}/build/&quot;</span><span class="p">)</span>
-<span class="n">set</span><span class="p">(</span><span class="n">LIBRARY_OUTPUT_PATH</span> <span class="s">&quot;${PROJECT_SOURCE_DIR}/build/&quot;</span><span class="p">)</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">set</span><span class="p">(</span><span class="n">EXECUTABLE_OUTPUT_PATH</span> <span class="s">"${PROJECT_SOURCE_DIR}/build/"</span><span class="p">)</span>
+<span class="n">set</span><span class="p">(</span><span class="n">LIBRARY_OUTPUT_PATH</span> <span class="s">"${PROJECT_SOURCE_DIR}/build/"</span><span class="p">)</span></code></pre></figure>
 
 <p>The next line tells CMake to pass specific flags to the Clang compiler:</p>
 
-<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">add_compile_options</span><span class="p">(</span><span class="o">-</span><span class="n">std</span><span class="o">=</span><span class="n">c</span><span class="o">++</span><span class="mi">0</span><span class="n">x</span><span class="p">)</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">add_compile_options</span><span class="p">(</span><span class="o">-</span><span class="n">std</span><span class="o">=</span><span class="n">c</span><span class="o">++</span><span class="mi">0</span><span class="n">x</span><span class="p">)</span></code></pre></figure>
 
 <p>Our library needs some headers to compile, so we tell CMake to search them in a number of directores:</p>
 
-<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">include_directories</span><span class="p">(</span>
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">include_directories</span><span class="p">(</span>
     <span class="err">$</span><span class="p">{</span><span class="n">PROJECT_SOURCE_DIR</span><span class="p">}</span><span class="o">/</span><span class="n">include</span>
-    <span class="err">$</span><span class="p">{</span><span class="n">PROJECT_SOURCE_DIR</span><span class="p">}</span><span class="o">/</span><span class="n">external</span><span class="o">/</span><span class="n">SDL</span><span class="o">/</span><span class="mf">2.0.3</span><span class="o">/</span><span class="n">include</span><span class="p">)</span></code></pre></div>
+    <span class="err">$</span><span class="p">{</span><span class="n">PROJECT_SOURCE_DIR</span><span class="p">}</span><span class="o">/</span><span class="n">external</span><span class="o">/</span><span class="n">SDL</span><span class="o">/</span><span class="mf">2.0.3</span><span class="o">/</span><span class="n">include</span><span class="p">)</span></code></pre></figure>
 
 <p>Here the <em>${PROJECT_SOURCE_DIR}</em> refers to the root project folder.</p>
 
 <p>We also need to specify where to look for the external libraries when linking our library against them:</p>
 
-<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">link_directories</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">PROJECT_SOURCE_DIR</span><span class="p">}</span><span class="o">/</span><span class="n">external</span><span class="o">/</span><span class="n">SDL</span><span class="o">/</span><span class="mf">2.0.3</span><span class="p">)</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">link_directories</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">PROJECT_SOURCE_DIR</span><span class="p">}</span><span class="o">/</span><span class="n">external</span><span class="o">/</span><span class="n">SDL</span><span class="o">/</span><span class="mf">2.0.3</span><span class="p">)</span></code></pre></figure>
 
 <p>Next we tell CMake to find all *.cpp files inside the <em>src</em> folder and put them into the <em>sources</em> variable:</p>
 
-<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">file</span><span class="p">(</span><span class="n">GLOB</span> <span class="n">sources</span> <span class="s">&quot;src/*.cpp&quot;</span><span class="p">)</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">file</span><span class="p">(</span><span class="n">GLOB</span> <span class="n">sources</span> <span class="s">"src/*.cpp"</span><span class="p">)</span></code></pre></figure>
 
 <p>In the next chunk of code we tell CMake to find some frameworks that we&#39;re going to be using, and save their paths to the <em>frameworks</em> variable:</p>
 
-<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">find_library</span><span class="p">(</span><span class="n">carbon_lib</span> <span class="n">Carbon</span><span class="p">)</span> <span class="err">#</span> <span class="n">we</span> <span class="n">look</span> <span class="k">for</span> <span class="n">the</span> <span class="n">Carbon</span> <span class="n">framework</span> <span class="n">and</span> <span class="n">use</span> <span class="n">carbon_lib</span> <span class="n">as</span> <span class="n">an</span> <span class="n">alias</span> <span class="k">for</span> <span class="n">it</span>
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">find_library</span><span class="p">(</span><span class="n">carbon_lib</span> <span class="n">Carbon</span><span class="p">)</span> <span class="err">#</span> <span class="n">we</span> <span class="n">look</span> <span class="k">for</span> <span class="n">the</span> <span class="n">Carbon</span> <span class="n">framework</span> <span class="n">and</span> <span class="n">use</span> <span class="n">carbon_lib</span> <span class="n">as</span> <span class="n">an</span> <span class="n">alias</span> <span class="k">for</span> <span class="n">it</span>
 <span class="n">find_library</span><span class="p">(</span><span class="n">iokit_lib</span> <span class="n">IOKit</span><span class="p">)</span>
 <span class="n">find_library</span><span class="p">(</span><span class="n">forcefeedback_lib</span> <span class="n">ForceFeedback</span><span class="p">)</span>
 <span class="n">find_library</span><span class="p">(</span><span class="n">cocoa_lib</span> <span class="n">Cocoa</span><span class="p">)</span>
@@ -112,27 +112,27 @@
     <span class="err">$</span><span class="p">{</span><span class="n">audiounit_lib</span><span class="p">}</span>
     <span class="err">$</span><span class="p">{</span><span class="n">coreaudio_lib</span><span class="p">}</span>
     <span class="err">$</span><span class="p">{</span><span class="n">opengl_lib</span><span class="p">}</span>
-    <span class="err">$</span><span class="p">{</span><span class="n">corefoundation_lib</span><span class="p">})</span></code></pre></div>
+    <span class="err">$</span><span class="p">{</span><span class="n">corefoundation_lib</span><span class="p">})</span></code></pre></figure>
 
 <p>Finally, we say that we want to build a static library from the given sources and link it against the <em>SDL2</em> library and the frameworks that we found before:</p>
 
-<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">add_library</span><span class="p">(</span><span class="n">solo</span> <span class="n">STATIC</span> <span class="err">$</span><span class="p">{</span><span class="n">sources</span><span class="p">})</span>
-<span class="n">target_link_libraries</span><span class="p">(</span><span class="n">solo</span> <span class="n">SDL2</span> <span class="err">$</span><span class="p">{</span><span class="n">frameworks</span><span class="p">})</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">add_library</span><span class="p">(</span><span class="n">solo</span> <span class="n">STATIC</span> <span class="err">$</span><span class="p">{</span><span class="n">sources</span><span class="p">})</span>
+<span class="n">target_link_libraries</span><span class="p">(</span><span class="n">solo</span> <span class="n">SDL2</span> <span class="err">$</span><span class="p">{</span><span class="n">frameworks</span><span class="p">})</span></code></pre></figure>
 
 <p>Adding the second binary (the <em>Test1</em> executable) is as easy as it is. We tell CMake to build it from the <em>Main.cpp</em> file and link agains the <em>solo</em> library:</p>
 
-<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">add_executable</span><span class="p">(</span><span class="n">Test1</span> <span class="n">tests</span><span class="o">/</span><span class="n">test1</span><span class="o">/</span><span class="n">Main</span><span class="p">.</span><span class="n">cpp</span><span class="p">)</span>
-<span class="n">target_link_libraries</span><span class="p">(</span><span class="n">Test1</span> <span class="n">LINK_PUBLIC</span> <span class="n">solo</span><span class="p">)</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">add_executable</span><span class="p">(</span><span class="n">Test1</span> <span class="n">tests</span><span class="o">/</span><span class="n">test1</span><span class="o">/</span><span class="n">Main</span><span class="p">.</span><span class="n">cpp</span><span class="p">)</span>
+<span class="n">target_link_libraries</span><span class="p">(</span><span class="n">Test1</span> <span class="n">LINK_PUBLIC</span> <span class="n">solo</span><span class="p">)</span></code></pre></figure>
 
 <p>Now if you hit <em>Cmd + F9</em> (Build), you should see two new files inside the <em>build</em> folder: <em>Test1</em> and <em>libsolo.a</em>.</p>
 
 <p>The whole CMakeLists.txt file:</p>
 
-<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">cmake_minimum_required</span><span class="p">(</span><span class="n">VERSION</span> <span class="mf">2.8.4</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">cmake_minimum_required</span><span class="p">(</span><span class="n">VERSION</span> <span class="mf">2.8.4</span><span class="p">)</span>
 <span class="n">project</span><span class="p">(</span><span class="n">solo</span><span class="p">)</span>
 
-<span class="n">set</span><span class="p">(</span><span class="n">EXECUTABLE_OUTPUT_PATH</span> <span class="s">&quot;${PROJECT_SOURCE_DIR}/build/&quot;</span><span class="p">)</span>
-<span class="n">set</span><span class="p">(</span><span class="n">LIBRARY_OUTPUT_PATH</span> <span class="s">&quot;${PROJECT_SOURCE_DIR}/build/&quot;</span><span class="p">)</span>
+<span class="n">set</span><span class="p">(</span><span class="n">EXECUTABLE_OUTPUT_PATH</span> <span class="s">"${PROJECT_SOURCE_DIR}/build/"</span><span class="p">)</span>
+<span class="n">set</span><span class="p">(</span><span class="n">LIBRARY_OUTPUT_PATH</span> <span class="s">"${PROJECT_SOURCE_DIR}/build/"</span><span class="p">)</span>
 
 <span class="n">add_compile_options</span><span class="p">(</span><span class="o">-</span><span class="n">std</span><span class="o">=</span><span class="n">c</span><span class="o">++</span><span class="mi">0</span><span class="n">x</span><span class="p">)</span>
 
@@ -142,9 +142,9 @@
 
 <span class="n">link_directories</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">PROJECT_SOURCE_DIR</span><span class="p">}</span><span class="o">/</span><span class="n">external</span><span class="o">/</span><span class="n">SDL</span><span class="o">/</span><span class="mf">2.0.3</span><span class="p">)</span>
 
-<span class="cp"># Engine</span>
-
-<span class="n">file</span><span class="p">(</span><span class="n">GLOB</span> <span class="n">sources</span> <span class="s">&quot;src/*.cpp&quot;</span><span class="p">)</span>
+<span class="cp"># Engine
+</span>
+<span class="n">file</span><span class="p">(</span><span class="n">GLOB</span> <span class="n">sources</span> <span class="s">"src/*.cpp"</span><span class="p">)</span>
 
 <span class="n">find_library</span><span class="p">(</span><span class="n">carbon_lib</span> <span class="n">Carbon</span><span class="p">)</span>
 <span class="n">find_library</span><span class="p">(</span><span class="n">iokit_lib</span> <span class="n">IOKit</span><span class="p">)</span>
@@ -168,9 +168,9 @@
 <span class="n">add_library</span><span class="p">(</span><span class="n">solo</span> <span class="n">STATIC</span> <span class="err">$</span><span class="p">{</span><span class="n">sources</span><span class="p">})</span>
 <span class="n">target_link_libraries</span><span class="p">(</span><span class="n">solo</span> <span class="n">SDL2</span> <span class="err">$</span><span class="p">{</span><span class="n">frameworks</span><span class="p">})</span>
 
-<span class="cp"># Tests</span>
-<span class="n">add_executable</span><span class="p">(</span><span class="n">Test1</span> <span class="n">tests</span><span class="o">/</span><span class="n">test1</span><span class="o">/</span><span class="n">Main</span><span class="p">.</span><span class="n">cpp</span><span class="p">)</span>
-<span class="n">target_link_libraries</span><span class="p">(</span><span class="n">Test1</span> <span class="n">LINK_PUBLIC</span> <span class="n">solo</span><span class="p">)</span></code></pre></div>
+<span class="cp"># Tests
+</span><span class="n">add_executable</span><span class="p">(</span><span class="n">Test1</span> <span class="n">tests</span><span class="o">/</span><span class="n">test1</span><span class="o">/</span><span class="n">Main</span><span class="p">.</span><span class="n">cpp</span><span class="p">)</span>
+<span class="n">target_link_libraries</span><span class="p">(</span><span class="n">Test1</span> <span class="n">LINK_PUBLIC</span> <span class="n">solo</span><span class="p">)</span></code></pre></figure>
 
 <h3>Conclusion</h3>
 
@@ -182,19 +182,6 @@
 			<div>
 
 			
-	<div id="disqus_thread">
-	</div>
-	<script type="text/javascript">
-		var disqus_shortname = 'raycastnet'; // required: replace example with your forum shortname
-		(function() {
-			var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-			dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-		})();
-	</script>
-	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-	<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
 
 		</div>
 

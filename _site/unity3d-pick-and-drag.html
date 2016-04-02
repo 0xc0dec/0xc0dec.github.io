@@ -127,7 +127,7 @@ When nothing happens, the visual avatar moves with the camera.</p>
 
 <p>Below is the code with some explaining comments:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">HeldObject</span> <span class="p">:</span> <span class="n">MonoBehaviour</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">HeldObject</span> <span class="p">:</span> <span class="n">MonoBehaviour</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="kt">bool</span> <span class="n">IsColliding</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
 
@@ -150,8 +150,8 @@ When nothing happens, the visual avatar moves with the camera.</p>
 
 <span class="k">public</span> <span class="k">class</span> <span class="nc">PlayerPick</span> <span class="p">:</span> <span class="n">MonoBehaviour</span>
 <span class="p">{</span>
-    <span class="c1">// Maximum distance from the camera at which the object can be picked up</span>
-    <span class="k">public</span> <span class="kt">float</span> <span class="n">MaxPickDistance</span><span class="p">;</span>
+    <span class="c1">// Maximum distance from the camera at which the object can be picked up
+</span> <span class="k">public</span> <span class="kt">float</span> <span class="n">MaxPickDistance</span><span class="p">;</span>
     <span class="k">public</span> <span class="kt">float</span> <span class="n">ThrowStrength</span> <span class="p">=</span> <span class="m">10</span><span class="p">;</span>
     <span class="k">public</span> <span class="kt">float</span> <span class="n">HeldObjectFollowStrength</span> <span class="p">=</span> <span class="m">50</span><span class="p">;</span>
 
@@ -159,9 +159,9 @@ When nothing happens, the visual avatar moves with the camera.</p>
     <span class="k">private</span> <span class="n">Camera</span> <span class="n">_playerCam</span><span class="p">;</span>
     <span class="k">private</span> <span class="n">GameObject</span> <span class="n">_pivot</span><span class="p">;</span>
 
-    <span class="k">private</span> <span class="n">HeldObject</span> <span class="n">_heldObject</span><span class="p">;</span> <span class="c1">// physical avatar</span>
-    <span class="k">private</span> <span class="n">GameObject</span> <span class="n">_heldBodyAvatar</span><span class="p">;</span> <span class="c1">// visual avatar</span>
-    <span class="k">private</span> <span class="kt">float</span> <span class="n">_heldBodyAngularDrag</span><span class="p">;</span>
+    <span class="k">private</span> <span class="n">HeldObject</span> <span class="n">_heldObject</span><span class="p">;</span> <span class="c1">// physical avatar
+</span> <span class="k">private</span> <span class="n">GameObject</span> <span class="n">_heldBodyAvatar</span><span class="p">;</span> <span class="c1">// visual avatar
+</span> <span class="k">private</span> <span class="kt">float</span> <span class="n">_heldBodyAngularDrag</span><span class="p">;</span>
 
     <span class="k">private</span> <span class="n">RaycastHit</span><span class="p">?</span> <span class="n">_raycast</span><span class="p">;</span>
 
@@ -174,29 +174,29 @@ When nothing happens, the visual avatar moves with the camera.</p>
 
     <span class="k">private</span> <span class="k">void</span> <span class="nf">Update</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="n">Raycast</span><span class="p">();</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">Input</span><span class="p">.</span><span class="n">GetKeyDown</span><span class="p">(</span><span class="n">KeyCode</span><span class="p">.</span><span class="n">E</span><span class="p">))</span>
+        <span class="nf">Raycast</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">Input</span><span class="p">.</span><span class="nf">GetKeyDown</span><span class="p">(</span><span class="n">KeyCode</span><span class="p">.</span><span class="n">E</span><span class="p">))</span>
         <span class="p">{</span>
             <span class="k">if</span> <span class="p">(!</span><span class="n">_heldObject</span><span class="p">)</span>
-                <span class="n">TakeObject</span><span class="p">();</span>
+                <span class="nf">TakeObject</span><span class="p">();</span>
             <span class="k">else</span>
                 <span class="nf">ReleaseObject</span><span class="p">();</span>
         <span class="p">}</span>
-        <span class="n">HoldObject</span><span class="p">();</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">Input</span><span class="p">.</span><span class="n">GetMouseButton</span><span class="p">(</span><span class="m">0</span><span class="p">)</span> <span class="p">&amp;&amp;</span> <span class="n">_heldObject</span><span class="p">)</span>
-            <span class="n">ThrowObject</span><span class="p">();</span>
+        <span class="nf">HoldObject</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">Input</span><span class="p">.</span><span class="nf">GetMouseButton</span><span class="p">(</span><span class="m">0</span><span class="p">)</span> <span class="p">&amp;&amp;</span> <span class="n">_heldObject</span><span class="p">)</span>
+            <span class="nf">ThrowObject</span><span class="p">();</span>
     <span class="p">}</span>
 
     <span class="k">private</span> <span class="k">void</span> <span class="nf">Raycast</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="n">_raycast</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
         <span class="k">const</span> <span class="kt">int</span> <span class="n">layerMask</span> <span class="p">=</span> <span class="m">1</span> <span class="p">&lt;&lt;</span> <span class="m">8</span><span class="p">;</span>
-        <span class="kt">var</span> <span class="n">raycastHits</span> <span class="p">=</span> <span class="n">Physics</span><span class="p">.</span><span class="n">RaycastAll</span><span class="p">(</span><span class="n">_playerCam</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">,</span> <span class="n">_playerCam</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">forward</span><span class="p">,</span>
+        <span class="n">var</span> <span class="n">raycastHits</span> <span class="p">=</span> <span class="n">Physics</span><span class="p">.</span><span class="nf">RaycastAll</span><span class="p">(</span><span class="n">_playerCam</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">,</span> <span class="n">_playerCam</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">forward</span><span class="p">,</span>
                                              <span class="n">MaxPickDistance</span><span class="p">,</span> <span class="p">~</span><span class="n">layerMask</span><span class="p">);</span>
-        <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">hit</span> <span class="k">in</span> <span class="n">raycastHits</span><span class="p">)</span>
+        <span class="k">foreach</span> <span class="p">(</span><span class="n">var</span> <span class="n">hit</span> <span class="k">in</span> <span class="n">raycastHits</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">hit</span><span class="p">.</span><span class="n">collider</span> <span class="p">==</span> <span class="n">_player</span><span class="p">.</span><span class="n">collider</span> <span class="p">||</span> <span class="p">!</span><span class="n">hit</span><span class="p">.</span><span class="n">collider</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">)</span> <span class="c1">// avoid colliding with the player object itself</span>
-                <span class="k">continue</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">hit</span><span class="p">.</span><span class="n">collider</span> <span class="p">==</span> <span class="n">_player</span><span class="p">.</span><span class="n">collider</span> <span class="p">||</span> <span class="p">!</span><span class="n">hit</span><span class="p">.</span><span class="n">collider</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">)</span> <span class="c1">// avoid colliding with the player object itself
+</span>             <span class="k">continue</span><span class="p">;</span>
             <span class="n">_raycast</span> <span class="p">=</span> <span class="n">hit</span><span class="p">;</span>
         <span class="p">}</span>
     <span class="p">}</span>
@@ -205,15 +205,15 @@ When nothing happens, the visual avatar moves with the camera.</p>
     <span class="p">{</span>
         <span class="k">if</span> <span class="p">(!</span><span class="n">_heldObject</span><span class="p">)</span>
             <span class="k">return</span><span class="p">;</span>
-        <span class="c1">// Drag the physical avatar by changing its velocity</span>
-        <span class="n">_heldObject</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">.</span><span class="n">velocity</span> <span class="p">=</span> <span class="n">HeldObjectFollowStrength</span> <span class="p">*</span> <span class="p">(</span><span class="n">_pivot</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span> <span class="p">-</span> <span class="n">_heldObject</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">);</span>
-        <span class="c1">// When the physical avatar collides, we move the visual one to the same position. When this doesn&#39;t happen,</span>
-        <span class="c1">// move the visuals back to the pivot point.</span>
-        <span class="n">_heldBodyAvatar</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span> <span class="p">=</span> <span class="n">_heldObject</span><span class="p">.</span><span class="n">IsColliding</span>
+        <span class="c1">// Drag the physical avatar by changing its velocity
+</span>     <span class="n">_heldObject</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">.</span><span class="n">velocity</span> <span class="p">=</span> <span class="n">HeldObjectFollowStrength</span> <span class="p">*</span> <span class="p">(</span><span class="n">_pivot</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span> <span class="p">-</span> <span class="n">_heldObject</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">);</span>
+        <span class="c1">// When the physical avatar collides, we move the visual one to the same position. When this doesn't happen,
+</span>     <span class="c1">// move the visuals back to the pivot point.
+</span>     <span class="n">_heldBodyAvatar</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span> <span class="p">=</span> <span class="n">_heldObject</span><span class="p">.</span><span class="n">IsColliding</span>
             <span class="p">?</span> <span class="n">_heldObject</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span>
             <span class="p">:</span> <span class="n">_pivot</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">;</span>
-        <span class="c1">// If the physical avatar is colliding with something, change visuals rotation to correspond</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">_heldObject</span><span class="p">.</span><span class="n">IsColliding</span><span class="p">)</span>
+        <span class="c1">// If the physical avatar is colliding with something, change visuals rotation to correspond
+</span>     <span class="k">if</span> <span class="p">(</span><span class="n">_heldObject</span><span class="p">.</span><span class="n">IsColliding</span><span class="p">)</span>
             <span class="n">_heldBodyAvatar</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">rotation</span> <span class="p">=</span> <span class="n">_heldObject</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">rotation</span><span class="p">;</span>
     <span class="p">}</span>
 
@@ -222,16 +222,16 @@ When nothing happens, the visual avatar moves with the camera.</p>
         <span class="k">if</span> <span class="p">(!</span><span class="n">_raycast</span><span class="p">.</span><span class="n">HasValue</span><span class="p">)</span>
             <span class="k">return</span><span class="p">;</span>
 
-        <span class="kt">var</span> <span class="n">heldBody</span> <span class="p">=</span> <span class="n">_raycast</span><span class="p">.</span><span class="n">Value</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">;</span>
+        <span class="n">var</span> <span class="n">heldBody</span> <span class="p">=</span> <span class="n">_raycast</span><span class="p">.</span><span class="n">Value</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">;</span>
         <span class="n">heldBody</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span> <span class="p">=</span> <span class="n">_pivot</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">;</span>
         <span class="n">heldBody</span><span class="p">.</span><span class="n">useGravity</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
 
         <span class="n">_heldBodyAngularDrag</span> <span class="p">=</span> <span class="n">heldBody</span><span class="p">.</span><span class="n">angularDrag</span><span class="p">;</span>
-        <span class="n">heldBody</span><span class="p">.</span><span class="n">angularDrag</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span> <span class="c1">// so that the object doesn&#39;t continue rotating after each collision</span>
-        <span class="n">heldBody</span><span class="p">.</span><span class="n">renderer</span><span class="p">.</span><span class="n">enabled</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+        <span class="n">heldBody</span><span class="p">.</span><span class="n">angularDrag</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span> <span class="c1">// so that the object doesn't continue rotating after each collision
+</span>     <span class="n">heldBody</span><span class="p">.</span><span class="n">renderer</span><span class="p">.</span><span class="n">enabled</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
         <span class="n">_heldObject</span> <span class="p">=</span> <span class="n">heldBody</span><span class="p">.</span><span class="n">gameObject</span><span class="p">.</span><span class="n">AddComponent</span><span class="p">&lt;</span><span class="n">HeldObject</span><span class="p">&gt;();</span>
 
-        <span class="n">_heldBodyAvatar</span> <span class="p">=</span> <span class="k">new</span> <span class="n">GameObject</span><span class="p">(</span><span class="s">&quot;Held body avatar&quot;</span><span class="p">);</span>
+        <span class="n">_heldBodyAvatar</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">GameObject</span><span class="p">(</span><span class="s">"Held body avatar"</span><span class="p">);</span>
         <span class="n">_heldBodyAvatar</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">parent</span> <span class="p">=</span> <span class="n">_playerCam</span><span class="p">.</span><span class="n">transform</span><span class="p">;</span>
         <span class="n">_heldBodyAvatar</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span> <span class="p">=</span> <span class="n">_pivot</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">;</span>
         <span class="n">_heldBodyAvatar</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">rotation</span> <span class="p">=</span> <span class="n">heldBody</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">rotation</span><span class="p">;</span>
@@ -239,30 +239,30 @@ When nothing happens, the visual avatar moves with the camera.</p>
         <span class="n">_heldBodyAvatar</span><span class="p">.</span><span class="n">AddComponent</span><span class="p">&lt;</span><span class="n">MeshFilter</span><span class="p">&gt;().</span><span class="n">sharedMesh</span> <span class="p">=</span> <span class="n">heldBody</span><span class="p">.</span><span class="n">gameObject</span><span class="p">.</span><span class="n">GetComponent</span><span class="p">&lt;</span><span class="n">MeshFilter</span><span class="p">&gt;().</span><span class="n">sharedMesh</span><span class="p">;</span>
         <span class="n">_heldBodyAvatar</span><span class="p">.</span><span class="n">AddComponent</span><span class="p">&lt;</span><span class="n">MeshRenderer</span><span class="p">&gt;().</span><span class="n">sharedMaterial</span> <span class="p">=</span> <span class="n">heldBody</span><span class="p">.</span><span class="n">gameObject</span><span class="p">.</span><span class="n">renderer</span><span class="p">.</span><span class="n">sharedMaterial</span><span class="p">;</span>
 
-        <span class="n">Physics</span><span class="p">.</span><span class="n">IgnoreCollision</span><span class="p">(</span><span class="n">heldBody</span><span class="p">.</span><span class="n">collider</span><span class="p">,</span> <span class="n">Player</span><span class="p">.</span><span class="n">Controller</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+        <span class="n">Physics</span><span class="p">.</span><span class="nf">IgnoreCollision</span><span class="p">(</span><span class="n">heldBody</span><span class="p">.</span><span class="n">collider</span><span class="p">,</span> <span class="n">Player</span><span class="p">.</span><span class="n">Controller</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="k">private</span> <span class="k">void</span> <span class="nf">ReleaseObject</span><span class="p">(</span><span class="n">Action</span> <span class="n">onRelease</span> <span class="p">=</span> <span class="k">null</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="n">Physics</span><span class="p">.</span><span class="n">IgnoreCollision</span><span class="p">(</span><span class="n">_heldObject</span><span class="p">.</span><span class="n">collider</span><span class="p">,</span> <span class="n">Player</span><span class="p">.</span><span class="n">Controller</span><span class="p">,</span> <span class="k">false</span><span class="p">);</span>
+        <span class="n">Physics</span><span class="p">.</span><span class="nf">IgnoreCollision</span><span class="p">(</span><span class="n">_heldObject</span><span class="p">.</span><span class="n">collider</span><span class="p">,</span> <span class="n">Player</span><span class="p">.</span><span class="n">Controller</span><span class="p">,</span> <span class="k">false</span><span class="p">);</span>
         <span class="n">_heldObject</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">.</span><span class="n">useGravity</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
         <span class="n">_heldObject</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">.</span><span class="n">angularDrag</span> <span class="p">=</span> <span class="n">_heldBodyAngularDrag</span><span class="p">;</span>
         <span class="n">_heldObject</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span> <span class="p">=</span> <span class="n">_heldBodyAvatar</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">;</span>
         <span class="n">_heldObject</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">rotation</span> <span class="p">=</span> <span class="n">_heldBodyAvatar</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">rotation</span><span class="p">;</span>
         <span class="n">_heldObject</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">.</span><span class="n">renderer</span><span class="p">.</span><span class="n">enabled</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
         <span class="n">_heldBodyAvatar</span><span class="p">.</span><span class="n">renderer</span><span class="p">.</span><span class="n">enabled</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
-        <span class="n">Destroy</span><span class="p">(</span><span class="n">_heldObject</span><span class="p">);</span>
-        <span class="n">Destroy</span><span class="p">(</span><span class="n">_heldBodyAvatar</span><span class="p">);</span>
+        <span class="nf">Destroy</span><span class="p">(</span><span class="n">_heldObject</span><span class="p">);</span>
+        <span class="nf">Destroy</span><span class="p">(</span><span class="n">_heldBodyAvatar</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">onRelease</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
-            <span class="n">onRelease</span><span class="p">();</span>
+            <span class="nf">onRelease</span><span class="p">();</span>
         <span class="n">_heldObject</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
     <span class="p">}</span>
 
     <span class="k">private</span> <span class="k">void</span> <span class="nf">ThrowObject</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="n">ReleaseObject</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="n">_heldObject</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">.</span><span class="n">AddForce</span><span class="p">(</span><span class="n">_playerCam</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">forward</span> <span class="p">*</span> <span class="n">ThrowStrength</span><span class="p">,</span> <span class="n">ForceMode</span><span class="p">.</span><span class="n">Impulse</span><span class="p">));</span>
+        <span class="nf">ReleaseObject</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="n">_heldObject</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">.</span><span class="nf">AddForce</span><span class="p">(</span><span class="n">_playerCam</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">forward</span> <span class="p">*</span> <span class="n">ThrowStrength</span><span class="p">,</span> <span class="n">ForceMode</span><span class="p">.</span><span class="n">Impulse</span><span class="p">));</span>
     <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>This algorithm could probably be improved by, for example, simplifying the <code>TakeObject</code> method. If the body that has been picked has complex visuals and a lot of components on it,
 it might be easier not to copy everything into a new visual avatar. Instead, you can leave the visuals on the object, and just create a new physical avatar. In my case
@@ -274,19 +274,6 @@ the object itself remains physical, and all visuals go to the new object.</p>
 			<div>
 
 			
-	<div id="disqus_thread">
-	</div>
-	<script type="text/javascript">
-		var disqus_shortname = 'raycastnet'; // required: replace example with your forum shortname
-		(function() {
-			var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-			dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-		})();
-	</script>
-	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-	<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
 
 		</div>
 

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>C++ embedded scripting&#58; LuaIntf recipes | Raycast</title>
+
+		<link href="/css/vendor/bootstrap.min.css" rel="stylesheet">
+    	<link href="/css/flat-ui.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="/css/style.css"/>
+		<link rel="stylesheet" href="/css/syntax.css" media="screen"/>
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox.css" media="screen"/>
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-buttons.css" media="screen" />
+		<link rel="stylesheet" href="/css/fancybox/jquery.fancybox-thumbs.css" media="screen" />
+		<link rel="shortcut icon" type="image/png" href="/images/gamepad.png">
+	</head>
+	<body>
+		<div class="container page">
+			<div class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/">
+				<img src="/images/gamepad_large.png"/>
+			</a>
+			<div class="navbar-text">Home page of one programmer</div>
+		</div>
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="/">Articles</a></li>
+			<li><a href="/portfolio/">Portfolio</a></li>
+			<li><a href="/about/">About</a></li>
+		</ul>
+	</div>
+</div>
+
+
+			<div class="content">
+				<div class="article">
+	<div class="row">
+		<div class="col-xs-12">
+			<h2>C++ embedded scripting&#58; LuaIntf recipes</h2>
+			
+				<span class="small text-muted">30 Sep 2015</span>
+			
+		</div>
+	</div>
+	
+	<div class="article-content">
+		<p>In <a href="/chaiscript-recipes">my previous post</a> on C++ embedded scripting I talked about ChaiScript and described how to implement some tricky cases
+when embedding this language into your C++ application.
+Although the language is really interesting, there are some flaws in it that I find serious, like, for example, not very rich syntax or long compilation times.</p>
+
+<p>Having said that, I decided to search again in attempt to find a good Lua binding library. After some research I found one - <a href="https://github.com/SteveKChiu/lua-intf">LuaInft</a> (C++11), which I want to talk about today.
+A good documentation (at least it has one!) plus the fact that its author positions the library as a modern remake of LuaBridge (another good, but abandoned library), attracted my attention immediately.</p>
+
+<!--break-->
+
+<p>As with many libraries, at some point you&#39;ll come across a task that you won&#39;t find in the documentation.
+The major flaw of LuaInft is the lack of tests or samples that could shed more light on the examples of library usage, aside from rather &quot;generic&quot; docs.
+This article is aimed at saving your time and fixing this particular problem. I&#39;ll illustrate the results of my experiments with this library in a form
+of code examples - the way that I find most convenient for learning libraries and discovering their possibilities.
+Be warned: consult documentation a lot if you don&#39;t know the very basics yet. These snippets won&#39;t cover
+things that are in the docs already.</p>
+
+<p>Lets start with the bare minimum - the <strong>simplest, ready-to-use program running LuaIntf</strong>. Unfortunately the documentation doesn&#39;t seem to have it in one piece:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="cp">#include &lt;LuaIntf.h&gt;
+</span>
+<span class="k">namespace</span> <span class="n">LuaIntf</span>
+<span class="p">{</span>
+    <span class="c1">// Enable support for shared_ptr, vector and map.
+</span> <span class="c1">// This will allow us to use shared_ptr almost interchangeably with raw pointers,
+</span> <span class="c1">// as well as use Lua tables to handle C++ vectors and maps
+</span> <span class="n">LUA_USING_SHARED_PTR_TYPE</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="p">)</span>
+    <span class="n">LUA_USING_LIST_TYPE</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="p">)</span>
+    <span class="n">LUA_USING_MAP_TYPE</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="k">namespace</span> <span class="n">LuaIntf</span><span class="p">;</span>
+    <span class="n">LuaState</span> <span class="n">lua</span><span class="p">;</span>
+    <span class="n">lua</span><span class="p">.</span><span class="n">openLibs</span><span class="p">();</span>
+    <span class="n">lua</span><span class="p">.</span><span class="n">doString</span><span class="p">(</span><span class="s">"lua code here"</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>(btw, setting header search paths and linking to the library is outside the scope of this article).</p>
+
+<p>Let&#39;s <strong>bind some enums</strong>. Unfortunately if you Ctrl+F &quot;enum&quot; in the docs, you&#39;ll find no mentions. I can think of two ways:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">enum</span> <span class="k">class</span> <span class="nc">TestEnum</span> <span class="c1">// should be no different from classic enums
+</span><span class="p">{</span>
+    <span class="n">Value</span>
+<span class="p">};</span>
+
+<span class="n">LuaBinding</span><span class="p">(</span><span class="n">lua</span><span class="p">).</span><span class="n">beginModule</span><span class="p">(</span><span class="s">"test"</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">addConstant</span><span class="p">(</span><span class="s">"TestEnum_Value"</span><span class="p">,</span> <span class="n">TestEnum</span><span class="o">::</span><span class="n">Value</span><span class="p">)</span>
+<span class="p">.</span><span class="n">endModule</span><span class="p">();</span>
+
+<span class="c1">// or
+</span>
+<span class="n">LuaBinding</span><span class="p">(</span><span class="n">lua</span><span class="p">).</span><span class="n">beginModule</span><span class="p">(</span><span class="s">"test"</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">beginModule</span><span class="p">(</span><span class="s">"TestEnum"</span><span class="p">)</span>
+        <span class="p">.</span><span class="n">addConstant</span><span class="p">(</span><span class="s">"Value"</span><span class="p">,</span> <span class="n">TestEnum</span><span class="o">::</span><span class="n">Value</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">endModule</span><span class="p">()</span>
+<span class="p">.</span><span class="n">endModule</span><span class="p">();</span>
+
+<span class="c1">// Lua
+</span><span class="n">print</span><span class="p">(</span><span class="n">test</span><span class="p">.</span><span class="n">TestEnum_Value</span><span class="p">)</span>
+<span class="o">--</span> <span class="n">or</span>
+<span class="n">print</span><span class="p">(</span><span class="n">test</span><span class="p">.</span><span class="n">TestEnum</span><span class="p">.</span><span class="n">Value</span><span class="p">)</span></code></pre></figure>
+
+<p>The second way is probably better, because it&#39;d allow you to easily enumerate all enum values in Lua. If it&#39;s ever needed.</p>
+
+<p>Working with <strong>inheritance and smart pointers</strong>:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">Base</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">Base</span><span class="p">()</span> <span class="p">{}</span>
+    <span class="k">virtual</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">first</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="kt">int</span> <span class="n">second</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">123</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">A</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Base</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">virtual</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">first</span><span class="p">()</span> <span class="n">override</span> <span class="p">{</span> <span class="k">return</span> <span class="s">"Hello, world"</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">virtual</span> <span class="kt">int</span> <span class="n">second</span><span class="p">()</span> <span class="k">const</span> <span class="n">override</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">2</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">virtual</span> <span class="kt">int</span> <span class="n">third</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">3</span><span class="p">;</span> <span class="p">}</span>
+    <span class="kt">int</span> <span class="n">fourth</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">4</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Base</span><span class="o">&gt;</span> <span class="n">make</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="c1">// ...
+</span>
+<span class="n">LuaBinding</span><span class="p">(</span><span class="n">lua</span><span class="p">).</span><span class="n">beginModule</span><span class="p">(</span><span class="s">"test"</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">beginClass</span><span class="o">&lt;</span><span class="n">Base</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"Base"</span><span class="p">)</span>
+        <span class="p">.</span><span class="n">addFunction</span><span class="p">(</span><span class="s">"first"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Base</span><span class="o">::</span><span class="n">first</span><span class="p">)</span>
+        <span class="p">.</span><span class="n">addFunction</span><span class="p">(</span><span class="s">"second"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Base</span><span class="o">::</span><span class="n">second</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">endClass</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">beginExtendClass</span><span class="o">&lt;</span><span class="n">A</span><span class="p">,</span> <span class="n">Base</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"A"</span><span class="p">)</span>
+        <span class="p">.</span><span class="n">addFunction</span><span class="p">(</span><span class="s">"third"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">third</span><span class="p">)</span>
+        <span class="p">.</span><span class="n">addFunction</span><span class="p">(</span><span class="s">"fourth"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">fourth</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">endClass</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">addFunction</span><span class="p">(</span><span class="s">"make"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">make</span><span class="p">)</span>
+<span class="p">.</span><span class="n">endModule</span><span class="p">();</span>
+
+<span class="c1">// Lua
+</span><span class="n">local</span> <span class="n">a</span> <span class="o">=</span> <span class="n">test</span><span class="p">.</span><span class="n">make</span><span class="p">()</span>
+<span class="n">print</span><span class="p">(</span><span class="n">a</span><span class="o">:</span><span class="n">first</span><span class="p">())</span>
+<span class="n">print</span><span class="p">(</span><span class="n">a</span><span class="o">:</span><span class="n">second</span><span class="p">())</span>
+<span class="n">print</span><span class="p">(</span><span class="n">a</span><span class="o">:</span><span class="n">third</span><span class="p">())</span>
+<span class="n">print</span><span class="p">(</span><span class="n">a</span><span class="o">:</span><span class="n">fourth</span><span class="p">())</span>
+
+<span class="c1">// Output
+</span><span class="n">Hello</span><span class="p">,</span> <span class="n">world</span>
+<span class="mi">2</span>
+<span class="mi">3</span>
+<span class="mi">4</span></code></pre></figure>
+
+<p>So basically if you have a pointer to an object Lua will figure out what methods are available on it and perform downcast if needed.</p>
+
+<p><strong>Passing Lua objects to C++ code</strong>:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">acceptStuff</span><span class="p">(</span><span class="n">LuaRef</span> <span class="n">luaObj</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">stringVector</span><span class="p">,</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">dict</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Assume that this function expects Lua object (table) as first argument
+</span> <span class="k">auto</span> <span class="n">func</span> <span class="o">=</span> <span class="n">luaObj</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="s">"func"</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">stringField</span> <span class="o">=</span> <span class="n">luaObj</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"str"</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">ostringstream</span> <span class="n">s</span><span class="p">;</span>
+    <span class="n">s</span> <span class="o">&lt;&lt;</span> <span class="s">"func() result: "</span> <span class="o">&lt;&lt;</span> <span class="n">func</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">", string field value: "</span> <span class="o">&lt;&lt;</span> <span class="n">stringField</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+    <span class="n">s</span> <span class="o">&lt;&lt;</span> <span class="s">"Vector size: "</span> <span class="o">&lt;&lt;</span> <span class="n">stringVector</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">", first element: "</span> <span class="o">&lt;&lt;</span> <span class="n">stringVector</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+    <span class="n">s</span> <span class="o">&lt;&lt;</span> <span class="s">"Dictionary size: "</span> <span class="o">&lt;&lt;</span> <span class="n">dict</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">", first element: ("</span> <span class="o">&lt;&lt;</span>
+        <span class="n">dict</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">&lt;&lt;</span> <span class="s">", "</span> <span class="o">&lt;&lt;</span> <span class="n">dict</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">second</span> <span class="o">&lt;&lt;</span> <span class="s">")"</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">s</span><span class="p">.</span><span class="n">str</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">LuaBinding</span><span class="p">(</span><span class="n">lua</span><span class="p">).</span><span class="n">beginModule</span><span class="p">(</span><span class="s">"test"</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">addFunction</span><span class="p">(</span><span class="s">"acceptStuff"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">acceptStuff</span><span class="p">)</span>
+<span class="p">.</span><span class="n">endModule</span><span class="p">();</span>
+
+<span class="c1">// Lua
+</span><span class="n">local</span> <span class="n">obj</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">func</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s">"You passed number "</span> <span class="p">..</span> <span class="n">i</span>
+    <span class="n">end</span><span class="p">,</span>
+    <span class="n">str</span> <span class="o">=</span> <span class="s">"Hello, world"</span>
+<span class="p">}</span>
+<span class="n">local</span> <span class="n">v</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="n">local</span> <span class="n">dict</span> <span class="o">=</span> <span class="p">{</span> <span class="n">first</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">second</span> <span class="o">=</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="n">print</span><span class="p">(</span><span class="n">test</span><span class="p">.</span><span class="n">acceptStuff</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dict</span><span class="p">))</span>
+
+<span class="c1">// Output
+</span><span class="n">func</span><span class="p">()</span> <span class="n">result</span><span class="o">:</span> <span class="n">You</span> <span class="n">passed</span> <span class="n">number</span> <span class="mi">10</span><span class="p">,</span> <span class="n">string</span> <span class="n">field</span> <span class="n">value</span><span class="o">:</span> <span class="n">Hello</span><span class="p">,</span> <span class="n">world</span>
+<span class="n">Vector</span> <span class="n">size</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span> <span class="n">first</span> <span class="n">element</span><span class="o">:</span> <span class="mi">1</span>
+<span class="n">Dictionary</span> <span class="n">size</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="n">first</span> <span class="n">element</span><span class="o">:</span> <span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></code></pre></figure>
+
+<p>Now to the interesting part: <strong>attaching C++ functions to C++ objects for using inside Lua</strong>.
+Let&#39;s say you want to bind a C++ class to Lua, but at some point you realize you need a few more methods in the class
+for use inside scripts only. An easy way would be to include those methods directly into the class or into some
+&quot;mixin&quot; class that you would later inherit from. This is not a very good solution, at least if you&#39;re aiming at keeping code clean,
+separating concerns, maintainability and flexibility.
+Luckily LuaIntf allows us to attach arbitrary C++ methods to a class. For instance:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">Base</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">Base</span><span class="p">()</span> <span class="p">{}</span>
+
+    <span class="k">virtual</span> <span class="kt">int</span> <span class="n">one</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">123</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">A</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Base</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">virtual</span> <span class="kt">int</span> <span class="n">one</span><span class="p">()</span> <span class="k">const</span> <span class="n">override</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">int</span> <span class="n">two</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">4</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Base</span><span class="o">&gt;</span> <span class="n">makeAsBase</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span> <span class="n">makeAsA</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">externalBaseFunc</span><span class="p">(</span><span class="n">Base</span><span class="o">*</span> <span class="n">obj</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">obj</span><span class="o">-&gt;</span><span class="n">one</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">externalAFunc</span><span class="p">(</span><span class="n">A</span><span class="o">*</span> <span class="n">obj</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">obj</span><span class="o">-&gt;</span><span class="n">two</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">LuaBinding</span><span class="p">(</span><span class="n">lua</span><span class="p">).</span><span class="n">beginModule</span><span class="p">(</span><span class="s">"test"</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">beginClass</span><span class="o">&lt;</span><span class="n">Base</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"Base"</span><span class="p">)</span>
+        <span class="p">.</span><span class="n">addFunction</span><span class="p">(</span><span class="s">"externalBaseFunc"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">externalBaseFunc</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">endClass</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">beginExtendClass</span><span class="o">&lt;</span><span class="n">A</span><span class="p">,</span> <span class="n">Base</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"A"</span><span class="p">)</span>
+        <span class="p">.</span><span class="n">addFunction</span><span class="p">(</span><span class="s">"externalAFunc"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">externalAFunc</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">endClass</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">addFunction</span><span class="p">(</span><span class="s">"makeAsBase"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">makeAsBase</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">addFunction</span><span class="p">(</span><span class="s">"makeAsA"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">makeAsA</span><span class="p">)</span>
+<span class="p">.</span><span class="n">endModule</span><span class="p">();</span>
+
+<span class="n">lua</span><span class="p">.</span><span class="n">doString</span><span class="p">(</span><span class="n">R</span><span class="s">"s(</span><span class="err">
+</span><span class="s"> local a = test.makeAsBase()</span><span class="err">
+</span><span class="s"> print(a:externalBaseFunc())</span><span class="err">
+</span><span class="s"> print(a:externalAFunc())</span><span class="err">
+
+</span><span class="s"> local b = test.makeAsA()</span><span class="err">
+</span><span class="s"> print(b:externalBaseFunc())</span><span class="err">
+</span><span class="s"> print(b:externalAFunc())</span><span class="err">
+</span><span class="s">)s"</span><span class="p">);</span>
+
+<span class="c1">// Output:
+</span><span class="mi">2</span>
+<span class="mi">4</span>
+<span class="mi">2</span>
+<span class="mi">4</span></code></pre></figure>
+
+<p>Liked it? Then go to the <a href="https://github.com/SteveKChiu/lua-intf">library Github</a> page and show it some support. Overall I think LuaIntf
+is a great choice in terms of feature set, but the only bad thing about this library is the lack of tests.
+Really, how does the author know it works?</p>
+
+	</div>
+</div>
+
+			<div>
+
+			
+
+		</div>
+
+		<div class="footer">
+	<p class="text-muted">© 2014-2016 Aleksey Fedotov</p>
+</div>
+
+<script src="/js/vendor/jquery.min.js"></script>
+<script src="/js/vendor/video.js"></script>
+<script src="/js/flat-ui.min.js"></script>
+<script src="/js/fancybox/jquery.fancybox.pack.js"></script>
+<script src="/js/fancybox/jquery.fancybox-buttons.js"></script>
+<script src="/js/fancybox/jquery.fancybox-media.js"></script>
+<script src="/js/fancybox/jquery.fancybox-thumbs.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-50872849-1', 'raycast.net');
+  ga('send', 'pageview', {
+    "page": "/lua-intf",
+    "title": 'C++ embedded scripting&#58; LuaIntf recipes'
+  });
+</script>
+
+<script>
+	$(document).ready(function() {
+		$(".lightbox").fancybox();
+	});
+</script>
+
+	</body>
+</html>
