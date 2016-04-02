@@ -53,6 +53,8 @@ a:hover, a:focus {
 
 .navbar-nav {
     float: right !important;
+    margin-left: 0 !important;
+    margin-right: -15px !important;
 }
 
 .navbar-default .navbar-nav > li {
