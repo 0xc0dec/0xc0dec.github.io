@@ -1,10 +1,3 @@
-/*@font-face {
-    font-family: Gudea;
-    src: url('/fonts/gudea/Gudea-Regular.ttf') format("truetype");
-    font-weight: normal;
-    font-style: normal;
-}*/
-
 @font-face {
     font-family: 'ClearSansRegular';
     src: url('/fonts/clear-sans/ClearSans-Regular-webfont.eot');
@@ -29,6 +22,13 @@ body {
 	background-color: rgb(245, 245, 245);
 }
 
+hr {
+	margin-left: 0;
+	margin-right: 0;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
 a {
 	color: #0090B2
 	transition: initial;
@@ -40,27 +40,52 @@ a:hover, a:focus {
 	text-decoration: none;
 }
 
+.navbar-header {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    float: left;
+}
+
 .navbar-default {
 	background-color: white;
 	box-shadow: 0 0 20px rgba(0, 0, 0, 0.04);
+}
+
+.navbar-nav {
+    float: right !important;
+}
+
+.navbar-default .navbar-nav > li {
+    float: left;
 }
 
 .navbar-default .navbar-nav > li > a {
 	font-size: 18px;
 }
 
-.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
 	color: #0018BB;
 	background-color: transparent;
 }
 
-.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
 	color: #0018BB;
 	background-color: transparent;
 }
 
 .navbar-brand img {
 	width: 50px;
+}
+
+.navbar-brand {
+    margin-left: -21px !important;
+}
+
+.navbar-text {
+    float: left !important;
+    margin-left: 21px !important;
 }
 
 .page-header {
@@ -156,13 +181,6 @@ h4 {
 	line-height: 100px;
 	text-align: center;
 	vertical-align: middle
-}
-
-hr {
-	margin-left: 0;
-	margin-right: 0;
-	margin-top: 10px;
-	margin-bottom: 10px;
 }
 
 .post-date {
