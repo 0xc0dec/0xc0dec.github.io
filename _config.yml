@@ -1,6 +1,7 @@
 name: Raycast
 markdown: redcarpet
-highlighter: pygments
+highlighter: rouge
 paginate: 10
 gems:
   - jekyll-redirect-from
+  - jekyll-paginate
