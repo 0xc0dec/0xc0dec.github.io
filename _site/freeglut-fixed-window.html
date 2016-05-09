@@ -78,7 +78,7 @@
          * button. */</span>
          <span class="n">flags</span> <span class="o">|=</span> <span class="n">WS_OVERLAPPEDWINDOW</span><span class="p">;</span>
 <span class="o">++</span>    <span class="k">if</span> <span class="p">(</span><span class="n">fgState</span><span class="p">.</span><span class="n">DisplayMode</span> <span class="o">&amp;</span> <span class="n">GLUT_FIXED_SIZE</span><span class="p">)</span>
-<span class="o">++</span>   <span class="n">flags</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="p">(</span><span class="n">WS_MAXIMIZEBOX</span> <span class="o">|</span> <span class="n">WS_THICKFRAME</span><span class="p">);</span>
+<span class="o">++</span>	<span class="n">flags</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="p">(</span><span class="n">WS_MAXIMIZEBOX</span> <span class="o">|</span> <span class="n">WS_THICKFRAME</span><span class="p">);</span>
 <span class="p">}</span></code></pre></figure>
 
 <p>This is a dirty hack, but probably FreeGLUT developers will introduce a good solution soon.</p>

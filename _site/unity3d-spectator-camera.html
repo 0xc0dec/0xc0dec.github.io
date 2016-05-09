@@ -48,11 +48,11 @@
 		<p>It’s pretty simple to code a camera to move in a spectator-like (and FPS) fashion. The
 only trick you should do to make this movement production-ready is to restrict camera movement around the horizontal axis.</p>
 
-<p>Basically, spectator camera rotates either &quot;left-right&quot; (around global vertical Z axis), or &quot;up-down&quot;
+<p>Basically, spectator camera rotates either “left-right” (around global vertical Z axis), or “up-down”
 (around its local X axis). This local X axis is always horizontal, i.e. lies in XZ global plane. When a camera
 rotates around this axis, the player looks up or down. This leads to a camera overturning problem when he tries to look
 upper and upper, or lower and lower. All games you’ve seen so far restrict this movement, so that the camera can only look
-vertically up or vertically down in the &quot;worst case&quot;.</p>
+vertically up or vertically down in the “worst case”.</p>
 
 <!--break-->
 
@@ -118,6 +118,7 @@ rotation approximately, so that the camera stops rotating when it almost reached
         <span class="n">camera</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="nf">RotateAround</span><span class="p">(</span><span class="n">camera</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">rotX</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span></code></pre></figure>
+
 
 	</div>
 </div>

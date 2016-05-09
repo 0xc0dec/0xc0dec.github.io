@@ -53,7 +53,7 @@
 <span class="p">}</span></code></pre></figure>
 
 <p>It’s OK to edit the PivotPoints field in object inspector, because Unity natively understands
-<code>Vector3</code> struct and displays it properly. Things get more complicated when I add field representing an array of custom objects:</p>
+<code class="highlighter-rouge">Vector3</code> struct and displays it properly. Things get more complicated when I add field representing an array of custom objects:</p>
 
 <figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">class</span> <span class="nc">NodeSetup</span>
 <span class="p">{</span>
@@ -75,6 +75,7 @@ Fortunately the problem has simple solution – just mark your custom class with
 <figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="na">[Serializable]</span>
 <span class="k">class</span> <span class="nc">NodeSetup</span>
 <span class="p">{</span> <span class="p">...</span> <span class="p">}</span></code></pre></figure>
+
 
 	</div>
 </div>

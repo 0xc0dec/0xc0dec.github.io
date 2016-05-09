@@ -95,44 +95,44 @@ From that moment the new task knows how long to run and what action to perform. 
 <p>Tasks class should not be misused. When you feel that action you’re going to code will be run only from one place in your surrounding application code, it’s OK to use the inline version</p>
 
 <figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="n">Task</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
-    <span class="p">.</span><span class="nf">UpdateCallback</span><span class="p">(</span><span class="n">time</span> <span class="p">=&gt;</span>
-    <span class="p">{</span>
-        <span class="c1">// do something
-</span>     <span class="c1">// and more
-</span>     <span class="c1">// and even more...
-</span> <span class="p">})</span>
-    <span class="p">.</span><span class="nf">EndCallback</span><span class="p">(()</span> <span class="p">=&gt;</span>
-    <span class="p">{</span>
-        <span class="c1">// react to task completion
-</span> <span class="p">}</span>
-    <span class="p">.</span><span class="nf">Run</span><span class="p">();</span></code></pre></figure>
+	<span class="p">.</span><span class="nf">UpdateCallback</span><span class="p">(</span><span class="n">time</span> <span class="p">=&gt;</span>
+	<span class="p">{</span>
+		<span class="c1">// do something
+</span>		<span class="c1">// and more
+</span>		<span class="c1">// and even more...
+</span>	<span class="p">})</span>
+	<span class="p">.</span><span class="nf">EndCallback</span><span class="p">(()</span> <span class="p">=&gt;</span>
+	<span class="p">{</span>
+		<span class="c1">// react to task completion
+</span>	<span class="p">}</span>
+	<span class="p">.</span><span class="nf">Run</span><span class="p">();</span></code></pre></figure>
 
 <p>But as soon as you need some action to be run from several places, you should go the classic way and create a separate component. Do not copy-paste you code! Subclass the Task class
 instead, and you will be provided with a convenient way to run it:</p>
 
 <figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">CustomTask</span><span class="p">:</span> <span class="n">Task</span>
 <span class="p">{</span>
-    <span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">UpdateImpl</span><span class="p">()</span>
-    <span class="p">{</span>
-        <span class="n">Debug</span><span class="p">.</span><span class="nf">Log</span><span class="p">(</span><span class="n">_time</span><span class="p">);</span>
-        <span class="n">Debug</span><span class="p">.</span><span class="nf">Log</span><span class="p">(</span><span class="n">_duration</span><span class="p">);</span>
-    <span class="p">}</span>
+	<span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">UpdateImpl</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="n">Debug</span><span class="p">.</span><span class="nf">Log</span><span class="p">(</span><span class="n">_time</span><span class="p">);</span>
+		<span class="n">Debug</span><span class="p">.</span><span class="nf">Log</span><span class="p">(</span><span class="n">_duration</span><span class="p">);</span>
+	<span class="p">}</span>
 
-    <span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">StartImpl</span><span class="p">()</span>
-    <span class="p">{</span>
-        <span class="n">Debug</span><span class="p">.</span><span class="nf">Log</span><span class="p">(</span><span class="s">"Started"</span><span class="p">);</span>
-    <span class="p">}</span>
+	<span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">StartImpl</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="n">Debug</span><span class="p">.</span><span class="nf">Log</span><span class="p">(</span><span class="s">"Started"</span><span class="p">);</span>
+	<span class="p">}</span>
 
-    <span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">EndImpl</span><span class="p">()</span>
-    <span class="p">{</span>
-        <span class="n">Debug</span><span class="p">.</span><span class="nf">Log</span><span class="p">(</span><span class="s">"Stopped"</span><span class="p">);</span>
-    <span class="p">}</span>
+	<span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">EndImpl</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="n">Debug</span><span class="p">.</span><span class="nf">Log</span><span class="p">(</span><span class="s">"Stopped"</span><span class="p">);</span>
+	<span class="p">}</span>
 <span class="p">}</span>
 
 <span class="n">Task</span><span class="p">.</span><span class="n">Create</span><span class="p">&lt;</span><span class="n">CustomTask</span><span class="p">&gt;(</span><span class="m">3</span><span class="p">)</span>
-    <span class="p">.</span><span class="nf">UpdateCallback</span><span class="p">(</span><span class="n">time</span> <span class="p">=&gt;</span> <span class="n">Debug</span><span class="p">.</span><span class="nf">Log</span><span class="p">(</span><span class="s">"Whatever"</span><span class="p">)</span> <span class="c1">// custom tasks also allow you to use callbacks!
-</span> <span class="p">.</span><span class="nf">EndCallback</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">})</span>
-    <span class="p">.</span><span class="nf">Run</span><span class="p">();</span></code></pre></figure>
+	<span class="p">.</span><span class="nf">UpdateCallback</span><span class="p">(</span><span class="n">time</span> <span class="p">=&gt;</span> <span class="n">Debug</span><span class="p">.</span><span class="nf">Log</span><span class="p">(</span><span class="s">"Whatever"</span><span class="p">)</span> <span class="c1">// custom tasks also allow you to use callbacks!
+</span>	<span class="p">.</span><span class="nf">EndCallback</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">})</span>
+	<span class="p">.</span><span class="nf">Run</span><span class="p">();</span></code></pre></figure>
 
 <p>Below is the code of my current Task class version. Use it freely if you find it useful.</p>
 
@@ -141,104 +141,105 @@ instead, and you will be provided with a convenient way to run it:</p>
 
 <span class="k">public</span> <span class="k">class</span> <span class="nc">Task</span> <span class="p">:</span> <span class="n">MonoBehaviour</span>
 <span class="p">{</span>
-    <span class="k">protected</span> <span class="kt">float</span> <span class="n">_duration</span><span class="p">;</span>
-    <span class="k">protected</span> <span class="kt">float</span> <span class="n">_time</span><span class="p">;</span>
+	<span class="k">protected</span> <span class="kt">float</span> <span class="n">_duration</span><span class="p">;</span>
+	<span class="k">protected</span> <span class="kt">float</span> <span class="n">_time</span><span class="p">;</span>
 
-    <span class="k">private</span> <span class="n">Action</span> <span class="n">_start</span><span class="p">;</span>
-    <span class="k">private</span> <span class="n">Action</span> <span class="n">_update</span><span class="p">;</span>
-    <span class="k">private</span> <span class="n">Action</span> <span class="n">_end</span><span class="p">;</span>
-    <span class="k">private</span> <span class="kt">bool</span> <span class="n">_started</span><span class="p">;</span>
-    <span class="k">private</span> <span class="kt">bool</span> <span class="n">_autoDestroy</span><span class="p">;</span>
+	<span class="k">private</span> <span class="n">Action</span> <span class="n">_start</span><span class="p">;</span>
+	<span class="k">private</span> <span class="n">Action</span> <span class="n">_update</span><span class="p">;</span>
+	<span class="k">private</span> <span class="n">Action</span> <span class="n">_end</span><span class="p">;</span>
+	<span class="k">private</span> <span class="kt">bool</span> <span class="n">_started</span><span class="p">;</span>
+	<span class="k">private</span> <span class="kt">bool</span> <span class="n">_autoDestroy</span><span class="p">;</span>
 
-    <span class="k">private</span> <span class="k">static</span> <span class="n">GameObject</span> <span class="n">_host</span><span class="p">;</span>
+	<span class="k">private</span> <span class="k">static</span> <span class="n">GameObject</span> <span class="n">_host</span><span class="p">;</span>
 
-    <span class="k">public</span> <span class="k">static</span> <span class="n">Task</span> <span class="nf">Create</span><span class="p">(</span><span class="kt">float</span> <span class="n">duration</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">autoDestroy</span> <span class="p">=</span> <span class="k">true</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nf">InitHost</span><span class="p">();</span>
-        <span class="n">var</span> <span class="n">job</span> <span class="p">=</span> <span class="n">_host</span><span class="p">.</span><span class="nf">AddComponent</span><span class="p">();</span>
-        <span class="n">job</span><span class="p">.</span><span class="n">_duration</span> <span class="p">=</span> <span class="n">duration</span><span class="p">;</span>
-        <span class="n">job</span><span class="p">.</span><span class="n">_autoDestroy</span> <span class="p">=</span> <span class="n">autoDestroy</span><span class="p">;</span>
-        <span class="n">job</span><span class="p">.</span><span class="n">_started</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
-        <span class="k">return</span> <span class="n">job</span><span class="p">;</span>
-    <span class="p">}</span>
+	<span class="k">public</span> <span class="k">static</span> <span class="n">Task</span> <span class="nf">Create</span><span class="p">(</span><span class="kt">float</span> <span class="n">duration</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">autoDestroy</span> <span class="p">=</span> <span class="k">true</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nf">InitHost</span><span class="p">();</span>
+		<span class="n">var</span> <span class="n">job</span> <span class="p">=</span> <span class="n">_host</span><span class="p">.</span><span class="nf">AddComponent</span><span class="p">();</span>
+		<span class="n">job</span><span class="p">.</span><span class="n">_duration</span> <span class="p">=</span> <span class="n">duration</span><span class="p">;</span>
+		<span class="n">job</span><span class="p">.</span><span class="n">_autoDestroy</span> <span class="p">=</span> <span class="n">autoDestroy</span><span class="p">;</span>
+		<span class="n">job</span><span class="p">.</span><span class="n">_started</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+		<span class="k">return</span> <span class="n">job</span><span class="p">;</span>
+	<span class="p">}</span>
 
-    <span class="k">public</span> <span class="k">static</span> <span class="n">T</span> <span class="n">Create</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;(</span><span class="kt">float</span> <span class="n">duration</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">autoDestroy</span> <span class="p">=</span> <span class="k">true</span><span class="p">)</span> <span class="n">where</span> <span class="n">T</span> <span class="p">:</span> <span class="n">Task</span>
-    <span class="p">{</span>
-        <span class="nf">InitHost</span><span class="p">();</span>
-        <span class="n">var</span> <span class="n">task</span> <span class="p">=</span> <span class="n">_host</span><span class="p">.</span><span class="n">AddComponent</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;();</span>
-        <span class="n">task</span><span class="p">.</span><span class="n">_duration</span> <span class="p">=</span> <span class="n">duration</span><span class="p">;</span>
-        <span class="n">task</span><span class="p">.</span><span class="n">_autoDestroy</span> <span class="p">=</span> <span class="n">autoDestroy</span><span class="p">;</span>
-        <span class="k">return</span> <span class="n">task</span><span class="p">;</span>
-    <span class="p">}</span>
+	<span class="k">public</span> <span class="k">static</span> <span class="n">T</span> <span class="n">Create</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;(</span><span class="kt">float</span> <span class="n">duration</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">autoDestroy</span> <span class="p">=</span> <span class="k">true</span><span class="p">)</span> <span class="n">where</span> <span class="n">T</span> <span class="p">:</span> <span class="n">Task</span>
+	<span class="p">{</span>
+		<span class="nf">InitHost</span><span class="p">();</span>
+		<span class="n">var</span> <span class="n">task</span> <span class="p">=</span> <span class="n">_host</span><span class="p">.</span><span class="n">AddComponent</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;();</span>
+		<span class="n">task</span><span class="p">.</span><span class="n">_duration</span> <span class="p">=</span> <span class="n">duration</span><span class="p">;</span>
+		<span class="n">task</span><span class="p">.</span><span class="n">_autoDestroy</span> <span class="p">=</span> <span class="n">autoDestroy</span><span class="p">;</span>
+		<span class="k">return</span> <span class="n">task</span><span class="p">;</span>
+	<span class="p">}</span>
 
-    <span class="k">public</span> <span class="n">Task</span> <span class="nf">StartCallback</span><span class="p">(</span><span class="n">Action</span> <span class="n">callback</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="n">_start</span> <span class="p">=</span> <span class="n">callback</span><span class="p">;</span>
-        <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
-    <span class="p">}</span>
+	<span class="k">public</span> <span class="n">Task</span> <span class="nf">StartCallback</span><span class="p">(</span><span class="n">Action</span> <span class="n">callback</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="n">_start</span> <span class="p">=</span> <span class="n">callback</span><span class="p">;</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+	<span class="p">}</span>
 
-    <span class="k">public</span> <span class="n">Task</span> <span class="nf">UpdateCallback</span><span class="p">(</span><span class="n">Action</span><span class="p">&lt;</span><span class="kt">float</span><span class="p">&gt;</span> <span class="n">callback</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="n">_update</span> <span class="p">=</span> <span class="n">callback</span><span class="p">;</span>
-        <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
-    <span class="p">}</span>
+	<span class="k">public</span> <span class="n">Task</span> <span class="nf">UpdateCallback</span><span class="p">(</span><span class="n">Action</span><span class="p">&lt;</span><span class="kt">float</span><span class="p">&gt;</span> <span class="n">callback</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="n">_update</span> <span class="p">=</span> <span class="n">callback</span><span class="p">;</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+	<span class="p">}</span>
 
-    <span class="k">public</span> <span class="n">Task</span> <span class="nf">EndCallback</span><span class="p">(</span><span class="n">Action</span> <span class="n">callback</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="n">_end</span> <span class="p">=</span> <span class="n">callback</span><span class="p">;</span>
-        <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
-    <span class="p">}</span>
+	<span class="k">public</span> <span class="n">Task</span> <span class="nf">EndCallback</span><span class="p">(</span><span class="n">Action</span> <span class="n">callback</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="n">_end</span> <span class="p">=</span> <span class="n">callback</span><span class="p">;</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+	<span class="p">}</span>
 
-    <span class="k">public</span> <span class="k">void</span> <span class="nf">Run</span><span class="p">()</span>
-    <span class="p">{</span>
-        <span class="n">_started</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">_start</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
-            <span class="nf">_start</span><span class="p">();</span>
-        <span class="nf">StartImpl</span><span class="p">();</span>
-    <span class="p">}</span>
+	<span class="k">public</span> <span class="k">void</span> <span class="nf">Run</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="n">_started</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">_start</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+			<span class="nf">_start</span><span class="p">();</span>
+		<span class="nf">StartImpl</span><span class="p">();</span>
+	<span class="p">}</span>
 
-    <span class="k">protected</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">UpdateImpl</span><span class="p">()</span>
-    <span class="p">{</span>
-    <span class="p">}</span>
+	<span class="k">protected</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">UpdateImpl</span><span class="p">()</span>
+	<span class="p">{</span>
+	<span class="p">}</span>
 
-    <span class="k">protected</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">StartImpl</span><span class="p">()</span>
-    <span class="p">{</span>
-    <span class="p">}</span>
+	<span class="k">protected</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">StartImpl</span><span class="p">()</span>
+	<span class="p">{</span>
+	<span class="p">}</span>
 
-    <span class="k">protected</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">EndImpl</span><span class="p">()</span>
-    <span class="p">{</span>
-    <span class="p">}</span>
+	<span class="k">protected</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">EndImpl</span><span class="p">()</span>
+	<span class="p">{</span>
+	<span class="p">}</span>
 
-    <span class="k">private</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">InitHost</span><span class="p">()</span>
-    <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(!</span><span class="n">_host</span><span class="p">)</span>
-            <span class="n">_host</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">GameObject</span><span class="p">(</span><span class="s">"Tasks"</span><span class="p">);</span>
-    <span class="p">}</span>
+	<span class="k">private</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">InitHost</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(!</span><span class="n">_host</span><span class="p">)</span>
+			<span class="n">_host</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">GameObject</span><span class="p">(</span><span class="s">"Tasks"</span><span class="p">);</span>
+	<span class="p">}</span>
 
-    <span class="c1">// ReSharper disable UnusedMember.Local
-</span> <span class="k">private</span> <span class="k">void</span> <span class="nf">Update</span><span class="p">()</span>
-    <span class="c1">// ReSharper restore UnusedMember.Local
-</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(!</span><span class="n">_started</span><span class="p">)</span>
-            <span class="k">return</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">_update</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
-            <span class="nf">_update</span><span class="p">(</span><span class="n">_time</span><span class="p">);</span>
-        <span class="nf">UpdateImpl</span><span class="p">();</span>
-        <span class="c1">// Tasks having _autoDestroy == false will continue running after _time &gt;= _duration,
-</span>     <span class="c1">// but their _time will stop increasing
-</span>     <span class="k">if</span> <span class="p">(</span><span class="n">_time</span> <span class="p">&gt;=</span> <span class="n">_duration</span><span class="p">)</span>
-            <span class="k">return</span><span class="p">;</span>
-        <span class="n">_time</span> <span class="p">+=</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">_time</span> <span class="p">&gt;=</span> <span class="n">_duration</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">_end</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
-                <span class="nf">_end</span><span class="p">();</span>
-            <span class="nf">EndImpl</span><span class="p">();</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">_autoDestroy</span><span class="p">)</span>
-                <span class="nf">Destroy</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+	<span class="c1">// ReSharper disable UnusedMember.Local
+</span>	<span class="k">private</span> <span class="k">void</span> <span class="nf">Update</span><span class="p">()</span>
+	<span class="c1">// ReSharper restore UnusedMember.Local
+</span>	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(!</span><span class="n">_started</span><span class="p">)</span>
+			<span class="k">return</span><span class="p">;</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">_update</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+			<span class="nf">_update</span><span class="p">(</span><span class="n">_time</span><span class="p">);</span>
+		<span class="nf">UpdateImpl</span><span class="p">();</span>
+		<span class="c1">// Tasks having _autoDestroy == false will continue running after _time &gt;= _duration,
+</span>		<span class="c1">// but their _time will stop increasing
+</span>		<span class="k">if</span> <span class="p">(</span><span class="n">_time</span> <span class="p">&gt;=</span> <span class="n">_duration</span><span class="p">)</span>
+			<span class="k">return</span><span class="p">;</span>
+		<span class="n">_time</span> <span class="p">+=</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span><span class="p">;</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">_time</span> <span class="p">&gt;=</span> <span class="n">_duration</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="n">_end</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+				<span class="nf">_end</span><span class="p">();</span>
+			<span class="nf">EndImpl</span><span class="p">();</span>
+			<span class="k">if</span> <span class="p">(</span><span class="n">_autoDestroy</span><span class="p">)</span>
+				<span class="nf">Destroy</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
 <span class="p">}</span></code></pre></figure>
+
 
 	</div>
 </div>

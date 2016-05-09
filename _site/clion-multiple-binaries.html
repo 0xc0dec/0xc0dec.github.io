@@ -45,21 +45,21 @@
 	</div>
 	
 	<div class="article-content">
-		<div class="row text-center"><img src="/images/clion_logo.png" class="margined20"/></div>
+		<div class="row text-center"><img src="/images/clion_logo.png" class="margined20" /></div>
 
 <p><a href="https://www.jetbrains.com/clion/">CLion</a> is a new C/C++ IDE from JetBrains, the creators of ReSharper, IntelliJ IDEA and many other great products for software developers. CLion is claimed to support a full-featured refactoring workflow for C++, similar to how it is already implemented in other JetBrains products. At this moment the IDE is available in early access mode, which means that we can download and use it freely, keeping in mind that the product is not stable yet, so bugs are possible.</p>
 
-<p>I decided to move one of my projects from XCode to CLion. The refactoring capabilities of XCode for C++ are far from being good (in fact, there is no refactoring support for C++), and after using ReSharper for my C# projects, I simply don&#39;t understand how to work without &quot;Rename&quot;, &quot;Find usages&quot;, &quot;Generate missing members&quot;, smart highlighting and a plenty of other super-useful features.</p>
+<p>I decided to move one of my projects from XCode to CLion. The refactoring capabilities of XCode for C++ are far from being good (in fact, there is no refactoring support for C++), and after using ReSharper for my C# projects, I simply don’t understand how to work without “Rename”, “Find usages”, “Generate missing members”, smart highlighting and a plenty of other super-useful features.</p>
 
-<p>CLion uses CMake to describe and manage its projects (at least yet). If you&#39;re not very familiar with CMake (like me), creating and building anything more complex than the default Hello world will be sort of a nightmare. In this post I&#39;ll share my experience in building a static library and a project that uses this library in CLion, hoping that this will save a lot of googling time for anyone having the similar task.</p>
+<p>CLion uses CMake to describe and manage its projects (at least yet). If you’re not very familiar with CMake (like me), creating and building anything more complex than the default Hello world will be sort of a nightmare. In this post I’ll share my experience in building a static library and a project that uses this library in CLion, hoping that this will save a lot of googling time for anyone having the similar task.</p>
 
 <!--break-->
 
 <p>For example, we want to build a static library named <em>solo</em> and a test project <em>Test1</em> that links against it. My project structure looks like this:</p>
 
-<div class="row text-center"><img src="/images/solo_project.png" class="margined20"/></div>
+<div class="row text-center"><img src="/images/solo_project.png" class="margined20" /></div>
 
-<p>The <em>src</em> folder contains the library source files and the <em>include</em> folder contains the interface headers. The <em>Test1</em> project resides inside the <em>tests/test1</em> folder. I&#39;m using a single CMakeLists.txt for everything for the sake of simplicity. As the project grows bigger, you might consider splitting it into several CMakeLists&#39; to make it modular and easier to manage.</p>
+<p>The <em>src</em> folder contains the library source files and the <em>include</em> folder contains the interface headers. The <em>Test1</em> project resides inside the <em>tests/test1</em> folder. I’m using a single CMakeLists.txt for everything for the sake of simplicity. As the project grows bigger, you might consider splitting it into several CMakeLists’ to make it modular and easier to manage.</p>
 
 <p>Lets examine the CMakeLists.txt file. The first two lines are added by CLion by default:</p>
 
@@ -93,7 +93,7 @@
 
 <figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">file</span><span class="p">(</span><span class="n">GLOB</span> <span class="n">sources</span> <span class="s">"src/*.cpp"</span><span class="p">)</span></code></pre></figure>
 
-<p>In the next chunk of code we tell CMake to find some frameworks that we&#39;re going to be using, and save their paths to the <em>frameworks</em> variable:</p>
+<p>In the next chunk of code we tell CMake to find some frameworks that we’re going to be using, and save their paths to the <em>frameworks</em> variable:</p>
 
 <figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">find_library</span><span class="p">(</span><span class="n">carbon_lib</span> <span class="n">Carbon</span><span class="p">)</span> <span class="err">#</span> <span class="n">we</span> <span class="n">look</span> <span class="k">for</span> <span class="n">the</span> <span class="n">Carbon</span> <span class="n">framework</span> <span class="n">and</span> <span class="n">use</span> <span class="n">carbon_lib</span> <span class="n">as</span> <span class="n">an</span> <span class="n">alias</span> <span class="k">for</span> <span class="n">it</span>
 <span class="n">find_library</span><span class="p">(</span><span class="n">iokit_lib</span> <span class="n">IOKit</span><span class="p">)</span>
@@ -172,9 +172,8 @@
 </span><span class="n">add_executable</span><span class="p">(</span><span class="n">Test1</span> <span class="n">tests</span><span class="o">/</span><span class="n">test1</span><span class="o">/</span><span class="n">Main</span><span class="p">.</span><span class="n">cpp</span><span class="p">)</span>
 <span class="n">target_link_libraries</span><span class="p">(</span><span class="n">Test1</span> <span class="n">LINK_PUBLIC</span> <span class="n">solo</span><span class="p">)</span></code></pre></figure>
 
-<h3>Conclusion</h3>
-
-<p>This article gives a recipe for writing a simple CMake file for building two linked binaries in CLion. Keep in mind that I&#39;m not an expert in CMake, neither in Clion, so the given file might not be the best that you can make to get the job done. However, it gives a good start for working with CLion, which, as I have noticed, is not well covered in the online tutorials yet.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>This article gives a recipe for writing a simple CMake file for building two linked binaries in CLion. Keep in mind that I’m not an expert in CMake, neither in Clion, so the given file might not be the best that you can make to get the job done. However, it gives a good start for working with CLion, which, as I have noticed, is not well covered in the online tutorials yet.</p>
 
 	</div>
 </div>

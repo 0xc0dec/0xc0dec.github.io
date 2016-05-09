@@ -49,32 +49,31 @@
 
 <p>Currently there are several options for embedding scripting into your C++ application. Among the most well-known, from my experience, are
 <a href="http://www.lua.org/">Lua</a>, <a href="http://www.angelcode.com/angelscript/">AngelScript</a> and the recent addition - <a href="http://chaiscript.com/">ChaiScript</a>.
-I&#39;ve been evaluating these languages for some time recently and my main impressions are:</p>
+I’ve been evaluating these languages for some time recently and my main impressions are:</p>
 
 <!--break-->
 
 <ul>
-<li>Lua has many binding libraries, but very few of them support smart pointers and std containers like <code>std::string</code> at the same time (a must-have I think). Many of them
+  <li>Lua has many binding libraries, but very few of them support smart pointers and std containers like <code class="highlighter-rouge">std::string</code> at the same time (a must-have I think). Many of them
 are abandoned, even the most well-known LubBind (sadly). Some libraries require Boost to compile, which might not be an option for some projects.
-Some libraries don&#39;t compile in MSVS 2013 (even with November CTP) due to the extensive use of C++11/14. Others have poor documentation...
+Some libraries don’t compile in MSVS 2013 (even with November CTP) due to the extensive use of C++11/14. Others have poor documentation…
 I personally can recommend <a href="https://github.com/tomaka/luawrapper">luawrapper</a> because it has one of the richest feature sets and a fairly good documentation.
-Unfortunately it requires Boost and compiles in MSVS 2013 Nov CTP only after some modifications (removing <code>constexpr</code> and ref-value qualifiers).</li>
-<li>AngelScript has a built-in mechanism for embedding into C++ programs, but it looks bulky and (probably - not sure) you have to register smart pointers manually
+Unfortunately it requires Boost and compiles in MSVS 2013 Nov CTP only after some modifications (removing <code class="highlighter-rouge">constexpr</code> and ref-value qualifiers).</li>
+  <li>AngelScript has a built-in mechanism for embedding into C++ programs, but it looks bulky and (probably - not sure) you have to register smart pointers manually
 in order to use them. Overall, the syntax leaves you with many ways to make a mistake in your bindings.</li>
-<li>ChaiScript is a header-only engine (!), heavily template-based and increases the compilation time/binary size significantly. It is, however, designed
-for embedded into C++ programs and thus provides a very straightforward and transparent way of doing this. Most of the time you understand what&#39;s going on
+  <li>ChaiScript is a header-only engine (!), heavily template-based and increases the compilation time/binary size significantly. It is, however, designed
+for embedded into C++ programs and thus provides a very straightforward and transparent way of doing this. Most of the time you understand what’s going on
 and why. The language syntax looks like a mix of JavaScript and C++.</li>
 </ul>
 
-<p>If you are reading this article chances are you&#39;re deciding between those three languages, or have already chosen ChaiScript, but
-can&#39;t find some necessary information in the official documentation. In this (updateable) post I&#39;ll gather a few ChaiScript tips and code snippets
+<p>If you are reading this article chances are you’re deciding between those three languages, or have already chosen ChaiScript, but
+can’t find some necessary information in the official documentation. In this (updateable) post I’ll gather a few ChaiScript tips and code snippets
 that were most difficult for me to discover. They come either from long series of experiments or from the official forum and
 careful reading of examples and tests. This article assumes that you have already read the documentation, looked through the
 <a href="https://github.com/ChaiScript/ChaiScript/blob/master/cheatsheet.md">cheat sheet</a>, <a href="https://github.com/ChaiScript/ChaiScript/tree/master/samples">samples</a>
 and <a href="https://github.com/ChaiScript/ChaiScript/tree/master/unittests">unit tests</a>.</p>
 
 <div id="recipes"></div>
-
 <p>Bootstrapping a project (for impatient):</p>
 
 <figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="cp">#include &lt;chaiscript.hpp&gt;
@@ -115,7 +114,7 @@ and <a href="https://github.com/ChaiScript/ChaiScript/tree/master/unittests">uni
 </span>
 <span class="n">abc</span></code></pre></figure>
 
-<p>Inheritance, <code>shared_ptr</code> to base class, polymorphic function call:</p>
+<p>Inheritance, <code class="highlighter-rouge">shared_ptr</code> to base class, polymorphic function call:</p>
 
 <figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="c1">// Host program
 </span>
@@ -234,16 +233,17 @@ and <a href="https://github.com/ChaiScript/ChaiScript/tree/master/unittests">uni
 <figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="c1">// Use Boxed_Value as return value
 </span><span class="n">chaiscript</span><span class="o">::</span><span class="n">Boxed_Value</span> <span class="n">func</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">token</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">token</span> <span class="o">==</span> <span class="s">"Foo"</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">chaiscript</span><span class="o">::</span><span class="n">Boxed_Value</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">Test</span><span class="o">&gt;</span><span class="p">());</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">token</span> <span class="o">==</span> <span class="s">"Bar"</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">chaiscript</span><span class="o">::</span><span class="n">Boxed_Value</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="s">"Hello, world!"</span><span class="p">));</span>
-    <span class="c1">// .. and so on
-</span> <span class="k">return</span> <span class="n">chaiscript</span><span class="o">::</span><span class="n">Boxed_Value</span><span class="p">(</span><span class="mi">123</span><span class="p">);</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">token</span> <span class="o">==</span> <span class="s">"Foo"</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">chaiscript</span><span class="o">::</span><span class="n">Boxed_Value</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">Test</span><span class="o">&gt;</span><span class="p">());</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">token</span> <span class="o">==</span> <span class="s">"Bar"</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">chaiscript</span><span class="o">::</span><span class="n">Boxed_Value</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="s">"Hello, world!"</span><span class="p">));</span>
+	<span class="c1">// .. and so on
+</span>	<span class="k">return</span> <span class="n">chaiscript</span><span class="o">::</span><span class="n">Boxed_Value</span><span class="p">(</span><span class="mi">123</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="c1">// Register function as normal
 </span><span class="n">script</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">chaiscript</span><span class="o">::</span><span class="n">fun</span><span class="p">(</span><span class="o">&amp;</span><span class="n">func</span><span class="p">),</span> <span class="s">"func"</span><span class="p">);</span></code></pre></figure>
+
 
 	</div>
 </div>

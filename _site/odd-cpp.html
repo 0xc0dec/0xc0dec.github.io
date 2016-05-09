@@ -211,7 +211,7 @@ article about designated initialization in C:</p>
 <figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">typedef</span><span class="p">;</span>
 <span class="kt">int</span> <span class="k">typedef</span> <span class="k">const</span><span class="p">;</span></code></pre></figure>
 
-<p>Won’t compile with <code>-Wall</code> though.</p>
+<p>Won’t compile with <code class="highlighter-rouge">-Wall</code> though.</p>
 
 <p>Some people write such code probably hoping that C/C++ has native support for tuples. No, it doesn’t.</p>
 
@@ -227,7 +227,7 @@ article about designated initialization in C:</p>
 </span>
 <span class="kt">int</span> <span class="n">d</span> <span class="o">=</span> <span class="n">func</span><span class="p">();</span> <span class="o">//</span> <span class="n">d</span> <span class="o">==</span> <span class="n">c</span> <span class="o">==</span> <span class="mi">3</span><span class="p">,</span> <span class="k">if</span> <span class="p">()</span> <span class="k">operator</span> <span class="n">is</span> <span class="n">not</span> <span class="n">overloaded</span></code></pre></figure>
 
-<p>This construction is strange in a way that you probably won&#39;t encounter it very often. For some reasons it&#39;s not commonly used. The <a href="http://en.cppreference.com/w/cpp/language/function-try-block">function-try-block</a>:</p>
+<p>This construction is strange in a way that you probably won’t encounter it very often. For some reasons it’s not commonly used. The <a href="http://en.cppreference.com/w/cpp/language/function-try-block">function-try-block</a>:</p>
 
 <figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="n">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="n">try</span> <span class="p">{</span>
   <span class="o">++</span><span class="n">n</span><span class="p">;</span> <span class="c1">// increments the function parameter
@@ -237,6 +237,7 @@ article about designated initialization in C:</p>
 </span>  <span class="n">assert</span><span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">4</span><span class="p">);</span>
   <span class="k">return</span> <span class="n">n</span><span class="p">;</span>
 <span class="p">}</span></code></pre></figure>
+
 
 	</div>
 </div>

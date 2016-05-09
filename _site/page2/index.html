@@ -46,13 +46,13 @@
 			<p>Recently I had a twitter conversation with Jonathan Blow, the creator of <a href="http://braid-game.com/">Braid</a> and leader of the team behind the upcoming game <a href="http://the-witness.net/">The Witness</a>.
 I was wondering why developers decided to use custom engine in their project, considering many good engines already available out there.</p>
 
-<p>Jonathan spoke of the following reasons:
+<p>Jonathan spoke of the following reasons:</p>
 <ul>
 <li>You have full control of your code</li>
 <li>You have no restrictions</li>
 <li>You can achieve any level of quality you wish (clearly because of 1. and 2.)</li>
 <li>You owe no money to anyone whose commercial engine you might have been using</li>
-</ul></p>
+</ul>
 
 <p>These are good points, however they shouldn’t be considered as a 100% guide for you to go and roll your own engine.
 Do that <em>only if you really need to</em>, if other engines don’t provide you with the necessary tools. Sadly,
@@ -105,7 +105,7 @@ I hope this activity will motivate me not to abandon those projects and, probabl
 
 <p>This first post is about my new game called <strong>Nether</strong>. Currently it’s a working title and might change in future.
 Meanwhile it’s a beautiful word, which somehow describes the game look and feel, and is also easy to print in
-terminal when doing some work with Git, <code>cd</code>ing, <code>ls</code>ing and so on, you know.</p>
+terminal when doing some work with Git, <code class="highlighter-rouge">cd</code>ing, <code class="highlighter-rouge">ls</code>ing and so on, you know.</p>
 
 
 			
@@ -130,7 +130,7 @@ terminal when doing some work with Git, <code>cd</code>ing, <code>ls</code>ing a
 <span class="p">}</span></code></pre></figure>
 
 <p>It’s OK to edit the PivotPoints field in object inspector, because Unity natively understands
-<code>Vector3</code> struct and displays it properly. Things get more complicated when I add field representing an array of custom objects:</p>
+<code class="highlighter-rouge">Vector3</code> struct and displays it properly. Things get more complicated when I add field representing an array of custom objects:</p>
 
 <figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">class</span> <span class="nc">NodeSetup</span>
 <span class="p">{</span>
@@ -152,6 +152,7 @@ Fortunately the problem has simple solution – just mark your custom class with
 <figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="na">[Serializable]</span>
 <span class="k">class</span> <span class="nc">NodeSetup</span>
 <span class="p">{</span> <span class="p">...</span> <span class="p">}</span></code></pre></figure>
+
 
 			
 		</div>
@@ -198,7 +199,7 @@ Fortunately the problem has simple solution – just mark your custom class with
          * button. */</span>
          <span class="n">flags</span> <span class="o">|=</span> <span class="n">WS_OVERLAPPEDWINDOW</span><span class="p">;</span>
 <span class="o">++</span>    <span class="k">if</span> <span class="p">(</span><span class="n">fgState</span><span class="p">.</span><span class="n">DisplayMode</span> <span class="o">&amp;</span> <span class="n">GLUT_FIXED_SIZE</span><span class="p">)</span>
-<span class="o">++</span>   <span class="n">flags</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="p">(</span><span class="n">WS_MAXIMIZEBOX</span> <span class="o">|</span> <span class="n">WS_THICKFRAME</span><span class="p">);</span>
+<span class="o">++</span>	<span class="n">flags</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="p">(</span><span class="n">WS_MAXIMIZEBOX</span> <span class="o">|</span> <span class="n">WS_THICKFRAME</span><span class="p">);</span>
 <span class="p">}</span></code></pre></figure>
 
 <p>This is a dirty hack, but probably FreeGLUT developers will introduce a good solution soon.</p>
@@ -248,11 +249,11 @@ when new entries appear.</p>
 			<p>It’s pretty simple to code a camera to move in a spectator-like (and FPS) fashion. The
 only trick you should do to make this movement production-ready is to restrict camera movement around the horizontal axis.</p>
 
-<p>Basically, spectator camera rotates either &quot;left-right&quot; (around global vertical Z axis), or &quot;up-down&quot;
+<p>Basically, spectator camera rotates either “left-right” (around global vertical Z axis), or “up-down”
 (around its local X axis). This local X axis is always horizontal, i.e. lies in XZ global plane. When a camera
 rotates around this axis, the player looks up or down. This leads to a camera overturning problem when he tries to look
 upper and upper, or lower and lower. All games you’ve seen so far restrict this movement, so that the camera can only look
-vertically up or vertically down in the &quot;worst case&quot;.</p>
+vertically up or vertically down in the “worst case”.</p>
 
 
 			

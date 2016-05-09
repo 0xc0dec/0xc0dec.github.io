@@ -45,23 +45,23 @@
 	</div>
 	
 	<div class="article-content">
-		<p><img src="/images/far.png" class="img-thumbnail pull-left margined20"></p>
+		<p><img src="/images/far.png" class="img-thumbnail pull-left margined20" /></p>
 
 <p>A few testimonials first. FAR Manager was the kind of software which I used a lot on a daily basis.
 Really, it’s fast, has a rich feature set and looks cool (console-styled interface is quite competitive with those native Windows GUI’s that other managers have).
 When it comes to reading large files like logs, FAR manager is beyond comparison.</p>
 
-<p>However, one thing that sucks and always did in FAR is the quick search – the search that is activated when you press <code>Alt</code> key and start typing.
+<p>However, one thing that sucks and always did in FAR is the quick search – the search that is activated when you press <code class="highlighter-rouge">Alt</code> key and start typing.
 The concept itself is very useful and allows you to navigate files at the speed of light, but in FAR the whole idea is ruined by the way it’s implemented:
 FAR seeks the input string only at the beginning of each file name. Let’s imagine that we have a program that consists of an .exe file and many libraries.
-All file names have the same prefix. For example, they follow some awkward notation <code>&lt;CompanyName&gt;.&lt;ProgramName&gt;.&lt;extension&gt;</code>, which, you know,
+All file names have the same prefix. For example, they follow some awkward notation <code class="highlighter-rouge">&lt;CompanyName&gt;.&lt;ProgramName&gt;.&lt;extension&gt;</code>, which, you know,
 is quite a real case in business software. As you might expect, there’s no way to quickly navigate the exe file in this directory – you literally have to print the entire file name to select it,
 because most of the files differ only by extension.</p>
 
 <!--break-->
 
-<p>OK, I’m being a little biased here. As I figured out today, you actually can use masks when searching. Considering the case above, we could print <code>*exe</code> to select the executable file.
-But note how many actions you have to perform: press Alt, then Shift, then <code>6</code> to print the <code>*</code> sign, and only then the essential string that you wish to find. Personally I think
+<p>OK, I’m being a little biased here. As I figured out today, you actually can use masks when searching. Considering the case above, we could print <code class="highlighter-rouge">*exe</code> to select the executable file.
+But note how many actions you have to perform: press Alt, then Shift, then <code class="highlighter-rouge">6</code> to print the <code class="highlighter-rouge">*</code> sign, and only then the essential string that you wish to find. Personally I think
 it’s a serious usability problem, because FAR is used mostly by programmers and geeks who need fast access to their files, and pressing all those keys is a boilerplate.
 I also never met anyone who knew that FAR supports wildcards in quick search.</p>
 
@@ -70,25 +70,25 @@ and they select those files that contain the string in their name (not necessary
 for example they can activate the search when you just start typing, no need to press any special key like Alt. Options also include filtering the files list to show only files that match your query.</p>
 
 <p>Honestly, I don’t use FAR for my personal needs anymore. But at work I use it sometimes to read logs, so today I’ve hacked the program a bit to make the quick search more usable.
-If you have Visual Studio and experience the same problems, go to Google code and download the source code. Navigate to the file <code>far_unicode/filelist.cpp</code> and add one line:</p>
+If you have Visual Studio and experience the same problems, go to Google code and download the source code. Navigate to the file <code class="highlighter-rouge">far_unicode/filelist.cpp</code> and add one line:</p>
 
 <figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="n">FileList</span><span class="o">::</span><span class="n">FindPartName</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">Name</span><span class="p">,</span><span class="kt">int</span> <span class="n">Next</span><span class="p">,</span><span class="kt">int</span> <span class="n">Direct</span><span class="p">,</span><span class="kt">int</span> <span class="n">ExcludeSets</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="cp">#if !defined(Mantis_698)
-</span> <span class="kt">int</span> <span class="n">DirFind</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="n">string</span> <span class="n">strMask</span> <span class="o">=</span> <span class="n">Name</span><span class="p">;</span>
+</span>	<span class="kt">int</span> <span class="n">DirFind</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="n">string</span> <span class="n">strMask</span> <span class="o">=</span> <span class="n">Name</span><span class="p">;</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">Name</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">IsSlash</span><span class="p">(</span><span class="n">Name</span><span class="p">.</span><span class="n">back</span><span class="p">()))</span>
-    <span class="p">{</span>
-        <span class="n">DirFind</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-        <span class="n">strMask</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span>
-    <span class="p">}</span>
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">Name</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">IsSlash</span><span class="p">(</span><span class="n">Name</span><span class="p">.</span><span class="n">back</span><span class="p">()))</span>
+	<span class="p">{</span>
+		<span class="n">DirFind</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+		<span class="n">strMask</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span>
+	<span class="p">}</span>
 
-<span class="o">+</span>    <span class="n">strMask</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">L"*"</span><span class="p">);</span>
-    <span class="n">strMask</span> <span class="o">+=</span> <span class="s">L"*"</span><span class="p">;</span>
+<span class="o">+</span>	<span class="n">strMask</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">L"*"</span><span class="p">);</span>
+	<span class="n">strMask</span> <span class="o">+=</span> <span class="s">L"*"</span><span class="p">;</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="n">ExcludeSets</span><span class="p">)</span>
-    <span class="p">{</span></code></pre></figure>
+	<span class="k">if</span> <span class="p">(</span><span class="n">ExcludeSets</span><span class="p">)</span>
+	<span class="p">{</span></code></pre></figure>
 
 <p>As you can see, FAR already turns your string into a mask by adding ‘<em>’ to the end. We go further and add ‘</em>’ to the beginning so that the input string
 is searched somewhere in the middle of a file name. Select the required configuration (debug/release, x86/x64) and build the program. Fortunately you

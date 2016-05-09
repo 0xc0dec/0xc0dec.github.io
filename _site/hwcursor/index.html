@@ -46,28 +46,26 @@
 	
 	<div class="article-content">
 		<div class="row">
-    <div class="col-xs-2"><div class="thumbnail"><img src="/images/hwcursor/logo.png" alt="..."></div></div>
-    <div class="col-xs-9">
-        <p>
-        The library allows you to change system cursor image and achieve fast and super-responsive custom
+	<div class="col-xs-2"><div class="thumbnail"><img src="/images/hwcursor/logo.png" alt="..." /></div></div>
+	<div class="col-xs-9">
+		<p>
+		The library allows you to change system cursor image and achieve fast and super-responsive custom
 in-game cursor which does not depend on game frame rate. Library works with Windows and Mac OS X stand-alone builds,
 does NOT require Unity PRO. Can load cursor images from both files and memory (therefore, from assets too).
 
-        </p>
-        <p>
-            <b>Note:</b> intended to be used with Unity3d versions prior 4.0. Unity v.4.0 has native support for hardware cursor.
-        </p>
-        <p><a target="_blank" href="http://u3d.as/3eH">Get from Unity Asset Store</a>.
-    </div>
-</div>
+		</p>
+		<p>
+			<b>Note:</b> intended to be used with Unity3d versions prior 4.0. Unity v.4.0 has native support for hardware cursor.
+		</p>
+		<p><a target="_blank" href="http://u3d.as/3eH">Get from Unity Asset Store</a>.
+	
 
-<h3>Installation</h3>
 
-<p>Copy <code>HardwareCursor.dll</code> into your project Assets folder.</p>
+### Installation
+Copy `HardwareCursor.dll` into your project Assets folder.
 
-<h3>Usage</h3>
-
-<p>Create cursor, initialize it from file and set as active:</p>
+### Usage
+Create cursor, initialize it from file and set as active:
 
 <figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="nn">UnityEngine</span><span class="p">;</span>
 <span class="k">using</span> <span class="nn">HardwareCursor</span><span class="p">;</span>
@@ -79,7 +77,8 @@ does NOT require Unity PRO. Can load cursor images from both files and memory (t
 </span><span class="n">cursor</span><span class="p">.</span><span class="nf">SetActive</span><span class="p">();</span>
 <span class="p">///...</span></code></pre></figure>
 
-<p>Create cursor, initialize it from an asset and set as active:</p>
+
+Create cursor, initialize it from an asset and set as active:
 
 <figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="nn">UnityEngine</span><span class="p">;</span>
 <span class="k">using</span> <span class="nn">HardwareCursor</span><span class="p">;</span>
@@ -91,19 +90,19 @@ does NOT require Unity PRO. Can load cursor images from both files and memory (t
 <span class="n">cursor</span><span class="p">.</span><span class="nf">SetActive</span><span class="p">();</span>
 <span class="p">//...</span></code></pre></figure>
 
-<p>Reset to default cursor:</p>
+
+Reset to default cursor:
 
 <figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="n">cursor</span><span class="p">.</span><span class="nf">ActivateDefaultCursor</span><span class="p">();</span></code></pre></figure>
 
-<p><strong>Note</strong>: to be able to use texture asset as a cursor image, the texture should be imported with Advanced texture type,
-should have Read/Write enabled set to true and its format set to ARGB 32 bit.</p>
 
-<h3>Known bugs</h3>
+**Note**: to be able to use texture asset as a cursor image, the texture should be imported with Advanced texture type,
+should have Read/Write enabled set to true and its format set to ARGB 32 bit.
 
-<ul>
-<li>Does not work in editor, only in standalone builds.</li>
-<li>Under Mac OS X the cursor is reset to default if game resolution is changed in runtime. You can work around this by re-activating the cursor.</li>
-</ul>
+### Known bugs
+* Does not work in editor, only in standalone builds.
+* Under Mac OS X the cursor is reset to default if game resolution is changed in runtime. You can work around this by re-activating the cursor.
+</p></div></div>
 
 	</div>
 </div>
