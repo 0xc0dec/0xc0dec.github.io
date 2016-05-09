@@ -3,6 +3,7 @@ layout: page
 title:  Unity3D tip&#58; edit arrays of custom objects in object inspector
 date:   2013-05-05 00:00:00
 permalink: unity3d-array-of-custom-objects
+comments: true
 ---
 
 Say I have the following component:

@@ -3,6 +3,7 @@ layout: page
 title:  Project Nether devblog. Intro
 date:   2013-05-22 00:00:00
 permalink: nether-devblog
+comments: true
 ---
 
 I’ve decided to start a series of posts describing how things are going on with the development of my current game projects.

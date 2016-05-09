@@ -3,6 +3,7 @@ layout: page
 title:  Better quick search in FAR Manager with one line of code
 date:   2014-03-29 00:00:00
 permalink: far-quick-search
+comments: true
 ---
 
 <img src="/images/far.png" class="img-thumbnail pull-left margined20">

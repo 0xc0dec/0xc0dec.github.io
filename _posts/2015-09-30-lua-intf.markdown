@@ -3,6 +3,7 @@ layout: page
 title: C++ embedded scripting&#58; LuaIntf recipes
 date:   2015-09-30 00:00:00
 permalink: lua-intf
+comments: true
 ---
 
 In [my previous post]({% post_url 2015-07-07-chaiscript-recipes %}) on C++ embedded scripting I talked about ChaiScript and described how to implement some tricky cases

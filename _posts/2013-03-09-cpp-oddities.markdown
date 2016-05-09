@@ -3,6 +3,7 @@ layout: page
 title:  Something you probably didn’t know about C/C++
 date:   2013-03-09 00:00:00
 permalink: odd-cpp
+comments: true
 ---
 
 I love to collect mind-blowing and not too widely known C/C++ language constructions and facts. This post carries my collection and will be updated

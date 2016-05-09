@@ -3,7 +3,7 @@ layout: page
 title: Sorting algorithms visualization in Three.js
 name: sortvis
 permalink: sortvis/
-enable_comments: true
+comments: true
 ---
 
 {% include descriptions/sortvis %}

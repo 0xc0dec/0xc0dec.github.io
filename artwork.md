@@ -3,7 +3,7 @@ layout: page
 title: Old artwork
 name: artwork
 permalink: artwork/
-enable_comments: true
+comments: true
 ---
 
 ### 2011

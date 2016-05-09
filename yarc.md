@@ -3,7 +3,7 @@ layout: page
 title: Yet Another Rubik's Cube
 name: yarc
 permalink: yarc/
-enable_comments: true
+comments: true
 ---
 
 <div class="row">

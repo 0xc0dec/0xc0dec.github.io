@@ -3,7 +3,7 @@ layout: page
 title: Uncopy
 name: uncopy
 permalink: uncopy/
-enable_comments: true
+comments: true
 ---
 
 <div class="row">

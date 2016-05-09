@@ -3,7 +3,7 @@ layout: page
 title: Cubic Roll
 name: cubicroll
 permalink: cubicroll/
-enable_comments: true
+comments: true
 ---
 
 <div class="row">

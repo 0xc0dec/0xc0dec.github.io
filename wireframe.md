@@ -3,7 +3,7 @@ layout: page
 title: Wireframe
 name: wireframe
 permalink: wireframe/
-enable_comments: true
+comments: true
 ---
 
 <div class="row">

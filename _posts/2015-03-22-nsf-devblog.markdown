@@ -3,6 +3,7 @@ layout: page
 title:  Not So Flat devblog
 date:   2015-03-22 13:00:00
 permalink: nsf-devblog
+comments: true
 ---
 
 <div class="row text-center"><img src="/images/nsf/player.png" class="margined20"/></div>

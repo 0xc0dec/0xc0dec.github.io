@@ -3,6 +3,7 @@ layout: page
 title:  Unity3d tip&#58; spectator and FPS camera without overturning
 date:   2012-11-28 00:00:00
 permalink: unity3d-spectator-camera
+comments: true
 ---
 
 It’s pretty simple to code a camera to move in a spectator-like (and FPS) fashion. The

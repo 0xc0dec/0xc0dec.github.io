@@ -3,6 +3,7 @@ layout: page
 title:  C++ embedded scripting&#58; ChaiScript recipes
 date:   2015-07-07 00:00:00
 permalink: chaiscript-recipes
+comments: true
 ---
 
 [Go to recipes]({% post_url 2015-07-07-chaiscript-recipes %}#recipes)

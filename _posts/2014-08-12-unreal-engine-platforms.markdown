@@ -3,6 +3,7 @@ layout: page
 title:  Making moving platforms in Unreal Engine 4
 date:   2014-08-12 00:00:00
 permalink: unreal-platforms
+comments: true
 ---
 
 <div class="row text-center"><img src="/images/ue_logo.png" class="margined20"/></div>

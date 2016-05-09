@@ -3,6 +3,7 @@ layout: page
 title:  Another failed experiment
 date:   2015-08-09 00:00:00
 permalink: hypermino
+comments: true
 ---
 
 It's time for me to accept that I've failed again.

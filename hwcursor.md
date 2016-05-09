@@ -3,7 +3,7 @@ layout: page
 title: Unity3D Hardware Cursor
 name: hwcursor
 permalink: hwcursor/
-enable_comments: true
+comments: true
 ---
 
 <div class="row">

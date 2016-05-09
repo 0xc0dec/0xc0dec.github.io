@@ -3,7 +3,7 @@ layout: page
 title: Not So Flat
 name: nsf
 permalink: nsf/
-enable_comments: true
+comments: true
 ---
 
 <div class="row">

@@ -3,7 +3,7 @@ layout: page
 title: Portfolio
 name: portfolio
 permalink: portfolio/
-enable_comments: false
+comments: false
 ---
 
 {% include thumbed-list-item.html url="/nsf" img_path="/images/nsf/icon.png" title="Not So Flat" description_path="descriptions/nsf" %}

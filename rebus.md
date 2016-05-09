@@ -3,7 +3,7 @@ layout: page
 title: Ре:бусы
 name: rebus
 permalink: rebus/
-enable_comments: true
+comments: true
 ---
 
 <div class="row">

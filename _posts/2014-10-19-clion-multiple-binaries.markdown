@@ -3,6 +3,7 @@ layout: page
 title:  Building multiple linked binaries in CLion on Mac OS X
 date:   2014-10-19 00:00:00
 permalink: clion-multiple-binaries
+comments: true
 ---
 
 <div class="row text-center"><img src="/images/clion_logo.png" class="margined20"/></div>

@@ -3,6 +3,7 @@ layout: page
 title:  Main entry point in Windows apps
 date:   2013-11-17 00:00:00
 permalink: windows-main
+comments: true
 ---
 
 Most of the time when you use external libraries to create window for your app (for example, graphics engines like OGRE),

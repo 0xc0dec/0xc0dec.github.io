@@ -3,7 +3,7 @@ layout: page
 title: Line Bound
 name: linebound
 permalink: line-bound/
-enable_comments: true
+comments: true
 ---
 
 <div class="row">
