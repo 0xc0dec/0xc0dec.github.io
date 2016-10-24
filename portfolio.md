@@ -18,6 +18,6 @@ comments: false
 {% include thumbed-list-item.html url="https://github.com/0xc0dec/solo" logo_placeholder="No logo" title="Solo Game Framework" description="A C++ game framework that I develop in my spare time for fun and learning new technologies." %}
 {% include thumbed-list-item.html url="/wireframe" img_path="/images/wireframe/icon.png" title="Wireframe" description_path="descriptions/wireframe" %}
 {% include thumbed-list-item.html url="/hwcursor" img_path="/images/hwcursor/logo.png" title="Unity3d hardware cursor" description_path="descriptions/hwcursor" %}
-{% include thumbed-list-item.html url="https://github.com/0xc0dec/ustats/wiki" img_path="../images/ustats_icon.png" title="Ustats module for Nginx" description="The module provides basic statistics for nginx upstream servers: the number of requests passed to them, the number of errors of different kinds, and so on." %}
+{% include thumbed-list-item.html url="https://github.com/0xc0dec/ustats" img_path="../images/ustats_icon.png" title="Ustats module for Nginx" description="The module provides basic statistics for nginx upstream servers: the number of requests passed to them, the number of errors of different kinds, and so on." %}
 {% include thumbed-list-item.html url="http://github.com/0xc0dec" logo_placeholder="" title="Other projects" description="Find more at my Github page." %}
 {% include thumbed-list-item.html url="/artwork" logo_placeholder="" title="Old artwork" description="A long time ago I used to do 3d modelling and vector drawing..." %}
