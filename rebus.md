@@ -25,6 +25,7 @@ comments: true
 		<p>
 			<b>Buy Full version:</b>
 		</p>
+		<p>
 			<a target="_blank" href="https://itunes.apple.com/us/app/re-busy/id921356369?l=ru&ls=1&mt=8">
 				<img src="/images/appstore_btn.png" class="store-button-image">
 			</a>
