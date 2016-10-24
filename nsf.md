@@ -22,7 +22,7 @@ comments: true
 		</p>
 		<p><b>Release date:</b> v1.0 - April 14, 2015; v1.1 - July 14, 2015</p>
 		<p><b>Platforms:</b> PC, Mac</p>
-		<p><b><a href="{% post_url 2015-03-22-nsf-devblog %}">Devblog</a></b>
+		<p><b><a href="{% post_url 2015-03-22-nsf-devblog %}">Devblog</a></b></p>
 		<p>
 			<a target="_blank" href="http://0xc0dec.itch.io/notsoflat">
 				<img src="/images/itchio_btn.png" class="store-button-image">
