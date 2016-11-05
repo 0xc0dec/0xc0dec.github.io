@@ -19,7 +19,7 @@ body {
 	padding-bottom: 20px;
 	margin-bottom: 60px;
 	font-family: ClearSansRegular, Helvetica, Arial, sans-serif;
-	background-color: rgb(245, 245, 245);
+	background-color: rgb(255, 255, 255);
 }
 
 hr {
@@ -48,7 +48,6 @@ a:hover, a:focus {
 
 .navbar-default {
 	background-color: white;
-	box-shadow: 0 0 20px rgba(0, 0, 0, 0.04);
 }
 
 .navbar-nav {
@@ -136,7 +135,6 @@ h4 {
 	padding-right: 40px;
 	padding-top: 0px;
 	padding-bottom: 30px;
-	box-shadow: 0 0 20px rgba(0, 0, 0, 0.04);
 }
 
 .page-header {
