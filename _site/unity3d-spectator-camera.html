@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>Unity3d tip&#58; spectator and FPS camera without overturning | Raycast</title>
+		<title>Unity3d tip&#58; spectator and FPS camera without overturning | Aleksey Fedotov</title>
 
 		<link href="/css/vendor/bootstrap.min.css" rel="stylesheet">
     	<link href="/css/flat-ui.min.css" rel="stylesheet">
@@ -99,7 +99,7 @@ rotation approximately, so that the camera stops rotating when it almost reached
         <span class="k">if</span> <span class="p">(</span><span class="n">Input</span><span class="p">.</span><span class="nf">GetKey</span><span class="p">(</span><span class="n">KeyCode</span><span class="p">.</span><span class="n">Q</span><span class="p">))</span> <span class="n">dp</span><span class="p">.</span><span class="n">y</span> <span class="p">=</span> <span class="p">-</span><span class="m">1</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">Input</span><span class="p">.</span><span class="nf">GetKey</span><span class="p">(</span><span class="n">KeyCode</span><span class="p">.</span><span class="n">E</span><span class="p">))</span> <span class="n">dp</span><span class="p">.</span><span class="n">y</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
 
-        <span class="n">var</span> <span class="n">speed</span> <span class="p">=</span> <span class="n">normalSpeed</span> <span class="p">*</span> <span class="p">(</span><span class="n">Input</span><span class="p">.</span><span class="nf">GetKey</span><span class="p">(</span><span class="n">KeyCode</span><span class="p">.</span><span class="n">LeftShift</span><span class="p">)</span> <span class="p">?</span> <span class="m">5</span> <span class="p">:</span> <span class="m">1</span><span class="p">);</span>
+        <span class="kt">var</span> <span class="n">speed</span> <span class="p">=</span> <span class="n">normalSpeed</span> <span class="p">*</span> <span class="p">(</span><span class="n">Input</span><span class="p">.</span><span class="nf">GetKey</span><span class="p">(</span><span class="n">KeyCode</span><span class="p">.</span><span class="n">LeftShift</span><span class="p">)</span> <span class="p">?</span> <span class="m">5</span> <span class="p">:</span> <span class="m">1</span><span class="p">);</span>
 
         <span class="n">dp</span><span class="p">.</span><span class="nf">Normalize</span><span class="p">();</span>
         <span class="n">dp</span> <span class="p">*=</span> <span class="n">speed</span> <span class="p">*</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span><span class="p">;</span>
@@ -143,16 +143,16 @@ rotation approximately, so that the camera stops rotating when it almost reached
 		</div>
 
 		<div class="footer">
-	<p class="text-muted">© 2014-2016 Aleksey Fedotov</p>
+	<p class="text-muted">© 2014-2017 Aleksey Fedotov</p>
 </div>
 
 <script src="/js/vendor/jquery.min.js"></script>
 <script src="/js/vendor/video.js"></script>
-<script src="/js/flat-ui.min.js"></script>
-<script src="/js/fancybox/jquery.fancybox.pack.js"></script>
-<script src="/js/fancybox/jquery.fancybox-buttons.js"></script>
-<script src="/js/fancybox/jquery.fancybox-media.js"></script>
-<script src="/js/fancybox/jquery.fancybox-thumbs.js"></script>
+<script src="/js/vendor/flat-ui.min.js"></script>
+<script src="/js/vendor/fancybox/jquery.fancybox.pack.js"></script>
+<script src="/js/vendor/fancybox/jquery.fancybox-buttons.js"></script>
+<script src="/js/vendor/fancybox/jquery.fancybox-media.js"></script>
+<script src="/js/vendor/fancybox/jquery.fancybox-thumbs.js"></script>
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

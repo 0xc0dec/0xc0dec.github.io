@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>Unity3d tip&#58; implementing pick-and-drag mechanics in a first-person game | Raycast</title>
+		<title>Unity3d tip&#58; implementing pick-and-drag mechanics in a first-person game | Aleksey Fedotov</title>
 
 		<link href="/css/vendor/bootstrap.min.css" rel="stylesheet">
     	<link href="/css/flat-ui.min.css" rel="stylesheet">
@@ -190,9 +190,9 @@ When nothing happens, the visual avatar moves with the camera.</p>
 	<span class="p">{</span>
 		<span class="n">_raycast</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
 		<span class="k">const</span> <span class="kt">int</span> <span class="n">layerMask</span> <span class="p">=</span> <span class="m">1</span> <span class="p">&lt;&lt;</span> <span class="m">8</span><span class="p">;</span>
-		<span class="n">var</span> <span class="n">raycastHits</span> <span class="p">=</span> <span class="n">Physics</span><span class="p">.</span><span class="nf">RaycastAll</span><span class="p">(</span><span class="n">_playerCam</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">,</span> <span class="n">_playerCam</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">forward</span><span class="p">,</span>
+		<span class="kt">var</span> <span class="n">raycastHits</span> <span class="p">=</span> <span class="n">Physics</span><span class="p">.</span><span class="nf">RaycastAll</span><span class="p">(</span><span class="n">_playerCam</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">,</span> <span class="n">_playerCam</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">forward</span><span class="p">,</span>
 											 <span class="n">MaxPickDistance</span><span class="p">,</span> <span class="p">~</span><span class="n">layerMask</span><span class="p">);</span>
-		<span class="k">foreach</span> <span class="p">(</span><span class="n">var</span> <span class="n">hit</span> <span class="k">in</span> <span class="n">raycastHits</span><span class="p">)</span>
+		<span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">hit</span> <span class="k">in</span> <span class="n">raycastHits</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span><span class="n">hit</span><span class="p">.</span><span class="n">collider</span> <span class="p">==</span> <span class="n">_player</span><span class="p">.</span><span class="n">collider</span> <span class="p">||</span> <span class="p">!</span><span class="n">hit</span><span class="p">.</span><span class="n">collider</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">)</span> <span class="c1">// avoid colliding with the player object itself
 </span>				<span class="k">continue</span><span class="p">;</span>
@@ -221,7 +221,7 @@ When nothing happens, the visual avatar moves with the camera.</p>
 		<span class="k">if</span> <span class="p">(!</span><span class="n">_raycast</span><span class="p">.</span><span class="n">HasValue</span><span class="p">)</span>
 			<span class="k">return</span><span class="p">;</span>
 
-		<span class="n">var</span> <span class="n">heldBody</span> <span class="p">=</span> <span class="n">_raycast</span><span class="p">.</span><span class="n">Value</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">;</span>
+		<span class="kt">var</span> <span class="n">heldBody</span> <span class="p">=</span> <span class="n">_raycast</span><span class="p">.</span><span class="n">Value</span><span class="p">.</span><span class="n">rigidbody</span><span class="p">;</span>
 		<span class="n">heldBody</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span> <span class="p">=</span> <span class="n">_pivot</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">;</span>
 		<span class="n">heldBody</span><span class="p">.</span><span class="n">useGravity</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
 
@@ -290,16 +290,16 @@ the object itself remains physical, and all visuals go to the new object.</p>
 		</div>
 
 		<div class="footer">
-	<p class="text-muted">© 2014-2016 Aleksey Fedotov</p>
+	<p class="text-muted">© 2014-2017 Aleksey Fedotov</p>
 </div>
 
 <script src="/js/vendor/jquery.min.js"></script>
 <script src="/js/vendor/video.js"></script>
-<script src="/js/flat-ui.min.js"></script>
-<script src="/js/fancybox/jquery.fancybox.pack.js"></script>
-<script src="/js/fancybox/jquery.fancybox-buttons.js"></script>
-<script src="/js/fancybox/jquery.fancybox-media.js"></script>
-<script src="/js/fancybox/jquery.fancybox-thumbs.js"></script>
+<script src="/js/vendor/flat-ui.min.js"></script>
+<script src="/js/vendor/fancybox/jquery.fancybox.pack.js"></script>
+<script src="/js/vendor/fancybox/jquery.fancybox-buttons.js"></script>
+<script src="/js/vendor/fancybox/jquery.fancybox-media.js"></script>
+<script src="/js/vendor/fancybox/jquery.fancybox-thumbs.js"></script>
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
