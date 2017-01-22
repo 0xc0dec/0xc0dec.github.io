@@ -10,8 +10,8 @@
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
@@ -30,7 +30,7 @@ hr {
 }
 
 a {
-	color: #0090B2
+	color: #0090B2;
 	transition: initial;
 	-webkit-transition: initial;
 }
@@ -62,6 +62,7 @@ a:hover, a:focus {
 
 .navbar-default .navbar-nav > li > a {
 	font-size: 18px;
+    color: #0090B2;
 }
 
 .navbar-default .navbar-nav > li > a:hover,
@@ -160,9 +161,9 @@ h4 {
 }
 
 .footer {
-  position: absolute;
-  bottom: 0;
-  height: 70px;
+    position: absolute;
+    bottom: 0;
+    height: 70px;
 }
 
 .footer .text-muted {
@@ -193,5 +194,4 @@ h4 {
 
 .thumbnail {
 	border: none;
-}
 }
