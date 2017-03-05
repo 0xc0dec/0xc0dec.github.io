@@ -1,21 +1,21 @@
 ---
 layout: page
-title:  Not So Flat devblog, part 2
+title:  Not So Flat devlog, part 2
 date:   2015-05-04 20:00:00
-permalink: nsf-devblog2
+permalink: nsf-devlog2
 comments: true
 ---
 
 <div class="row text-center"><img src="/images/nsf/player2.png" class="margined20"/></div>
 
-<a href="/nsf-devblog">Part 1</a>
+<a href="/nsf-devlog">Part 1</a>
 
 Whoa, that did happen! Not So Flat has finally been released and is <a href="http://0xc0dec.itch.io/notsoflat">available for free on itch.io</a>.
 
-The only game before Not So Flat that also had a devblog about it was ultimately abandonded and never made it to the release.
+The only game before Not So Flat that also had a devlog about it was ultimately abandonded and never made it to the release.
 I was afraid that Not So Flat would suffer the same fate, but things turned out (almost) very well.
 
-This second part of the devblog is aimed at explaining the character movement implementation.
+This second part of the devlog is aimed at explaining the character movement implementation.
 This includes two major topics: the actual movement (running and jumping) and the calculation of the space available for movement.
 
 <!--break-->
