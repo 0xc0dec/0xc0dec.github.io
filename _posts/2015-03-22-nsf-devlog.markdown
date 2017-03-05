@@ -1,6 +1,6 @@
 ---
 layout: page
-title:  Not So Flat devblog
+title:  Not So Flat devlog
 date:   2015-03-22 13:00:00
 permalink: nsf-devblog
 comments: true
@@ -8,7 +8,7 @@ comments: true
 
 <div class="row text-center"><img src="/images/nsf/player.png" class="margined20"/></div>
 
-<a href="/nsf-devblog2">Part 2</a>
+<a href="/nsf-devlog2">Part 2</a>
 
 Not So Flat is the name of the new game that I'm currently working on. When I first started the development (late December 2014),
 it's been already more than half a year since my previous game <a href="/cubicroll/">Cubic Roll</a> came out. At that time I was struggling to come up with
