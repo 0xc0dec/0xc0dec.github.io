@@ -19,10 +19,10 @@ comments: true
 	</div>
 </div>
 
-### Installation
+<h2>Installation</h2>
 Copy `HardwareCursor.dll` into your project Assets folder.
 
-### Usage
+<h2>Usage</h2>
 Create cursor, initialize it from file and set as active:
 {% highlight csharp %}
 using UnityEngine;
@@ -57,6 +57,8 @@ cursor.ActivateDefaultCursor();
 **Note**: to be able to use texture asset as a cursor image, the texture should be imported with Advanced texture type,
 should have Read/Write enabled set to true and its format set to ARGB 32 bit.
 
-### Known bugs
-* Does not work in editor, only in standalone builds.
-* Under Mac OS X the cursor is reset to default if game resolution is changed in runtime. You can work around this by re-activating the cursor.
+<h2>Known bugs</h2>
+<ul>
+<li>Does not work in editor, only in standalone builds.</li>
+<li>Under Mac OS X the cursor is reset to default if game resolution is changed in runtime. You can work around this by re-activating the cursor.</li>
+</ul>
