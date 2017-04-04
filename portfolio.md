@@ -12,7 +12,7 @@ comments: false
 {% include thumbed-list-item.html url="/line-bound" img_path="/images/line-bound/icon.png" title="Line Bound" description_path="descriptions/linebound" %}
 {% include thumbed-list-item.html url="/uncopy" img_path="/images/uncopy/boxshot.png" title="Uncopy" description_path="descriptions/uncopy" %}
 {% include thumbed-list-item.html url="http://www.ludumdare.com/compo/ludum-dare-27/?action=preview&uid=20100" img_path="../images/test_chambers_icon.jpg" title="Test Chambers (for Ludum Dare 27)" description="My competition entry for the Ludum Dare 27, which was held at 23-26 august, 2013. The theme was '10 seconds'." %}
-{% include thumbed-list-item.html url="/nether-devblog" img_path="../images/nether_icon.png" title="Project Nether (abandoned)" description="There's only a blog post left that reminds of that game. And a long-forgotten Git repository somewhere." %}
+{% include thumbed-list-item.html url="/nether-devlog" img_path="../images/nether_icon.png" title="Project Nether (abandoned)" description="The idea was to make a difficult 'fly through obstacles' game." %}
 {% include thumbed-list-item.html url="/yarc" img_path="/images/yarc/yarc.png" title="Yet Another Rubik's Cube" description_path="descriptions/yarc" %}
 {% include thumbed-list-item.html url="/sortvis" img_path="/images/sortvis/logo.png" title="Sorting algorithms visualization in Three.js" description_path="descriptions/sortvis" %}
 {% include thumbed-list-item.html url="https://github.com/0xc0dec/solo" logo_placeholder="No logo" title="Solo Game Framework" description="A C++ game framework that I develop in my spare time for fun and learning new technologies." %}
