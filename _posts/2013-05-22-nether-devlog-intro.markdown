@@ -1,8 +1,8 @@
 ---
 layout: page
-title:  Project Nether devblog. Intro
+title:  Project Nether devlog. Intro
 date:   2013-05-22 00:00:00
-permalink: nether-devblog
+permalink: nether-devlog
 comments: true
 ---
 
