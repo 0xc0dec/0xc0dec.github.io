@@ -1,3 +1,0 @@
-A collection of shaders and materials for high-quality wireframe rendering in Unity.
-The package relies on geometry shaders so currently it runs only on Windows and DX10-compatible video cards.
-Geometry shaders are not yet supported by Unity on Linux and macOS.

@@ -1,3 +1,0 @@
-Small emulation of the famous Rubik's Cube. I made this mainly for the purpose of testing how OGRE works together with SDL.
-
-Supports sizes from 2x2x2 up to 10x10x10.

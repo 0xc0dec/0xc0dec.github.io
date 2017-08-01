@@ -1,3 +1,0 @@
-A Unity library for changing system cursor image - the best way to make in-game cursor fast,
-responsive and framerate-independent. Library works with Windows and Mac OS X standalone builds,
-does not require Unity PRO. Can load cursor images from both files and memory (therefore, from assets too).
