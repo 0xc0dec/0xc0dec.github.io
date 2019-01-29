@@ -1,2 +1,0 @@
-webpackJsonp([0xa6fdde1c5f455800],{"./node_modules/json-loader/index.js!./.cache/json/cubicroll.json":function(o,e){o.exports={pathContext:{}}}});
-//# sourceMappingURL=path---cubicroll-586c7e095e534a3909ec.js.map
