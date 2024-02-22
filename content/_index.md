@@ -2,7 +2,7 @@
 title = "~/aleks"
 +++
 
-# Hello there, I am Aleksey Fedotov
+# Hello there! I am Aleksey Fedotov
 
 a full-time software engineer and a hobbyist game developer.
 
