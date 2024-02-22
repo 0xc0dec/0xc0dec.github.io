@@ -125,11 +125,15 @@ li {
 
 ul li::marker {
   content: '» ';
+  display: block;
+  position: absolute;
   color: var(--metaColor)
 }
 
 ul li:hover::marker {
   content: '# ';
+  display: block;
+  position: absolute;
   font-weight: 700;
   color: var(--linkColor)
 }
