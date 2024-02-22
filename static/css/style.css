@@ -120,7 +120,7 @@ ul {
 }
 
 li {
-  margin-bottom: .25rem;
+  margin-bottom: .5rem;
 }
 
 ul li::marker {
@@ -240,8 +240,7 @@ textarea {
   min-height: 100svh;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  gap: 2rem;
-  
+  gap: 1rem;
 }
 
 /* Icons settings */
@@ -262,7 +261,7 @@ textarea {
 }
 
 .navBar {
-  padding: 1rem 0 0 0;
+  padding: 2rem 0 0 0;
   display: flex;
   flex-direction: row;
   gap: .4rem;
@@ -340,8 +339,8 @@ textarea {
   float: left
 }
 
-.webring {
-  margin: 0.5rem;
+.published-on {
+    color: var(--grey)
 }
 
 /* Add Padding */
