@@ -4,7 +4,7 @@ title = "Cubic Roll"
 
 A game that tests your reflexes: you need to keep an accelerating rolling cube on a randomly generated track.
 
-Released on June 26, 2014. Used to have an iOS version but it's been abandoned.
+Released on June 26, 2014. Used to have an iOS version but it's been abandoned 🤷‍♂️
 
 [Download at itch.io](https://0xc0dec.itch.io/cubic-roll)
 
