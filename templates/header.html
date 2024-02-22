@@ -5,7 +5,7 @@
 {% set current_lang = section.lang %}
 {% endif %}
 {% if config.extra.header_nav %}
-<nav class="navBar">
+<nav class="navbar">
     {% for nav_item in config.extra.header_nav %}
     <a href="{{ nav_item.url }}" class="{% if nav_item.url == current_url %}active{% endif %}">
         {% set language_key = 'name_' ~ current_lang %}

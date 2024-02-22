@@ -227,14 +227,13 @@ th {
   text-align: left
 }
 
-.metaData,
-.themeButton,
+.metadata,
+.theme-btn,
 hr,
 textarea {
   color: var(--metaColor)
 }
 
-/* Site Specific Styling */
 .wrapper {
   min-height: 100vh;
   min-height: 100svh;
@@ -243,7 +242,6 @@ textarea {
   gap: 1rem;
 }
 
-/* Icons settings */
 .icons {
   width: 2.0rem;
   height: 2.0rem;
@@ -260,7 +258,7 @@ textarea {
   color: var(--metaColor);
 }
 
-.navBar {
+.navbar {
   padding: 2rem 0 0 0;
   display: flex;
   flex-direction: row;
@@ -271,23 +269,23 @@ textarea {
   align-content: flex-end
 }
 
-.themeButton {
+.theme-btn {
   cursor: pointer;
   border: none;
   font-size: 1.8rem;
   background-color: transparent
 }
 
-.dark .themeButton.dark,
-.themeButton.light {
+.dark .theme-btn.dark,
+.theme-btn.light {
   display: none
 }
 
-.dark .themeButton.light {
+.dark .theme-btn.light {
   display: block
 }
 
-.tagsData {
+.tags-data {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -296,7 +294,7 @@ textarea {
   align-content: flex-end
 }
 
-.titleList li {
+.title-list li {
   margin-bottom: .75rem;
 }
 
@@ -313,30 +311,15 @@ textarea {
   padding: 0 0 0 1rem;
 }
 
-.footContainer {
+.foot-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
 }
 
-.noStyle {
-  padding: 0;
-  margin: 0;
-  border: none;
-  border-radius: 0
-}
-
-.textCenter {
+.text-center {
   text-align: center;
-}
-
-.floatRight {
-  float: right
-}
-
-.floatLeft {
-  float: left
 }
 
 .published-on {
