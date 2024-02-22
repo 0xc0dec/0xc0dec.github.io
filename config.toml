@@ -23,6 +23,6 @@ default_theme = "light"
 list_pages = false
 
 header_nav = [
-    { url = "/", name_en = "/home/" },
-    { url = "/posts", name_en = "/posts/" },
+    { url = "/", name = "/home/" },
+    { url = "/posts", name = "/posts/" },
 ]
