@@ -1,20 +1,32 @@
 <!DOCTYPE html>
 <html lang="{% if page %}{{ page.lang }}{% else %}{{ config.default_language }}{% endif %}">
+
 <head>
     {% include "head.html" %}
 </head>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KC3EPJR3G5"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-KC3EPJR3G5');
+</script>
+
 <body>
     <div class="wrapper">
-      <header>
-          {% include "header.html" %}
-      </header>
-      <main>
-          {% block content %}
-          {% endblock content %}
-      </main>
-      <footer>
-          {% include "footer.html" %}
-      </footer>
+        <header>
+            {% include "header.html" %}
+        </header>
+        <main>
+            {% block content %}
+            {% endblock content %}
+        </main>
+        <footer>
+            {% include "footer.html" %}
+        </footer>
     </div>
 </body>
+
 </html>
