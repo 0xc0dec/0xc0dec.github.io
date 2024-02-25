@@ -18,7 +18,7 @@ highlight_theme = "material-light"
 
 author = "Aleksey"
 display_author = true
-favicon = "/img/favicon.png"
+favicon = "/favicon.ico"
 
 default_theme = "light"
 list_pages = false
