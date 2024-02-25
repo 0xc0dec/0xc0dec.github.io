@@ -13,10 +13,10 @@ When not coding I write documentation, plan our work via JIRA tickets, or partic
 
 I can be found ~terminally online~ here:
 
-{{ brandicon(faClass="fa-github-square")}} [Github](https://github.com/0xc0dec)
-{{ brandicon(faClass="fa-twitter-square")}} [Xwitter](https://x.com/0xc0dec)
-{{ brandicon(faClass="fa-facebook-square")}} [Facebook](https://facebook.com/0xc0dec)
-{{ brandicon(faClass="fa-vk")}} [VK](https://vk.com/0xc0dec)
+{{ icon(class="fa-brands fa-github-square")}} [Github](https://github.com/0xc0dec)
+{{ icon(class="fa-brands fa-twitter-square")}} [Xwitter](https://x.com/0xc0dec)
+{{ icon(class="fa-brands fa-facebook-square")}} [Facebook](https://facebook.com/0xc0dec)
+{{ icon(class="fa-brands fa-vk")}} [VK](https://vk.com/0xc0dec)
 
 and probably somewhere else too at `@0xc0dec`.
 
