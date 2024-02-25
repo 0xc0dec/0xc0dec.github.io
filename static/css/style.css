@@ -62,23 +62,22 @@
 html {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  font-size: 62.5%;
+  font-size: 14px;
   scrollbar-color: var(--metaColor) var(--bgColor);
   scrollbar-width: thin;
 }
 
 header {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-top: 1em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 1em;
 }
 
 body {
   font-family: monospace;
-  font-size: 1.6rem;
   line-height: 1.35;
-  max-width: 64rem;
+  max-width: 700px;
   margin: auto;
   overflow-wrap: break-word;
   background: var(--bgColor);
@@ -86,7 +85,8 @@ body {
 }
 
 h1 {
-  font-size: 2.4rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
   color: var(--bgColor);
   background-color: var(--metaColor);
   text-align: center;
@@ -95,7 +95,7 @@ h1 {
 
 h1::before {
   color: var(--bgColor);
-  content: '# '
+  content: '# ';
 }
 
 h2::before,
@@ -220,7 +220,6 @@ th {
 }
 
 footer {
-  font-size: 1.4rem;
   clear: both;
   color: var(--footColor)
 }
