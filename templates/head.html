@@ -5,12 +5,18 @@
 <meta name="robots" content="index, follow">
 
 {% if page.title %}
-{% set title = page.title %}
+{% set page_title = page.title %}
 {% elif section.title %}
-{% set title = section.title %}
-{% elif config.title %}
-{% set title = config.title %}
+{% set page_title = section.title %}
 {% endif %}
+
+{% if config.title %}
+{% set title_prefix = config.title %}
+{% else %}
+{% set title_prefix = "" %}
+{% endif %}
+
+{% set title = title_prefix ~ " • " ~ page_title %}
 
 {% if page.extra.author %}
 {% set author = page.extra.author %}
@@ -44,9 +50,7 @@
 {% set url = config.base_url %}
 {% endif %}
 
-{% if title %}
 <title>{{ title }}</title>
-{% endif %}
 
 {% block metatags %}
 

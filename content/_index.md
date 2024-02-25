@@ -1,5 +1,5 @@
 +++
-title = "~/aleks"
+title = "Home"
 +++
 
 # Hello there! I am Aleksey Fedotov

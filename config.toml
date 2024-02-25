@@ -1,4 +1,5 @@
 base_url = "https://fdtv.me"
+title = "fdtv.me"
 compile_sass = true
 build_search_index = true
 generate_feed = true
