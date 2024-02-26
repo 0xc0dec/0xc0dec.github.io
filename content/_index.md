@@ -9,6 +9,9 @@ I am Aleksey Fedotov, a full-time software engineer and a hobbyist game develope
 I currently work as a backend engineer designing and supporting Node.js services written in TypeScript and running on AWS.
 When not coding I write documentation, plan our work via JIRA tickets, or participate in totally useful meetings.
 
+In the past I used to develop .NET/C# backend services and frontend React apps, sometimes also touching Python and C.
+In my personal projects I lean towards C++ and Rust.
+
 ## Online contacts
 
 I can be found ~terminally online~ here:
