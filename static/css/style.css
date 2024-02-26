@@ -327,6 +327,11 @@ textarea {
     color: var(--grey)
 }
 
+.social-link-btn {
+    line-height: 2rem;
+    display: inline-block;
+}
+
 /* Add Padding */
 @media (max-width: 650px) {
   .wrapper {
