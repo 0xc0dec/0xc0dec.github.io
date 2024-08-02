@@ -1,27 +1,10 @@
-:root,
-:root.light {
+:root {
   --bgColor: white;
   --fgColor: #41474E;
-  --metaColor: #D26878;
-  --headColor: #;
+  --metaColor: #5690AF;
   --linkColor: #5690AF;
-  --hovColor: #22453F;
-  --bgSelect: #FFFAE1;
-  --bgUrl: url(https://i.ibb.co/Qpkrw4V/tile-Light.webp) repeat;
-  --red: #D26878;
-  --dimRed: #623039;
-  --orange: #e08f67;
-  --dimOrange: #926048;
-  --yellow: #FFFAE1;
-  --dimYellow: #D5C5A1;
-  --green: #56AFA0;
-  --dimGreen: #22453F;
   --blue: #5690AF;
-  --dimBlue: #223844;
-  --purple: #9271D6;
-  --dimPurple: #47356C;
   --grey: #CBCDCD;
-  --dimGrey: #646868
 }
 
 ::-moz-selection {
@@ -38,7 +21,7 @@ html {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   font-size: 14px;
-  scrollbar-color: var(--metaColor) var(--bgColor);
+  scrollbar-color: var(--blue) var(--bgColor);
   scrollbar-width: thin;
 }
 
