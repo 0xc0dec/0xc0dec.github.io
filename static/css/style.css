@@ -1,6 +1,6 @@
 :root,
 :root.light {
-  --bgColor: #fafafa;
+  --bgColor: white;
   --fgColor: #41474E;
   --metaColor: #D26878;
   --headColor: #;
@@ -26,12 +26,12 @@
 
 ::-moz-selection {
   color: var(--bgColor);
-  background: var(--metaColor)
+  background: var(--blue)
 }
 
 ::selection {
   color: var(--bgColor);
-  background: var(--metaColor)
+  background: var(--blue)
 }
 
 html {
@@ -63,22 +63,13 @@ h1 {
   margin-bottom: 1.5rem;
   font-size: 1.5rem;
   color: var(--bgColor);
-  background-color: var(--metaColor);
+  background-color: var(--blue);
   text-align: center;
   text-wrap: balance;
 }
 
 h1::before {
   color: var(--bgColor);
-}
-
-h2::before,
-h3::before,
-h4::before,
-h5::before,
-h6::before {
-  color: var(--metaColor);
-  content: '# '
 }
 
 a {
@@ -159,7 +150,7 @@ div code {
   padding: 0 .2rem 0 .2rem;
   border-radius: .3rem;
   color: var(--bgColor);
-  background-color: var(--fgColor);
+  background-color: var(--grey);
 }
 
 pre code {
