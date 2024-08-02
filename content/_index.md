@@ -26,8 +26,7 @@ and probably somewhere else too at `@0xc0dec`.
 
 ## Pet projects
 
-As if I don't code enough at work I sometimes do it in my spare time too.
-Here are some projects:
+I sometimes code in in my spare time too. Here are some of the projects:
 
 - [Solo](https://github.com/0xc0dec/solo), a simple game engine with OpenGL/Vulkan backend, Bullet physics and Lua scripting.
   More or less just a playground for my gamedev experiments.
