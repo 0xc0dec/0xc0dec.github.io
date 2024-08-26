@@ -12,7 +12,7 @@ When not coding I write documentation, plan our work via JIRA tickets, or partic
 In the past I used to develop .NET/C# backend services and frontend React apps, sometimes also touching Python and C.
 In my personal projects I lean towards C++ and Rust.
 
-## Online contacts
+## Online presence
 
 I can be found ~terminally online~ here:
 

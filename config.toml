@@ -26,4 +26,5 @@ list_pages = false
 header_nav = [
     { url = "/", name = "/home/" },
     { url = "/posts", name = "/posts/" },
+    { url = "/posts-ru", name = "/posts (RU)/" },
 ]
