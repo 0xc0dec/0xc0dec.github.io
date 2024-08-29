@@ -1,7 +1,7 @@
 :root {
   --bgColor: white;
   --fgColor: #41474E;
-  --metaColor: #5690AF;
+  --metaColor: #96b1c0;
   --linkColor: #5690AF;
   --blue: #5690AF;
   --grey: #b3b3b3;
@@ -233,11 +233,15 @@ textarea {
 
 .tags-data {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-end;
   align-items: flex-start;
   align-content: flex-end
+}
+
+.tags-data .metadata {
+    margin-right: 5px;
 }
 
 .title-list li {
