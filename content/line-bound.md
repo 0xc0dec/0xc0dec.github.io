@@ -6,7 +6,7 @@ Guide a moving line through a 2D track full of obstacles in a 3D space with ever
 
 Released on August 15, 2013. Used to have an iOS version but it's been abandoned.
 
-[Download at itch.io](https://0xc0dec.itch.io/line-bound)
+[Download on itch.io](https://0xc0dec.itch.io/line-bound)
 
 {{ youtube(id="SJHra0h_xKs") }}
 
