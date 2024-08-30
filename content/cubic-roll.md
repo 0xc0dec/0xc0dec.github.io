@@ -6,7 +6,7 @@ A game that tests your reflexes: you need to keep an accelerating rolling cube o
 
 Released on June 26, 2014. Used to have an iOS version but it's been abandoned.
 
-[Download at itch.io](https://0xc0dec.itch.io/cubic-roll)
+[Download on itch.io](https://0xc0dec.itch.io/cubic-roll)
 
 {{ youtube(id="LIk4Yl86uqw") }}
 

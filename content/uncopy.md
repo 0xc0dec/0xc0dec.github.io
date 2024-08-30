@@ -7,7 +7,7 @@ Place together blocks of the same type and they will disappear.
 
 Released on November 1, 2012.
 
-[Download at itch.io](https://0xc0dec.itch.io/uncopy)
+[Download on itch.io](https://0xc0dec.itch.io/uncopy)
 
 {{ youtube(id="OzyMXuluPn8") }}
 
