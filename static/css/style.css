@@ -5,6 +5,7 @@
   --linkColor: #5690AF;
   --blue: #5690AF;
   --grey: #b3b3b3;
+  --lightGrey: #ebebeb;
 }
 
 ::-moz-selection {
@@ -132,8 +133,7 @@ li code,
 div code {
   padding: 0 .2rem 0 .2rem;
   border-radius: .3rem;
-  color: var(--bgColor);
-  background-color: var(--grey);
+  background-color: var(--lightGrey);
 }
 
 pre code {
