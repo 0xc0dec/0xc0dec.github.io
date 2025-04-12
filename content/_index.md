@@ -39,4 +39,4 @@ I love indie gamedev and occasionally mess around with some ideas. That's how th
 
 [Not so Flat](/nsf) • [Cubic Roll](/cubic-roll) • [Line Bound](/line-bound) • [Uncopy](/uncopy) • [Ре:бусы](/rebus)
 
-They are all rather amateurish and naive but at this point it's a history to remember.
+They are all rather amateurish and naive but it's still a history to remember.
