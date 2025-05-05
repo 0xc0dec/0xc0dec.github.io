@@ -16,7 +16,7 @@ In my personal projects I lean towards C++ and Rust.
 
 <span class="social-link-btn">{{ icon(class="fa-brands fa-linkedin fa-xl") }} [LinkedIn](https://www.linkedin.com/in/fdtv/)</span>
 <span class="social-link-btn">{{ icon(class="fa-brands fa-github-square fa-xl") }} [Github](https://github.com/0xc0dec)</span>
-<span class="social-link-btn">{{ icon(class="fa-brands fa-twitter-square fa-xl") }} [Xwitter](https://x.com/0xc0dec)</span>
+<span class="social-link-btn">{{ icon(class="fa-brands fa-twitter-square fa-xl") }} [Xwitter](https://x.com/lexfdv)</span>
 <span class="social-link-btn">{{ icon(class="fa-brands fa-facebook-square fa-xl") }} [Facebook](https://facebook.com/0xc0dec)</span>
 <span class="social-link-btn">{{ icon(class="fa-brands fa-vk fa-xl")}} [VK](https://vk.com/0xc0dec)</span>
 
