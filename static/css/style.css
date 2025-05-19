@@ -1,28 +1,26 @@
 :root {
-  --bgColor: white;
-  --fgColor: #41474E;
-  --metaColor: #96b1c0;
-  --linkColor: #5690AF;
-  --blue: #5690AF;
-  --grey: #b3b3b3;
-  --lightGrey: #ebebeb;
+  --bg-color: white;
+  --fg-color: #41474E;
+  --meta-color: #96b1c0;
+  --accent-color: #3b647a;
+  --dimmed-color: #b3b3b3;
 }
 
 ::-moz-selection {
-  color: var(--bgColor);
-  background: var(--blue)
+  color: var(--bg-color);
+  background: var(--accent-color)
 }
 
 ::selection {
-  color: var(--bgColor);
-  background: var(--blue)
+  color: var(--bg-color);
+  background: var(--accent-color)
 }
 
 html {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   font-size: 14px;
-  scrollbar-color: var(--blue) var(--bgColor);
+  scrollbar-color: var(--accent-color) var(--bg-color);
   scrollbar-width: thin;
 }
 
@@ -39,34 +37,34 @@ body {
   max-width: 800px;
   margin: auto;
   overflow-wrap: break-word;
-  background: var(--bgColor);
-  color: var(--fgColor);
+  background: var(--bg-color);
+  color: var(--fg-color);
 }
 
 h1 {
   margin-bottom: 1.5rem;
   font-size: 1.5rem;
-  color: var(--bgColor);
-  background-color: var(--blue);
+  color: var(--bg-color);
+  background-color: var(--accent-color);
   text-align: center;
   text-wrap: balance;
 }
 
 h1::before {
-  color: var(--bgColor);
+  color: var(--bg-color);
 }
 
 a {
   text-decoration: none;
   padding: 0 .2rem 0 .2rem;
   border-radius: .3rem;
-  color: var(--linkColor);
+  color: var(--accent-color);
 }
 
 a:focus,
 a:hover {
-  background-color: var(--linkColor);
-  color: var(--bgColor)
+  background-color: var(--accent-color);
+  color: var(--bg-color)
 }
 
 ul {
@@ -84,16 +82,16 @@ li {
 }
 
 ul li::marker {
-  color: var(--metaColor)
+  color: var(--meta-color)
 }
 
 ul li:hover::marker {
   font-weight: 700;
-  color: var(--linkColor)
+  color: var(--accent-color)
 }
 
 blockquote {
-  border-left: .5rem solid var(--metaColor);
+  border-left: .5rem solid var(--meta-color);
   margin: 1rem;
   padding: 0 0 0 1rem
 }
@@ -103,7 +101,7 @@ textarea {
   outline: 0;
   resize: none;
   overflow: auto;
-  background-color: var(--bgColor)
+  background-color: var(--bg-color)
 }
 
 hr {
@@ -115,12 +113,12 @@ img {
   height: auto;
   margin: .2rem;
   padding: .2rem;
-  border: dashed .2rem var(--metaColor);
+  border: dashed .2rem var(--meta-color);
   border-radius: 15px
 }
 
 pre {
-  border: 1px solid var(--metaColor);
+  border: 1px solid var(--meta-color);
   padding: 1rem;
   overflow-x: auto;
   font-style: monospace;
@@ -133,7 +131,7 @@ li code,
 div code {
   padding: 0 .2rem 0 .2rem;
   border-radius: .3rem;
-  background-color: var(--lightGrey);
+  background-color: #ebebeb;
 }
 
 pre code {
@@ -169,7 +167,7 @@ th {
 td,
 th {
   padding: .5rem;
-  border: dashed .1rem var(--metaColor)
+  border: dashed .1rem var(--meta-color)
 }
 
 footer {
@@ -187,7 +185,7 @@ th {
 .theme-btn,
 hr,
 textarea {
-  color: var(--metaColor)
+  color: var(--meta-color)
 }
 
 .wrapper {
@@ -204,14 +202,14 @@ textarea {
   aspect-ratio: 1/1;
   display: inline-block;
   vertical-align: middle;
-  color: var(--fgColor);
-  fill: var(--fgColor);
+  color: var(--fg-color);
+  fill: var(--fg-color);
   background-color: transparent;
 }
 
 .icons__background:hover {
   background-color: transparent;
-  color: var(--metaColor);
+  color: var(--meta-color);
 }
 
 .navbar {
@@ -253,7 +251,7 @@ textarea {
 }
 
 .footnote-definition-label {
-  color: var(--metaColor);
+  color: var(--meta-color);
 }
 
 .footnote-definition p {
@@ -273,7 +271,7 @@ textarea {
 }
 
 .published-on {
-    color: var(--grey)
+    color: var(--dimmed-color)
 }
 
 .social-link-btn {
