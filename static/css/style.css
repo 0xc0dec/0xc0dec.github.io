@@ -34,7 +34,7 @@ header {
 body {
   font-family: monospace;
   line-height: 1.7;
-  max-width: 800px;
+  max-width: 640px;
   margin: auto;
   overflow-wrap: break-word;
   background: var(--bg-color);
