@@ -4,7 +4,7 @@ title = "Home"
 
 # Hello there!
 
-I am Aleksey Fedotov, a full-time software engineer and a hobbyist game developer.
+I am Aleksey Fedotov, a full-time software engineer and a hobbyist game developer. Welcome to my website.
 
 I currently work as a backend engineer designing and supporting Node.js services written in TypeScript and running on AWS.
 When not coding I write documentation, plan work via JIRA tickets, or participate in totally useful meetings.
