@@ -55,7 +55,7 @@ h1::before {
 }
 
 a {
-  text-decoration: none;
+  text-decoration: underline;
   padding: 0 .2rem 0 .2rem;
   border-radius: .3rem;
   color: var(--accent-color);
@@ -64,7 +64,8 @@ a {
 a:focus,
 a:hover {
   background-color: var(--accent-color);
-  color: var(--bg-color)
+  color: var(--bg-color);
+  text-decoration: none;
 }
 
 ul {
