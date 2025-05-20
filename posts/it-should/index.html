@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta content="IE=edge" http-equiv="X-UA-Compatible" />
+<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+<meta name="robots" content="index, follow">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<title>fdtv.me • Don&#x27;t name your tests &#x27;it(&quot;should ...&quot;)&#x27;</title>
+
+
+
+
+<meta name="title" content="fdtv.me • Don&#x27;t name your tests &#x27;it(&quot;should ...&quot;)&#x27;">
+
+
+
+<meta name="author" content="Aleksey">
+
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://fdtv.me/posts/it-should/">
+
+
+<meta property="og:site_name" content="fdtv.me">
+
+
+
+<meta property="og:title" content="fdtv.me • Don&#x27;t name your tests &#x27;it(&quot;should ...&quot;)&#x27;">
+
+
+
+
+
+<meta property="og:image" content="https:&#x2F;&#x2F;fdtv.me&#x2F;favicon.ico">
+
+
+
+
+<link rel="canonical" href="https://fdtv.me/posts/it-should/">
+
+
+<link rel="shortcut icon" type="image/x-icon" href="https://fdtv.me/favicon.ico">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://fdtv.me/css/style.css" />
+<link rel="stylesheet" href="https://fdtv.me/fontawesome/css/fontawesome.min.css" />
+<link rel="stylesheet" href="https://fdtv.me/fontawesome/css/solid.min.css" />
+<link rel="stylesheet" href="https://fdtv.me/fontawesome/css/brands.min.css" />
+
+</head>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KC3EPJR3G5"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-KC3EPJR3G5');
+</script>
+
+<body>
+    <div class="wrapper">
+        <header>
+            <span>\o/</span>
+
+
+<nav class="navbar">
+    
+    
+    <a href="&#x2F;" class="main-menu-link">
+        home
+    </a>
+    
+    /
+    <a href="&#x2F;posts" class="main-menu-link">
+        posts
+    </a>
+    
+    /
+    <a href="&#x2F;posts-ru" class="main-menu-link">
+        posts (RU)
+    </a>
+    
+</nav>
+
+        </header>
+        <main>
+            
+<h1>Don&#x27;t name your tests &#x27;it(&quot;should ...&quot;)&#x27;</h1>
+
+<p class="published-on">
+    Published on <span class="metadata">2024-03-17</span> by <span class="metadata">Aleksey</span>
+</p>
+
+
+
+<h2 id="common-pattern">Common pattern</h2>
+<p>If you’ve ever worked with tests in a language like TypeScript, chances are
+you’ve seen something like this:</p>
+<pre data-lang="js" style="background-color:#fafafa;color:#80cbc4;" class="language-js "><code class="language-js" data-lang="js"><span style="color:#6182b8;">describe</span><span>(</span><span style="color:#39adb5;">&quot;</span><span style="color:#91b859;">readFileToString</span><span style="color:#39adb5;">&quot;, () </span><span style="font-style:italic;color:#7c4dff;">=&gt; </span><span style="color:#39adb5;">{
+</span><span>  </span><span style="color:#6182b8;">it</span><span>(</span><span style="color:#39adb5;">&quot;</span><span style="color:#91b859;">should throw when file is missing</span><span style="color:#39adb5;">&quot;, () </span><span style="font-style:italic;color:#7c4dff;">=&gt; </span><span style="color:#39adb5;">{
+</span><span style="color:#39adb5;">    </span><span style="font-style:italic;color:#ccd7da;">// ...
+</span><span>  </span><span style="color:#39adb5;">}</span><span>)</span><span style="color:#39adb5;">;
+</span><span>
+</span><span>  </span><span style="color:#6182b8;">it</span><span>(</span><span style="color:#39adb5;">&quot;</span><span style="color:#91b859;">should throw on empty file name</span><span style="color:#39adb5;">&quot;, () </span><span style="font-style:italic;color:#7c4dff;">=&gt; </span><span style="color:#39adb5;">{
+</span><span style="color:#39adb5;">    </span><span style="font-style:italic;color:#ccd7da;">// ...
+</span><span>  </span><span style="color:#39adb5;">}</span><span>)</span><span style="color:#39adb5;">;
+</span><span>
+</span><span>  </span><span style="color:#6182b8;">it</span><span>(</span><span style="color:#39adb5;">&quot;</span><span style="color:#91b859;">should return file content as string</span><span style="color:#39adb5;">&quot;, () </span><span style="font-style:italic;color:#7c4dff;">=&gt; </span><span style="color:#39adb5;">{
+</span><span style="color:#39adb5;">    </span><span style="font-style:italic;color:#ccd7da;">// ...
+</span><span>  </span><span style="color:#39adb5;">}</span><span>)</span><span style="color:#39adb5;">;
+</span><span>
+</span><span style="color:#39adb5;">  </span><span style="font-style:italic;color:#ccd7da;">// ...
+</span><span style="color:#39adb5;">}</span><span>)</span><span style="color:#39adb5;">;
+</span></code></pre>
+<p>This contrived example illustrates the pattern that seems very popular among the developers: naming your tests <code>should ...</code>.</p>
+<p>I seriously struggle to understand the popularity. There must be a logical reason for such a pattern to merge,
+but I just don’t see one. It’s almost like everybody uses it because everybody else does.</p>
+<h2 id="not-evident-enough">Not evident enough?</h2>
+<p>The single biggest problem for me with the <code>should</code> prefix is that it’s completely redundant.
+The very existence of a test already implies that a piece of logic <em>should</em> work in a certain way,
+exactly how the test documents it. I don’t need a prefix to remind me about that. It’s a tautology.
+If I omit the prefix</p>
+<pre data-lang="js" style="background-color:#fafafa;color:#80cbc4;" class="language-js "><code class="language-js" data-lang="js"><span style="color:#6182b8;">it</span><span>(</span><span style="color:#39adb5;">&quot;</span><span style="color:#91b859;">throws when file is missing</span><span style="color:#39adb5;">&quot;, () </span><span style="font-style:italic;color:#7c4dff;">=&gt; </span><span style="color:#39adb5;">{
+</span><span style="color:#39adb5;">  </span><span style="font-style:italic;color:#ccd7da;">// ...
+</span><span style="color:#39adb5;">}</span><span>)</span><span style="color:#39adb5;">;
+</span></code></pre>
+<p>I’m losing zero useful information. In fact, the test name is now more concise and reads naturally.</p>
+<p>The inevitable consequence of this point is that <code>should</code> becomes a visual noise if you read tests long enough. At least I
+have definitely noticed about myself that over time I tend to semi-conciously skip the prefix in order to reach the meaningful
+part of the name quicker. Any unnecessary visual noise in code is bad because it increases the cognitive load on the reader,
+who is already burdened enough due to the nature of the job.</p>
+<p>The visual noise becomes more apparent in the test runner output. A whole column is wasted on a word that’s repeated in 100% of the tests
+and brings zero value.</p>
+<pre data-lang="sh" style="background-color:#fafafa;color:#80cbc4;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#6182b8;">PASS apps/tests/recurrent-payment-endpoint.spec.ts
+</span><span>  </span><span style="color:#6182b8;">Recurrent payment endpoint
+</span><span>    </span><span style="color:#6182b8;">request is authorized
+</span><span>      </span><span style="color:#6182b8;">amount is negative
+</span><span>        </span><span style="color:#6182b8;">✓ should return HTTP 200
+</span><span>        </span><span style="color:#6182b8;">✓ should return failed transaction
+</span><span>        </span><span style="color:#6182b8;">✓ should send transaction metric
+</span><span>        </span><span style="color:#6182b8;">✓ should log request details
+</span></code></pre>
+<h2 id="beyond-unit-tests">Beyond unit tests</h2>
+<p>Another problem with <code>should</code> is that it kinda fits well only with <code>it()</code> and mostly in unit tests. I don’t know who invented
+the idea that tests should read like natural language and therefore start with “it should”, but the benefit of this hasn’t
+exactly been very apparent, to put it mildly.</p>
+<p>Once you start writing integration or e2e tests, the context of the test becomes broader and higher-level. The meaning
+of <em>it</em> may no longer be obvious for each particular test, especially if it’s nested within multiple <code>describe</code>s. Consequently,
+<code>should</code> also loses this connection to <em>something</em> being tested and becomes even less useful. At best, the need to follow the “it should” pattern becomes a hinderance in places where a more concise name would work better.</p>
+<p>To give an example, imagine I’m testing a complex flow that is triggered by an external event. Following the pattern I’d write:</p>
+<pre data-lang="js" style="background-color:#fafafa;color:#80cbc4;" class="language-js "><code class="language-js" data-lang="js"><span style="color:#6182b8;">describe</span><span>(</span><span style="color:#39adb5;">&quot;</span><span style="color:#91b859;">Authorization confirmation</span><span style="color:#39adb5;">&quot;, () </span><span style="font-style:italic;color:#7c4dff;">=&gt; </span><span style="color:#39adb5;">{
+</span><span style="color:#39adb5;">  </span><span style="font-style:italic;color:#ccd7da;">// ...
+</span><span>
+</span><span>  </span><span style="color:#6182b8;">describe</span><span>(</span><span style="color:#39adb5;">&quot;</span><span style="color:#91b859;">&#39;order placed&#39; event is received</span><span style="color:#39adb5;">&quot;, () </span><span style="font-style:italic;color:#7c4dff;">=&gt; </span><span style="color:#39adb5;">{
+</span><span>    </span><span style="color:#6182b8;">it</span><span>(</span><span style="color:#39adb5;">&quot;</span><span style="color:#91b859;">should confirm authorization</span><span style="color:#39adb5;">&quot;, () </span><span style="font-style:italic;color:#7c4dff;">=&gt; </span><span style="color:#39adb5;">{}</span><span>)</span><span style="color:#39adb5;">;
+</span><span>
+</span><span>    </span><span style="color:#6182b8;">it</span><span>(</span><span style="color:#39adb5;">&quot;</span><span style="color:#91b859;">should emit &#39;auth confirmed&#39; event</span><span style="color:#39adb5;">&quot;, () </span><span style="font-style:italic;color:#7c4dff;">=&gt; </span><span style="color:#39adb5;">{}</span><span>)</span><span style="color:#39adb5;">;
+</span><span>  </span><span style="color:#39adb5;">}</span><span>)</span><span style="color:#39adb5;">;
+</span><span>
+</span><span style="color:#39adb5;">  </span><span style="font-style:italic;color:#ccd7da;">// ...
+</span><span style="color:#39adb5;">}</span><span>)</span><span style="color:#39adb5;">;
+</span></code></pre>
+<p>The fixture name is the name of the flow: “Authorization confirmation”. Then we read “order placed event is received” followed by
+“should confirm authorization”. But what exactly does that mean? The event confirms an authorization? This vaguely makes sense but also not really because the event itself cannot confirm anything, the service does that. However <em>the service</em> is not mentioned anywhere, going up the chain of <code>describe</code>s we stop only at the flow name. But the flow itself cannot confirm anything either, it’s just a generic name of a set of
+processes.</p>
+<p>What about the second test <code>it(&quot;should emit 'auth confirmed' event&quot;)</code>? It’s even more confusing because it basically says that the <code>order placed</code> event should emit the <code>auth confirmed</code> event. But the event itself cannot emit anything! It’s just a trigger that launches a flow that may or may not eventually emit the output event. At best such test name in this context is misleading.</p>
+<h2 id="just-don-t">Just don’t</h2>
+<p>The point of all this is that the pattern is too opinionated and may require unnecessary effort to follow if you also care about concise and clear test names in good English. Just drop the prefix, re-word the names and ideally also use a less opinionated alternative to <code>it()</code>, for example in Jest it’s just a synonim for <code>test()</code>.</p>
+<p>Given that, the previous example could be reworded:</p>
+<pre data-lang="js" style="background-color:#fafafa;color:#80cbc4;" class="language-js "><code class="language-js" data-lang="js"><span style="color:#6182b8;">describe</span><span>(</span><span style="color:#39adb5;">&quot;</span><span style="color:#91b859;">Authorization confirmation</span><span style="color:#39adb5;">&quot;, () </span><span style="font-style:italic;color:#7c4dff;">=&gt; </span><span style="color:#39adb5;">{
+</span><span style="color:#39adb5;">  </span><span style="font-style:italic;color:#ccd7da;">// ...
+</span><span>
+</span><span>  </span><span style="color:#6182b8;">describe</span><span>(</span><span style="color:#39adb5;">&quot;</span><span style="color:#91b859;">&#39;order placed&#39; event is received</span><span style="color:#39adb5;">&quot;, () </span><span style="font-style:italic;color:#7c4dff;">=&gt; </span><span style="color:#39adb5;">{
+</span><span>    </span><span style="color:#6182b8;">test</span><span>(</span><span style="color:#39adb5;">&quot;</span><span style="color:#91b859;">authorization is confirmed</span><span style="color:#39adb5;">&quot;, () </span><span style="font-style:italic;color:#7c4dff;">=&gt; </span><span style="color:#39adb5;">{}</span><span>)</span><span style="color:#39adb5;">;
+</span><span>
+</span><span>    </span><span style="color:#6182b8;">test</span><span>(</span><span style="color:#39adb5;">&quot;</span><span style="color:#91b859;">&#39;auth confirmed&#39; event is emitted</span><span style="color:#39adb5;">&quot;, () </span><span style="font-style:italic;color:#7c4dff;">=&gt; </span><span style="color:#39adb5;">{}</span><span>)</span><span style="color:#39adb5;">;
+</span><span>  </span><span style="color:#39adb5;">}</span><span>)</span><span style="color:#39adb5;">;
+</span><span>
+</span><span style="color:#39adb5;">  </span><span style="font-style:italic;color:#ccd7da;">// ...
+</span><span style="color:#39adb5;">}</span><span>)</span><span style="color:#39adb5;">;
+</span></code></pre>
+<p>Without <code>it</code> it’s now possible to use passive voice in test names. You might not want to overuse it
+because it can sound too beaurocratic, however in certain situations it leads to the shortest test name.</p>
+<p>The very first example, re-worded without the passive voice:</p>
+<pre data-lang="js" style="background-color:#fafafa;color:#80cbc4;" class="language-js "><code class="language-js" data-lang="js"><span style="color:#6182b8;">describe</span><span>(</span><span style="color:#39adb5;">&quot;</span><span style="color:#91b859;">readFileToString</span><span style="color:#39adb5;">&quot;, () </span><span style="font-style:italic;color:#7c4dff;">=&gt; </span><span style="color:#39adb5;">{
+</span><span>  </span><span style="color:#6182b8;">test</span><span>(</span><span style="color:#39adb5;">&quot;</span><span style="color:#91b859;">throws when file is missing</span><span style="color:#39adb5;">&quot;, () </span><span style="font-style:italic;color:#7c4dff;">=&gt; </span><span style="color:#39adb5;">{
+</span><span style="color:#39adb5;">    </span><span style="font-style:italic;color:#ccd7da;">// ...
+</span><span>  </span><span style="color:#39adb5;">}</span><span>)</span><span style="color:#39adb5;">;
+</span><span>
+</span><span>  </span><span style="color:#6182b8;">test</span><span>(</span><span style="color:#39adb5;">&quot;</span><span style="color:#91b859;">throws on empty file name</span><span style="color:#39adb5;">&quot;, () </span><span style="font-style:italic;color:#7c4dff;">=&gt; </span><span style="color:#39adb5;">{
+</span><span style="color:#39adb5;">    </span><span style="font-style:italic;color:#ccd7da;">// ...
+</span><span>  </span><span style="color:#39adb5;">}</span><span>)</span><span style="color:#39adb5;">;
+</span><span>
+</span><span>  </span><span style="color:#6182b8;">test</span><span>(</span><span style="color:#39adb5;">&quot;</span><span style="color:#91b859;">returns file content as string</span><span style="color:#39adb5;">&quot;, () </span><span style="font-style:italic;color:#7c4dff;">=&gt; </span><span style="color:#39adb5;">{
+</span><span style="color:#39adb5;">    </span><span style="font-style:italic;color:#ccd7da;">// ...
+</span><span>  </span><span style="color:#39adb5;">}</span><span>)</span><span style="color:#39adb5;">;
+</span><span>
+</span><span style="color:#39adb5;">  </span><span style="font-style:italic;color:#ccd7da;">// ...
+</span><span style="color:#39adb5;">}</span><span>)</span><span style="color:#39adb5;">;
+</span></code></pre>
+<p>We no longer have <code>it()</code> but <em>it</em> is still self-evident from the narrow context of a unit test.</p>
+<h2 id="summary">Summary</h2>
+<p>Don’t follow the trend blindly. Test names don’t have to match a rigid structure if readability suffers.
+They don’t have to imitate the natural language, for programmers who are used to code
+it simply brings inconvenience and non-tech people won’t read your code anyway.</p>
+<p>What matters is a balance between readability, clear meaning and conciseness.
+Use a more generic schema <code>test(&quot;'does something' or 'something is done'&quot;)</code>
+everywhere and you’ll have less small things to worry about (if you care).</p>
+
+
+<p class="tags-data">
+    
+</p>
+
+        </main>
+        <footer>
+            <hr>
+<div class="foot-container">
+    <div class="footLeft">
+        <p>
+            © 2025 Aleksey Fedotov <br>
+            Built with <a target="_blank" rel="noopener noreferrer" href="https://www.getzola.org">Zola</a> using
+            modified <a target="_blank" rel="noopener noreferrer" href="https://github.com/Speyll/anemone">anemone</a>
+            theme and no AI.
+        </p>
+    </div>
+    
+</div>
+        </footer>
+    </div>
+</body>
+
+</html>
