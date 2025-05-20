@@ -3,7 +3,8 @@
 {% if config.extra.header_nav %}
 <nav class="navbar">
     {% for nav_item in config.extra.header_nav %}
-    <a href="{{ nav_item.url }}" class="{% if nav_item.url == current_url %}active{% endif %}">
+    {% if not loop.first %}/{% endif %}
+    <a href="{{ nav_item.url }}" class="main-menu-link">
         {{ nav_item.name }}
     </a>
     {% endfor %}
