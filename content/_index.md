@@ -12,7 +12,7 @@ When not coding I write documentation, plan work via JIRA tickets, or participat
 In the past I used to develop .NET/C# backend services and frontend React apps, sometimes also touching Python and C.
 In my personal projects I lean towards C++ and Rust.
 
-## Online presence
+You can find me online at these spots:
 
 <span class="social-link-btn">{{ icon(class="fa-brands fa-linkedin fa-xl") }} [LinkedIn](https://www.linkedin.com/in/fdtv/)</span>
 <span class="social-link-btn">{{ icon(class="fa-brands fa-github-square fa-xl") }} [Github](https://github.com/lexfn)</span>
@@ -20,9 +20,9 @@ In my personal projects I lean towards C++ and Rust.
 <span class="social-link-btn">{{ icon(class="fa-brands fa-facebook-square fa-xl") }} [Facebook](https://facebook.com/lexfdv)</span>
 <span class="social-link-btn">{{ icon(class="fa-brands fa-vk fa-xl")}} [VK](https://vk.com/lexfv)</span>
 
-## Pet projects
+## Projects
 
-I sometimes code in in my spare time too. Here are some of the projects:
+I sometimes code in in my spare time, here are some of the projects:
 
 - [Solo](https://github.com/lexfn/solo), a simple game engine with OpenGL/Vulkan backend, Bullet physics and Lua scripting.
   More or less just a playground for my gamedev experiments.
@@ -32,8 +32,6 @@ I sometimes code in in my spare time too. Here are some of the projects:
 - [Ustats module](https://github.com/lexfn/ustats) for the NGINX web server for collecting upstream servers statistics, initially created to be used at my first company.
   Hopelessly outdated at this point.
 - [More on Github](https://github.com/lexfn).
-
-## Games
 
 I love indie gamedev and occasionally mess around with some ideas. That's how these games came to be:
 
